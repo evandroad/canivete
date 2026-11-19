@@ -1,82 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../style.css">
     <title>CEP</title>
-    <style>
-        body {
-            background: #f0f0f0;
-        }
-        h1 {
-            text-align: center;
-            font-size: 200%;
-        }
-        #d {
-            background: #f8f3f3;
-            margin: 20px auto;
-            border: #dadada solid 1px;
-            border-radius: 15px;
-            padding: 15px;
-        }
-        table {
-            margin-top: 20px;
-        }
-        th {
-            border : solid black 1px;
-            border-radius : 3px;
-            padding : 3px;
-            background : #dadada;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        td {
-            border : solid black 1px;
-            border-radius : 3px;
-            padding : 3px;
-            background : #f0f0f0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-    </style>
 </head>
-<body>
-    <div class="center">
-        <div id="d" class="col-sm-4">
+<body class="cep-app">
+    <main>
+        <div id="d" class="app-panel cep-panel">
             <h1>Buscar Endereço</h1>
             
             <div class="form-group">
                 <label>Digite seu CEP:</label>
-                <input type="Text" id="cep" name="cep" class="form-control" size="15" maxlength="8" placeholder="Só números">
+                <input type="text" id="cep" name="cep" class="form-control app-input" size="15" maxlength="8" placeholder="Só números">
             </div>
             <div class="form-group">
-                <button class="btn btn-primary" type="button" onclick="consultaCep()">Consultar</button>
+                <button class="btn btn-primary button-primary" type="button" onclick="consultaCep()">Consultar</button>
             </div>
             
-            <div style="padding: 20px;" id="return"></div>
+            <div class="cep-result" id="return"></div>
             
-            <h1>Buscar CEP</h1>
+            <h2>Buscar CEP</h2>
             
             <div class="form-group">
                 <label>Estado:</label>
-                <input type="Text" id="estado" name="estado" class="form-control" placeholder="Sigla (duas letras)">
+                <input type="text" id="estado" name="estado" class="form-control app-input" placeholder="Sigla (duas letras)">
             </div>
             <div class="form-group">
                 <label>Cidade:</label>
-                <input type="Text" id="cidade" name="cidade" class="form-control" placeholder="No mínimo 3 letras">
+                <input type="text" id="cidade" name="cidade" class="form-control app-input" placeholder="No mínimo 3 letras">
             </div>
             <div class="form-group">
                 <label>Rua:</label>
-                <input type="Text" id="rua" name="rua" class="form-control" placeholder="No mínimo 3 letras">
+                <input type="text" id="rua" name="rua" class="form-control app-input" placeholder="No mínimo 3 letras">
             </div>
             <div class="form-group">
-                <button class="btn btn-primary" type="button" onclick="consultaEndereco()">Consultar</button>
+                <button class="btn btn-primary button-primary" type="button" onclick="consultaEndereco()">Consultar</button>
             </div>
             
-            <div id="ceps"></div>
+            <div class="cep-results" id="ceps"></div>
         </div>
-    </div>
+    </main>
 
     <script>
         window.onload = () => {
@@ -123,6 +89,7 @@
                             
                 if(cep.length > 0) {
                     var tabela = document.createElement('table')
+                    tabela.className = 'cep-results-table'
                         var thead = document.createElement('thead')
                             var tr = document.createElement('tr');
                                 var th = document.createElement('th');

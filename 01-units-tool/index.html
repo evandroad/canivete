@@ -97,7 +97,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text unit-label">Hexadecimal:</span>
 						</div>
-						<input type="text" id="hex" class="form-control" v-model="hex">
+						<input type="text" id="hex" class="form-control app-input" v-model="hex">
 						<div class="input-group-append">
 							<button class="btn btn-primary button-primary" type="button" @click="converterHex">Converter</button>
 						</div>
@@ -106,7 +106,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text unit-label">Decimal:</span>
 						</div>
-						<input type="text" id="dec" class="form-control" v-model="dec">
+						<input type="text" id="dec" class="form-control app-input" v-model="dec">
 						<div class="input-group-append">
 							<button class="btn btn-primary button-primary" type="button" @click="converterDec">Converter</button>
 						</div>
@@ -115,7 +115,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text unit-label">ASCII:</span>
 						</div>
-						<input type="text" id="asc" class="form-control" v-model="asc">
+						<input type="text" id="asc" class="form-control app-input" v-model="asc">
 						<div class="input-group-append">
 							<button class="btn btn-primary button-primary" type="button" @click="converterAsc">Converter</button>
 						</div>
@@ -124,7 +124,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text unit-label">Binário:</span>
 						</div>
-						<input type="text" id="bin" class="form-control" v-model="bin">
+						<input type="text" id="bin" class="form-control app-input" v-model="bin">
 						<div class="input-group-append">
 							<button class="btn btn-primary button-primary" type="button" @click="converterBin">Converter</button>
 						</div>
@@ -133,7 +133,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text unit-label">Byte:</span>
 						</div>
-						<input type="text" id="bte" class="form-control" v-model="bte">
+						<input type="text" id="bte" class="form-control app-input" v-model="bte">
 						<div class="input-group-append">
 							<button class="btn btn-primary button-primary" type="button" @click="converterBte">Converter</button>
 						</div>
@@ -142,7 +142,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text unit-label">Base64:</span>
 						</div>
-						<input type="Text" id="b64" class="form-control" v-model="b64">
+						<input type="Text" id="b64" class="form-control app-input" v-model="b64">
 						<div class="input-group-append">
 							<button class="btn btn-primary button-primary" type="button" @click="converterBase64">Converter</button>
 						</div>
@@ -151,8 +151,8 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text unit-label">Bcrypt:</span>
 						</div>
-						<input type="Text" id="bcr" class="form-control unit-bcrypt" v-model="bcr">
-						<input type="Text" id="salt" class="form-control unit-salt" v-model="salt" placeholder="salt">
+						<input type="Text" id="bcr" class="form-control app-input unit-bcrypt" v-model="bcr">
+						<input type="Text" id="salt" class="form-control app-input unit-salt" v-model="salt" placeholder="salt">
 						<div class="input-group-append">
 							<button class="btn btn-primary button-primary" type="button" @click="converterBcr">Converter</button>
 						</div>
@@ -161,13 +161,13 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text unit-label">MD5:</span>
 						</div>
-						<input type="Text" id="md5" class="form-control" v-model="md5">
+						<input type="Text" id="md5" class="form-control app-input" v-model="md5">
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<span class="input-group-text unit-label">SHA1:</span>
 						</div>
-						<input type="Text" id="sh1" class="form-control" v-model="sh1">
+						<input type="Text" id="sh1" class="form-control app-input" v-model="sh1">
 					</div>
 					<div class="form-group">
 						<button class="btn btn-primary button-primary" type="button" @click="cleaning">Limpar</button>

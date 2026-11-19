@@ -149,6 +149,30 @@ h1 {
   color: #9ca3af;
 }
 
+.app-input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  background-color: #111827;
+  color: #f9fafb;
+  font-size: 16px;
+}
+
+.app-input::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+.app-input:focus {
+  border-color: #818cf8;
+  outline: none;
+  background-color: #111827;
+  color: #f9fafb;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+}
+
 .button-primary,
 .button-secondary {
   border: 1px solid transparent;
@@ -196,22 +220,8 @@ h1 {
   color: #f9fafb;
 }
 
-.units-tool .form-control {
-  border-color: #475569;
-  background-color: #111827;
-  color: #f9fafb;
-}
-
-.units-tool .form-control::placeholder {
-  color: #9ca3af;
-  opacity: 1;
-}
-
-.units-tool .form-control:focus {
-  border-color: #818cf8;
-  background-color: #111827;
-  color: #f9fafb;
-  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+.units-tool .input-group .app-input {
+  width: 1%;
 }
 
 .units-tool .input-group-text {
@@ -234,13 +244,11 @@ h1 {
 
 .units-tool .unit-bcrypt {
   flex: 1 1 0;
-  width: auto;
   min-width: 0;
 }
 
 .units-tool .unit-salt {
   flex: 0 0 4.5rem;
-  width: auto;
 }
 
 .units-tool table {
@@ -615,26 +623,6 @@ h1 {
   font-size: 1rem;
 }
 
-.bmi-app input[type="number"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #475569;
-  border-radius: 8px;
-  background: #111827;
-  color: #f9fafb;
-  font-size: 16px;
-}
-
-.bmi-app input[type="number"]::placeholder {
-  color: #9ca3af;
-}
-
-.bmi-app input[type="number"]:focus {
-  border-color: #818cf8;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
-}
-
 .bmi-app .buttons {
   display: flex;
   gap: 10px;
@@ -702,6 +690,72 @@ h1 {
 
 .bmi-app .app-footer {
   font-size: 12px;
+}
+
+/* App 04: buscador de CEP */
+.cep-app {
+  color: #f9fafb;
+}
+
+.cep-app .cep-panel {
+  width: min(720px, 100%);
+  margin: 0 auto;
+}
+
+.cep-app h1 {
+  margin-bottom: 24px;
+  text-align: center;
+  font-size: 1.8rem;
+  letter-spacing: normal;
+}
+
+.cep-app h2 {
+  margin: 28px 0 20px;
+  font-size: 1.4rem;
+}
+
+.cep-app label {
+  display: block;
+  margin-bottom: 6px;
+  color: #d1d5db;
+}
+
+.cep-app .form-group {
+  margin-bottom: 16px;
+}
+
+.cep-app .cep-result,
+.cep-app .cep-results {
+  overflow-x: auto;
+  color: #d1d5db;
+}
+
+.cep-app .cep-result {
+  margin: 16px 0;
+  line-height: 1.7;
+}
+
+.cep-app .cep-results-table {
+  width: 100%;
+  margin: 16px 0;
+  border-collapse: collapse;
+}
+
+.cep-app .cep-results-table th,
+.cep-app .cep-results-table td {
+  padding: 8px;
+  border: 1px solid #475569;
+  text-align: left;
+}
+
+.cep-app .cep-results-table th {
+  background-color: #293449;
+  color: #f9fafb;
+}
+
+.cep-app .cep-results-table td {
+  background-color: #111827;
+  color: #d1d5db;
 }
 
 /* Comportamento responsivo global e dos apps */
