@@ -1,3 +1,4 @@
+/* Estilos globais: cores, tipografia, reset e estrutura base */
 :root {
   color-scheme: dark;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -24,6 +25,7 @@ main {
   padding: 76px 0 64px;
 }
 
+/* Página inicial: coleção de projetos */
 .eyebrow {
   margin: 0 0 12px;
   color: #a5b4fc;
@@ -125,6 +127,7 @@ h1 {
   transform: translateX(4px);
 }
 
+/* App 01: ferramenta de conversão de unidades */
 .units-tool {
   color: #f9fafb;
 }
@@ -278,6 +281,260 @@ h1 {
   to { bottom: 0; opacity: 0; }
 }
 
+/* App 02: tutoriais */
+.tutorial-app {
+  background: var(--color_2);
+  color: var(--font);
+}
+
+.tutorial-app h1 {
+  width: 100%;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.tutorial-app h2 {
+  font-size: 22px;
+}
+
+.tutorial-app p {
+  font-size: 16px;
+}
+
+.tutorial-app #mainContainer {
+  display: flex;
+  flex-direction: column;
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 12px 0 64px;
+}
+
+.tutorial-app .header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.tutorial-app #description {
+  max-width: 860px;
+  margin: 12px auto 28px;
+  line-height: 1.65;
+}
+
+.tutorial-app .gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  justify-items: center;
+  gap: 24px;
+}
+
+.tutorial-app .card {
+  width: 100%;
+  min-width: 0;
+  max-width: 260px;
+  padding: 16px;
+  border: 1px solid var(--color_3);
+  border-radius: 18px;
+  background: var(--color_2);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.tutorial-app .card img {
+  display: block;
+  height: 5em;
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.tutorial-app .card h2 {
+  margin: 10px 0;
+  text-align: center;
+  font-size: 18px;
+}
+
+.tutorial-app .card button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  font-size: 1em;
+}
+
+.tutorial-app .card button a {
+  color: var(--tutorial-link, #0366d6);
+  text-decoration: none;
+}
+
+.tutorial-app .card button a:hover {
+  color: var(--tutorial-link-hover, #023581);
+  cursor: pointer;
+}
+
+/* Conteúdo dos tutoriais e navegação lateral */
+.tutorial-app #contentMenu {
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.tutorial-app #sidenav {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 97.5%;
+  overflow-x: hidden;
+  padding: 20px 10px 0;
+  background-color: var(--color_3);
+}
+
+.tutorial-app #logoHome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tutorial-app svg path {
+  fill: var(--font);
+}
+
+.tutorial-app svg:hover path {
+  fill: var(--color_5);
+  cursor: pointer;
+}
+
+.tutorial-app #summaryTitle {
+  padding-left: 15px;
+  color: var(--font);
+}
+
+.tutorial-app #summaryItem:hover {
+  border-radius: 5px;
+  background-color: var(--color_2);
+}
+
+.tutorial-app #summaryItem a {
+  display: block;
+  padding: 6px 8px 6px 16px;
+  color: var(--font);
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.tutorial-app #contentBody {
+  margin-bottom: 20px;
+  margin-left: 20%;
+  padding: 0 10px;
+  background-color: var(--color_2);
+  font-size: 18px;
+}
+
+.tutorial-app #btnTop {
+  position: fixed;
+  z-index: 99;
+  right: 25px;
+  bottom: 20px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 10px;
+  background-color: #1d4ed8;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.tutorial-app #btnTop:hover {
+  background-color: #1e40af;
+}
+
+/* Conteúdo Markdown */
+.tutorial-app .markdown-body {
+  background-color: var(--color_2);
+  color: var(--font);
+}
+
+.tutorial-app .markdown-body p {
+  width: 80%;
+  line-height: 1.65;
+}
+
+.tutorial-app .markdown-body a {
+  color: var(--tutorial-link, #0366d6);
+}
+
+.tutorial-app .markdown-body pre,
+.tutorial-app .markdown-body code {
+  background: var(--color_3) !important;
+  color: var(--font);
+}
+
+.tutorial-app .markdown-body pre {
+  width: 80%;
+}
+
+.tutorial-app .markdown-body th,
+.tutorial-app .markdown-body tbody tr:nth-child(odd),
+.tutorial-app .markdown-body tbody tr:nth-child(even) {
+  background-color: var(--color_1);
+}
+
+/* Alternador de tema */
+.tutorial-app .switch {
+  position: fixed;
+  z-index: 100;
+  top: 16px;
+  right: 20px;
+  display: block;
+  width: 60px;
+  height: 30px;
+  margin: 0;
+  font-size: 17px;
+}
+
+.tutorial-app .switch input {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.tutorial-app .slider {
+  --background: #151b6b;
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  background-color: var(--background);
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.tutorial-app .slider::before {
+  position: absolute;
+  bottom: 15%;
+  left: 10%;
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50%;
+  background: var(--background);
+  box-shadow: inset 8px -4px 0 0 #fff000;
+  content: "";
+  transition: 0.6s;
+}
+
+.tutorial-app .switch input:checked + .slider {
+  background-color: #1797ff;
+}
+
+.tutorial-app .switch input:checked + .slider::before {
+  transform: translateX(100%);
+  box-shadow: inset 15px -4px 0 15px #fff000;
+}
+
+/* Comportamento responsivo global e dos apps */
 @media (max-width: 520px) {
   main {
     width: min(100% - 32px, 420px);
@@ -286,6 +543,37 @@ h1 {
 
   .intro {
     margin-bottom: 30px;
+  }
+
+  .tutorial-app #mainContainer {
+    width: min(100% - 32px, 420px);
+  }
+}
+
+@media (max-width: 950px) {
+  .tutorial-app .markdown-body p,
+  .tutorial-app .markdown-body pre {
+    width: 100%;
+  }
+}
+
+@media (max-width: 650px) {
+  .tutorial-app #contentMenu {
+    display: none;
+  }
+
+  .tutorial-app #contentBody {
+    margin-left: 0;
+  }
+}
+
+@media (max-height: 450px) {
+  .tutorial-app #sidenav {
+    padding-top: 15px;
+  }
+
+  .tutorial-app #sidenav a {
+    font-size: 18px;
   }
 }
 
