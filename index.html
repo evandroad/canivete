@@ -81,7 +81,7 @@
     }
 
     .preview {
-      height: 225px;
+      height: 200px;
       overflow: hidden;
       border-bottom: 1px solid #293449;
       background: #f3f4f6;
@@ -89,17 +89,16 @@
 
     .preview iframe {
       display: block;
-      width: 100%;
       height: 460px;
       border: 0;
       pointer-events: none;
-      transform: scale(0.72);
+      transform: scale(0.60);
       transform-origin: top left;
-      width: 138.9%;
+      width: 170%;
     }
 
     .project-info {
-      padding: 21px 22px 23px;
+      padding: 16px 16px 16px;
     }
 
     .project-info h2 {
@@ -159,33 +158,93 @@
   <main>
     <header>
       <p class="eyebrow">Coleção de projetos</p>
-      <h1>Meus projetos</h1>
-      <p class="intro">Uma seleção dos meus apps e experimentos. Escolha um card para abrir o projeto.</p>
+      <h1>Ferramentas e Utilitários</h1>
+      <p class="intro">Uma seleção de apps e experimentos. Escolha um card para abrir o projeto.</p>
     </header>
 
-    <section class="projects" aria-label="Projetos">
-      <a class="project-card" href="./cep/" aria-label="Abrir Buscador de CEP">
-        <div class="preview" aria-hidden="true">
-          <iframe src="./cep/index.html" title="Prévia do Buscador de CEP" loading="lazy" tabindex="-1"></iframe>
-        </div>
-        <div class="project-info">
-          <h2>Buscador de CEP</h2>
-          <p>Consulte endereços pelo CEP ou encontre CEPs usando um endereço.</p>
-          <span class="open-project">Abrir projeto <span aria-hidden="true">→</span></span>
-        </div>
-      </a>
-
-      <a class="project-card" href="./minha-numerologia/" aria-label="Abrir Minha Numerologia">
-        <div class="preview" aria-hidden="true">
-          <iframe src="./minha-numerologia/index.html" title="Prévia do Minha Numerologia" loading="lazy" tabindex="-1"></iframe>
-        </div>
-        <div class="project-info">
-          <h2>Minha Numerologia</h2>
-          <p>Explore a numerologia do seu nome e da sua data de nascimento.</p>
-          <span class="open-project">Abrir projeto <span aria-hidden="true">→</span></span>
-        </div>
-      </a>
-    </section>
+    <section class="projects" id="projects" aria-label="Projetos"></section>
   </main>
+  <script>
+    const projetos = [
+      {
+        nome: "Ferramenta de Conversão de Unidades",
+        descricao: "Converta unidades de medida de forma rápida e fácil.",
+        link: "./units-tool/",
+        previa: "./units-tool/index.html"
+      },
+      {
+        nome: "Diversos Tutoriais e Dicas",
+        descricao: "Descubra tutoriais e dicas úteis para aprimorar suas habilidades.",
+        link: "./tutorials/tutorial",
+        previa: "./tutorials/tutorial/index.html"
+      },
+      {
+        nome: "Calculadora de IMC",
+        descricao: "Calcule o Índice de Massa Corporal (IMC) e descubra sua classificação.",
+        link: "./bmi/",
+        previa: "./bmi/index.html"
+      },
+      {
+        nome: "Buscador de CEP",
+        descricao: "Consulte endereços pelo CEP ou encontre CEPs usando um endereço.",
+        link: "./cep/",
+        previa: "./cep/index.html"
+      },
+      {
+        nome: "Perfil de Evandro",
+        descricao: "Uma página pessoal com informações sobre Evandro, incluindo links para redes sociais e projetos.",
+        link: "./evandro/",
+        previa: "./evandro/index.html"
+      },
+      {
+        nome: "Minha Numerologia",
+        descricao: "Explore a numerologia do seu nome e da sua data de nascimento.",
+        link: "./numerologia/",
+        previa: "./numerologia/index.html"
+      }
+    ];
+
+    const listaProjetos = document.getElementById("projects");
+
+    for (const projeto of projetos) {
+      const card = document.createElement("a");
+      card.className = "project-card";
+      card.href = projeto.link;
+      card.setAttribute("aria-label", `Abrir ${projeto.nome}`);
+
+      const preview = document.createElement("div");
+      preview.className = "preview";
+      preview.setAttribute("aria-hidden", "true");
+
+      const iframe = document.createElement("iframe");
+      iframe.src = projeto.previa;
+      iframe.title = `Prévia do ${projeto.nome}`;
+      iframe.loading = "lazy";
+      iframe.tabIndex = -1;
+      preview.appendChild(iframe);
+
+      const info = document.createElement("div");
+      info.className = "project-info";
+
+      const titulo = document.createElement("h2");
+      titulo.textContent = projeto.nome;
+
+      const descricao = document.createElement("p");
+      descricao.textContent = projeto.descricao;
+
+      const abrir = document.createElement("span");
+      abrir.className = "open-project";
+      abrir.append("Abrir projeto ");
+
+      const seta = document.createElement("span");
+      seta.setAttribute("aria-hidden", "true");
+      seta.textContent = "→";
+      abrir.appendChild(seta);
+
+      info.append(titulo, descricao, abrir);
+      card.append(preview, info);
+      listaProjetos.appendChild(card);
+    }
+  </script>
 </body>
 </html>

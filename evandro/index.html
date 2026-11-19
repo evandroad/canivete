@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Evandro - Desenvolvedor Fullstack</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<!-- Header -->
+	<header>
+		<div class="container">
+			<nav>
+				<div class="logo">Evandro</div>
+				<ul>
+					<li><a href="#sobre">Sobre</a></li>
+					<li><a href="#projetos">Projetos</a></li>
+					<li><a href="#experiencia">Experiência</a></li>
+					<li><a href="#contato">Contato</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<!-- Hero Section -->
+	<section class="hero">
+		<div class="container">
+			<h1>Desenvolvedor Full Stack</h1>
+			<p>+<span id="exp1"></span> anos criando sistemas escaláveis, APIs robustas e soluções integradas com hardware</p>
+		</div>
+	</section>
+
+	<!-- About Section -->
+	<section id="sobre">
+		<div class="container">
+			<h2>Sobre Mim</h2>
+			<div class="about-content">
+				<div class="profile-photo">
+					<img id="github-avatar" src="" alt="Evandro Abreu Domingues" style="width: 200px; height: 200px; border-radius: 50%; border: 3px solid #00d4ff; object-fit: cover;">
+				</div>
+				<div class="about-text">
+					<p>
+						Desenvolvedor Full Stack com mais de <span id="exp"></span> anos de experiência em desenvolvimento de software, 
+						atuando em ambientes corporativos e industriais. Forte atuação em backend com Ruby on Rails, 
+						Java e Go, além de desenvolvimento frontend com React e Angular.
+					</p>
+					<p>
+						Experiência sólida em sistemas distribuídos, APIs REST, bancos de dados relacionais, cache, 
+						containers Docker e integração com hardware e sistemas embarcados. Perfil analítico, focado 
+						em resolver problemas complexos e entregar soluções eficientes e escaláveis.
+					</p>
+					<p style="margin-top: 1rem; color: #00d4ff;">
+						📍 Gravataí - RS
+					</p>
+					<div class="skills">
+						<span class="skill-tag">Java</span>
+						<span class="skill-tag">Go</span>
+						<span class="skill-tag">Ruby on Rails</span>
+						<span class="skill-tag">C++</span>
+						<span class="skill-tag">PHP</span>
+						<span class="skill-tag">JavaScript</span>
+						<span class="skill-tag">TypeScript</span>
+						<span class="skill-tag">React</span>
+						<span class="skill-tag">Angular</span>
+						<span class="skill-tag">Vue.js</span>
+						<span class="skill-tag">PostgreSQL</span>
+						<span class="skill-tag">MySQL</span>
+						<span class="skill-tag">Redis</span>
+						<span class="skill-tag">Docker</span>
+						<span class="skill-tag">APIs REST</span>
+						<span class="skill-tag">Sistemas Embarcados</span>
+					</div>
+				</div>
+				<div style="background: linear-gradient(45deg, #00d4ff, #7c3aed); padding: 2px; border-radius: 10px;">
+					<div style="background: #1a1a2e; padding: 2rem; border-radius: 8px; text-align: center;">
+						<div style="font-size: 2rem; color: #00d4ff; font-weight: bold;" id="experience"></div>
+						<p>Anos de Experiência</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Projects Section -->
+	<section id="projetos">
+		<div class="container">
+			<h2>Meus Projetos</h2>
+			<div class="projects-grid">
+				<div class="project-card">
+					<h3>PubSub em Tempo Real</h3>
+					<p class="justify">
+						Sistema de mensageria em tempo real desenvolvido em Go utilizando WebSockets, permitindo 
+						comunicação eficiente entre múltiplos clientes via canais. Implementa autenticação JWT, 
+						controle de acesso por IP/CORS e monitoramento com métricas em tempo real.
+					</p>
+					<div class="project-tech">
+						<span class="tech-badge">Go</span>
+						<span class="tech-badge">Gin</span>
+						<span class="tech-badge">Websocket</span>
+						<span class="tech-badge">JWT</span>
+					</div>
+				</div>
+				<div class="project-card">
+					<h3>Plataforma de Controle de Tráfego</h3>
+					<p class="justify">
+						Sistema SaaS para gerenciamento de controladores de tráfego urbano, com processamento em tempo real. 
+						Arquitetura baseada em Ruby on Rails, PostgreSQL e Redis, com foco em escalabilidade, alta disponibilidade 
+						e operação em ambientes críticos.
+					</p>
+					<div class="project-tech">
+						<span class="tech-badge">RubyOnRails</span>
+						<span class="tech-badge">PostgreSQL</span>
+						<span class="tech-badge">Redis</span>
+						<span class="tech-badge">Docker</span>
+					</div>
+				</div>
+				<div class="project-card">
+					<h3>Aplicação PDV (Ponto de Venda)</h3>
+					<p class="justify">
+						Aplicação desenvolvida em Java para dispositivos Android voltados a POS (Point of Sale), 
+						com integração a APIs REST e comunicação segura com cartões utilizando protocolo APDU 
+						(SAM Card). Foco em confiabilidade, segurança e operação em ambientes críticos.
+					</p>
+					<div class="project-tech">
+						<span class="tech-badge">Java</span>
+						<span class="tech-badge">Android</span>
+						<span class="tech-badge">APDU</span>
+						<span class="tech-badge">REST API</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Experience Section -->
+	<section id="experiencia">
+		<div class="container">
+			<h2>Experiência Profissional</h2>
+			<div class="timeline">
+				<div class="timeline-item">
+					<h3>Digicon S/A</h3>
+					<div class="position">Desenvolvedor de Software</div>
+					<div class="date">09/2021 - 04/2026</div>
+					<p>
+						Desenvolvimento e manutenção de plataforma SaaS para controle e gerenciamento de controladores 
+						de tráfego urbano, atuando em ambiente crítico e de alta disponibilidade.
+					</p>
+	
+					<p>
+						Construção de APIs RESTful escaláveis utilizando Ruby on Rails, com foco em performance, 
+						segurança e manutenibilidade, integradas a bancos PostgreSQL e sistemas de cache com Redis.
+					</p>
+	
+					<p>
+						Desenvolvimento de aplicações em Go para comunicação direta com hardware e sistemas embarcados, 
+						garantindo integração eficiente entre software e dispositivos físicos.
+					</p>
+	
+					<p>
+						Criação de aplicação para configuração de equipamentos com frontend em React, proporcionando 
+						interface intuitiva para operação técnica.
+					</p>
+	
+					<p>
+						Desenvolvimento de soluções em Java para Android (POS), incluindo comunicação com dispositivos 
+						seguros via protocolo APDU (SAM Card).
+					</p>
+	
+					<p>
+						Participação ativa em definição de arquitetura, versionamento com Git, organização de backlog, criação de pipelines de deploy 
+						e colaboração em equipe multidisciplinar.
+					</p>
+				</div>
+				<div class="timeline-item">
+					<h3>Digicon S/A</h3>
+					<div class="position">Desenhista Mecânico</div>
+					<div class="date">06/2020 - 09/2021</div>
+					<p>
+						Modelagem e manutenção de projetos mecânicos 3D utilizando SolidWorks e Siemens NX, 
+						com foco em precisão e padrões industriais.
+					</p>
+				</div>
+
+				<div class="timeline-item">
+					<h3>Digicon S/A</h3>
+					<div class="position">Técnico de Processos</div>
+					<div class="date">05/2018 - 06/2020</div>
+					<p>
+						Otimização de processos industriais, desenvolvimento de soluções produtivas e melhoria de eficiência operacional.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Contact Section -->
+	<section id="contato">
+		<div class="container">
+			<h2>Vamos Conversar?</h2>
+			<div class="contact-content">
+				<p style="font-size: 1.1rem; margin-bottom: 2rem; color: #b0b0b0;">
+					Estou aberto a oportunidades como Desenvolvedor Full Stack, Backend ou Software Engineer. 
+					Vamos conversar!
+				</p>
+				<div class="contact-links">
+					<a href="mailto:evandro.domingues@hotmail.com" class="contact-link">📧 Email</a>
+					<a href="https://linkedin.com/in/evandro-abreu-domingues" target="_blank" class="contact-link">💼 LinkedIn</a>
+					<a href="https://github.com/evandroad" target="_blank" class="contact-link">🐙 GitHub</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<p>&copy; <span id="year"></span> Evandro Abreu Domingues</p>
+		</div>
+	</footer>
+
+	<script>
+		const currentDate = new Date()
+		document.getElementById('year').textContent = currentDate.getFullYear()
+		
+		const startDate = new Date(2021, 8)
+		const years = (currentDate - startDate) / (1000 * 60 * 60 * 24 * 365.25)
+		const exp = Math.floor(years)
+
+		document.getElementById('experience').textContent = exp + '+'
+		document.getElementById('exp1').textContent = exp
+		document.getElementById('exp').textContent = exp
+		
+		fetch('https://api.github.com/users/evandroad')
+			.then(response => response.json())
+			.then(data => document.getElementById('github-avatar').src = data.avatar_url)
+	</script>
+</body>
+</html>

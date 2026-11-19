@@ -1,0 +1,18 @@
+{
+    "lang": "pt",
+    "dir": "ltr",
+    "name": "Calculadora IMC",
+    "short_name": "IMC",
+    "icons": [
+        {
+            "src": "bmi.png",
+            "sizes": "96x96"
+        }
+    ],
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "./",
+    "orientation": "portrait",
+    "theme_color": "#ffffff",
+    "background_color": "#0a82fa"
+}

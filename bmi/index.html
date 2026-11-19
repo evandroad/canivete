@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" type="image/png" href="bmi.png"/>
+  <link rel="manifest" href="manifest.json">
+  <title>BMI</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #e6e6e6;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .alert {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .danger { background: #f8d7da; }
+    .success { background: #d4edda; }
+    .warning { background: #fff3cd; }
+    .info { background: #d1ecf1; }
+    .dark { background: #c2c2c2; }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .highlight {
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>⚖️ BMI Calculator</h1>
+
+      <div class="input-group">
+        <label>Height (cm)</label>
+        <input type="number" id="altura" placeholder="Enter your height in centimeters" autofocus>
+      </div>
+
+      <div class="input-group">
+        <label>Weight (kg)</label>
+        <input type="number" id="peso" placeholder="Enter your weight in Kilograms">
+      </div>
+
+      <div class="buttons">
+        <button class="primary" onclick="calculo()">Calculate</button>
+        <button class="secondary" onclick="limpar()">Clean</button>
+      </div>
+
+      <div id="alert"></div>
+
+      <div class="table-responsive">
+        <table class="table table-sm table-hover table-condensed tabela">
+          <thead>
+            <th>BMI</th>
+            <th>CLASSIFICATION</th>
+            <th id='t'></th>
+          </thead>
+          <tbody>
+            <tr id="m">
+              <td>LESS THAN 18,5</td>
+              <td>THINNESS</td>
+              <td id="mm"></td>
+            </tr>
+            <tr id="n">
+              <td>BETWEEN 18,5 e 24,9</td>
+              <td>NORMAL</td>
+              <td id="nn"></td>
+            </tr>
+            <tr id="s">
+              <td>BETWEEN 25 e 29,9</td>
+              <td>OVER WEIGHT</td>
+              <td id="ss"></td>
+            </tr>
+            <tr id="o1">
+              <td>BETWEEN 30 e 34,9</td>
+              <td>OBESITY I</td>
+              <td id="o"></td>
+            </tr>
+            <tr id="o2">
+              <td>BETWEEN 35 e 39,9</td>
+              <td>OBESITY II</td>
+              <td id="oo"></td>
+            </tr>
+            <tr id="o3">
+              <td>BIGGER THEN 40</td>
+              <td>OBESITY III</td>
+              <td id="ooo"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="https://github.com/evandroad/bmi">
+      <img src="https://img.icons8.com/glyph-neue/48/000000/github.png"/>
+    </a>
+    <a href="https://www.linkedin.com/in/evandro-abreu-domingues/">
+      <img src="https://img.icons8.com/color/48/000000/linkedin-circled--v1.png"/>
+    </a>
+    <div id="author"><span>Created by Evandro Abreu Domingues</span></div>
+  </footer>
+
+  <script>
+    function calculo() {
+      document.getElementById("m").className = ''
+      document.getElementById("n").className = ''
+      document.getElementById("s").className = ''
+      document.getElementById("o1").className = ''
+      document.getElementById("o2").className = ''
+      document.getElementById("o3").className = ''
+
+      var peso = document.getElementById('peso').value
+      var altura = document.getElementById('altura').value
+      const calc = (v) => (v * altura * altura / 10000).toFixed(1)
+      const setClass = (el, v) => document.getElementById(el).className = v
+
+      var imc = parseFloat(10000 * (peso / (altura * altura)))
+      imc = parseFloat(imc.toFixed(1))
+      document.getElementById("alert").innerHTML = `Seu imc é <strong>${imc}</strong>.`
+
+      if (imc <= 18.49) {
+        setClass('alert', 'alert danger')
+        setClass('m', 'alert danger')
+      }
+      if (imc >= 18.5 && imc <= 24.99) {
+        setClass('alert', 'alert success')
+        setClass('n', 'alert success')
+      }
+      if (imc >= 25 && imc <= 29.99) {
+        setClass('alert', 'alert warning')
+        setClass('s', 'alert warning')
+      }
+      if (imc >= 30 && imc <= 34.99) {
+        setClass('alert', 'alert info')
+        setClass('o1', 'alert info')
+      }
+      if (imc >= 35 && imc <= 39.99) {
+        setClass('alert', 'alert dark')
+        setClass('o2', 'alert dark')
+      }
+      if (imc >= 40) {
+        setClass('alert', 'alert danger')
+        setClass('o3', 'alert danger')
+      }
+
+      document.getElementById('mm').innerHTML = `0 - ${calc(18.5)}`
+      document.getElementById('nn').innerHTML = `${calc(18.5)} - ${calc(25)}`
+      document.getElementById('ss').innerHTML = `${calc(25)} - ${calc(30)}`
+      document.getElementById('o').innerHTML = `${calc(30)} - ${calc(35)}`
+      document.getElementById('oo').innerHTML = `${calc(35)} - ${calc(40)}`
+      document.getElementById('ooo').innerHTML = `< - ${calc(40)}`
+      document.getElementById('t').innerHTML = `PESO`
+    }
+
+    function limpar() {
+      document.getElementById('peso').value = ''
+      document.getElementById('altura').value = ''
+      document.getElementById("alert").innerHTML = ''
+      document.getElementById("alert").className = ''
+      document.getElementById("m").className = ''
+      document.getElementById("n").className = ''
+      document.getElementById("s").className = ''
+      document.getElementById("o1").className = ''
+      document.getElementById("o2").className = ''
+      document.getElementById("o3").className = ''
+      document.getElementById('mm').innerText = ''
+      document.getElementById('nn').innerText = ''
+      document.getElementById('ss').innerText = ''
+      document.getElementById('o').innerText = ''
+      document.getElementById('oo').innerText = ''
+      document.getElementById('ooo').innerText = ''
+      document.getElementById('t').innerText = ''
+      document.getElementById('altura').focus()
+    }
+  </script>    
+</body>
+</html>

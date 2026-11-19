@@ -1,0 +1,12 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "Tutoriais Wails",
+  "outputfilename": "tutorial-wails-1.0",
+  "frontend:install": "",
+  "frontend:build": "",
+  "frontend:dev:watcher": "",
+  "author": {
+    "name": "Evandro A. Domingues",
+    "email": "evandro.abreu@digicon.com.br"
+  }
+}
