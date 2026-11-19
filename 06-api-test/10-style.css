@@ -1,0 +1,173 @@
+body {
+	color: #cacaca;
+  margin: 0px;
+  padding: 0px 20px 0 10px;
+	box-sizing: border-box;
+  background-color: #242424;
+}
+
+h2 {
+	font-size: 1.2em;
+}
+
+pre {
+	overflow-x: auto;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	height: 92%;
+	overflow-y: scroll;
+	word-wrap: break-word;
+	color: #fff;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+#divRequest,
+#divResponse,
+#divEndpoints {
+	border: 1px solid #999;
+	border-radius: 5px;
+	padding: 20px;
+	height: 100%;
+	width: 100%;
+	height: 590px;
+}
+
+#divEndpoints {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	overflow-y: scroll;
+	padding: 10px;
+}
+
+#divRequest {
+	display: flex;
+	flex-direction: column;
+}
+
+#buttonsForm {
+	margin-bottom: -20px;
+	text-align: center;
+	margin-top: 10px;
+	display: flex;
+	gap: 4px;
+	justify-content: center
+}
+
+.container {
+	border-radius: 10px;
+	padding: 20px;
+	margin-top: -20px;
+}
+
+.modal-body,
+.modal-header {
+	background-color: #1f1f1f;
+}
+
+.btn-close {
+	background-color: #fff;
+}
+
+.form-control,
+.form-select {
+	background-color: #424242;
+	color: #fff;
+	border-color: #2b2b2b;
+}
+
+.form-control:focus,
+.form-select:focus {
+	background-color: #555;
+	color: #fff;
+}
+
+.panelRequest {
+	padding: 0px 5px 0px 0px;
+}
+
+.panelResponse {
+	padding: 0px 0px 0px 5px;
+}
+
+.form {
+	flex: 1;
+}
+
+.main-title {
+	margin: 20px auto;
+	text-align: center;
+}
+
+.hidden {
+	display: none;
+}
+
+.link {
+	display: flex;
+	justify-content: space-between;
+}
+
+.link span {
+	background: #0f0f0f;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+#loader {
+	animation: is-rotating 1s infinite;
+  border: 4px solid #e5e5e5;
+  border-radius: 50%;
+  border-top-color: #51d4db;
+  height: 20px;
+  width: 20px;
+}
+
+@keyframes is-rotating {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.loading {
+  pointer-events: none;
+}
+
+.context-menu {
+  position: fixed;
+  z-index: 1000;
+  background-color: #292929;
+  border: 1px solid #4b4b4b;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px #0000001a;
+}
+
+.context-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.context-menu ul li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.context-menu ul li:hover {
+  background-color: #1a1a1a;
+}
+
+.new-folder {
+	background: #242424;
+	border: none;
+}
+
+.new-folder:hover {
+	background: #3d3d3d;
+	border-radius: 3px;
+}
+
+.ml {
+	margin-left: 10px;
+}
