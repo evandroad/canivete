@@ -127,6 +127,61 @@ h1 {
   transform: translateX(4px);
 }
 
+/* Componentes reutilizaveis entre apps */
+.app-panel {
+  padding: 20px;
+  border: 1px solid #293449;
+  border-radius: 18px;
+  background: #192233;
+}
+
+.app-footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.app-footer .github-icon {
+  filter: brightness(0) invert(1);
+}
+
+.app-author {
+  margin-top: 16px;
+  color: #9ca3af;
+}
+
+.button-primary,
+.button-secondary {
+  border: 1px solid transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.button-primary {
+  border-color: #1d4ed8;
+  background-color: #1d4ed8;
+}
+
+.button-primary:hover,
+.button-primary:not(:disabled):not(.disabled):active {
+  border-color: #1e40af;
+  background-color: #1e40af;
+}
+
+.button-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(29, 78, 216, 0.45);
+}
+
+.button-secondary {
+  border-color: #475569;
+  background-color: #475569;
+}
+
+.button-secondary:hover,
+.button-secondary:active {
+  border-color: #334155;
+  background-color: #334155;
+}
+
 /* App 01: ferramenta de conversão de unidades */
 .units-tool {
   color: #f9fafb;
@@ -141,31 +196,36 @@ h1 {
   color: #f9fafb;
 }
 
+.units-tool .form-control {
+  border-color: #475569;
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+.units-tool .form-control::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+.units-tool .form-control:focus {
+  border-color: #818cf8;
+  background-color: #111827;
+  color: #f9fafb;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+}
+
+.units-tool .input-group-text {
+  border-color: #475569;
+  background-color: #293449;
+  color: #d1d5db;
+}
+
 .units-tool .center {
   padding: 10px;
 }
 
 .units-tool #d {
   margin: auto;
-  padding: 20px;
-  border: 1px solid #293449;
-  border-radius: 18px;
-  background: #192233;
-}
-
-.units-tool .btn-primary {
-  border-color: #1d4ed8;
-  background-color: #1d4ed8;
-}
-
-.units-tool .btn-primary:hover,
-.units-tool .btn-primary:active {
-  border-color: #1e40af;
-  background-color: #1e40af;
-}
-
-.units-tool .btn-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(29, 78, 216, 0.45);
 }
 
 .units-tool .unit-label {
@@ -173,11 +233,14 @@ h1 {
 }
 
 .units-tool .unit-bcrypt {
-  width: 70%;
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
 }
 
 .units-tool .unit-salt {
-  width: 4.5rem;
+  flex: 0 0 4.5rem;
+  width: auto;
 }
 
 .units-tool table {
@@ -199,16 +262,6 @@ h1 {
 .units-tool td {
   background: #f0f0f0;
   color: #111827;
-}
-
-.units-tool footer {
-  margin-top: 24px;
-  text-align: center;
-}
-
-.units-tool #author {
-  margin-top: 16px;
-  color: #9ca3af;
 }
 
 .units-tool #snackbar {
@@ -532,6 +585,123 @@ h1 {
 .tutorial-app .switch input:checked + .slider::before {
   transform: translateX(100%);
   box-shadow: inset 15px -4px 0 15px #fff000;
+}
+
+/* App 03: calculadora de BMI */
+.bmi-app {
+  color: #f9fafb;
+}
+
+.bmi-app .bmi-card {
+  width: min(500px, 100%);
+  margin: 0 auto;
+}
+
+.bmi-app h1 {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: normal;
+}
+
+.bmi-app .input-group {
+  margin-bottom: 15px;
+}
+
+.bmi-app label {
+  display: block;
+  margin-bottom: 5px;
+  color: #d1d5db;
+  font-size: 1rem;
+}
+
+.bmi-app input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  background: #111827;
+  color: #f9fafb;
+  font-size: 16px;
+}
+
+.bmi-app input[type="number"]::placeholder {
+  color: #9ca3af;
+}
+
+.bmi-app input[type="number"]:focus {
+  border-color: #818cf8;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+}
+
+.bmi-app .buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.bmi-app .buttons button {
+  flex: 1;
+  padding: 10px;
+  border: 0;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.bmi-app .alert {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  color: #111827;
+  text-align: center;
+  font-weight: bold;
+}
+
+.bmi-app .danger {
+  background: #f8d7da;
+}
+
+.bmi-app .success {
+  background: #d4edda;
+}
+
+.bmi-app .warning {
+  background: #fff3cd;
+}
+
+.bmi-app .info {
+  background: #d1ecf1;
+}
+
+.bmi-app .dark {
+  background: #c2c2c2;
+}
+
+.bmi-app .table-responsive {
+  overflow-x: auto;
+}
+
+.bmi-app table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.bmi-app th,
+.bmi-app td {
+  padding: 8px;
+  border-bottom: 1px solid #475569;
+  text-align: center;
+}
+
+.bmi-app .highlight {
+  font-weight: bold;
+}
+
+.bmi-app .app-footer {
+  font-size: 12px;
 }
 
 /* Comportamento responsivo global e dos apps */
