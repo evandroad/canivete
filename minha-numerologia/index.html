@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="numerology.png" type="image/x-icon">
+  <title>Numerologia</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(45, 45, 68, 0.8);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #a78bfa;
+      margin-bottom: 30px;
+      font-size: 1.6em;
+      text-shadow: 0 2px 10px rgba(167, 139, 250, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #b4b4b4;
+      font-weight: 500;
+      font-size: 0.95em;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px 12px;
+      background: rgba(60, 60, 80, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+      background: rgba(70, 70, 90, 0.8);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #calculate {
+      background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+      color: white;
+    }
+
+    #calculate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(167, 139, 250, 0.4);
+    }
+
+    #clean {
+      background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+      color: white;
+    }
+
+    #clean:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(100, 116, 139, 0.4);
+    }
+
+    .result-section {
+      margin-top: 30px;
+    }
+
+    .result-item {
+      background: rgba(60, 60, 80, 0.4);
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .result-item:hover {
+      border-color: rgba(167, 139, 250, 0.3);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .result-header {
+      padding: 15px 20px;
+      background: rgba(70, 70, 90, 0.6);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .result-header:hover {
+      background: rgba(80, 80, 100, 0.8);
+    }
+
+    .result-header.active {
+      background: linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+      border-bottom: 1px solid rgba(167, 139, 250, 0.3);
+    }
+
+    .result-title {
+      font-weight: 600;
+      color: #e0e0e0;
+      font-size: 1.1em;
+    }
+
+    .result-value {
+      background: #a78bfa;
+      color: #1e1e2e;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .chevron {
+      width: 20px;
+      height: 20px;
+      border-right: 2px solid #b4b4b4;
+      border-bottom: 2px solid #b4b4b4;
+      transform: rotate(45deg);
+      transition: transform 0.3s ease;
+    }
+
+    .chevron.rotated {
+      transform: rotate(225deg);
+    }
+
+    .result-content {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      background: rgba(50, 50, 70, 0.3);
+    }
+
+    .result-content.expanded {
+      max-height: 1000px;
+      padding: 20px;
+    }
+
+    .result-text {
+      color: #c4c4c4;
+      line-height: 1.6;
+      font-size: 0.95em;
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: auto;
+      word-spacing: 0.1em;
+      text-indent: 2em;
+    }
+
+    .summary-section {
+      background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(167, 139, 250, 0.2);
+    }
+
+    .summary-title {
+      color: #a78bfa;
+      font-size: 1.3em;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .summary-item {
+      background: rgba(60, 60, 80, 0.5);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-label {
+      color: #b4b4b4;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+
+    .summary-value {
+      color: #a78bfa;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: #a78bfa;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(167, 139, 250, 0.3);
+      border-top: 4px solid #a78bfa;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✨ Calculadora de Numerologia ✨</h1>
+
+    <div class="form-group">
+      <label for="name">Nome Completo:</label>
+      <input type="text" id="name" placeholder="Digite seu nome completo...">
+    </div>
+
+    <div class="input-row">
+      <div class="form-group">
+        <label for="day">Dia:</label>
+        <input type="text" id="day" placeholder="DD">
+      </div>
+      <div class="form-group">
+        <label for="month">Mês:</label>
+        <input type="text" id="month" placeholder="MM">
+      </div>
+      <div class="form-group">
+        <label for="year">Ano:</label>
+        <input type="text" id="year" placeholder="AAAA">
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button id="calculate">Calcular</button>
+      <button id="clean">Limpar</button>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Calculando sua numerologia...</p>
+    </div>
+
+    <div id="result" class="result-section"></div>
+  </div>
+  
+  <script>
+    const codes = {
+      "a": 1,"A": 1,"j": 1,"J": 1,"s": 1,"S": 1,
+      "b": 2,"B": 2,"k": 2,"K": 2,"t": 2,"T": 2,
+      "c": 3,"C": 3,"l": 3,"L": 3,"u": 3,"U": 3,
+      "d": 4,"D": 4,"m": 4,"M": 4,"v": 4,"V": 4,
+      "e": 5,"E": 5,"n": 5,"N": 5,"w": 5,"W": 5,
+      "f": 6,"F": 6,"o": 6,"O": 6,"x": 6,"X": 6,
+      "g": 7,"G": 7,"p": 7,"P": 7,"y": 7,"Y": 7,
+      "h": 8,"H": 8,"q": 8,"Q": 8,"z": 8,"Z": 8,
+      "i": 9,"I": 9,"r": 9,"R": 9
+    }
+    const vowels = ['a', 'A', 'e', 'E', 'i', 'I', 'o', 'O', 'u', 'U', 'y', 'Y']
+    const excesses = {"1": 3, "2": 2, "3": 3, "4": 2, "5": 3, "6": 2, "7": 1, "8": 1, "9": 3}
+    const masterNumbers = [11, 22, 33]
+    const calculate = document.getElementById('calculate')
+    const clean = document.getElementById('clean')
+    const result = document.getElementById('result')
+    const loading = document.getElementById('loading')
+
+    function reduzirDigitos(num) {
+      while (num >= 10) {
+        num = num.toString().split('').reduce((soma, digito) => soma + parseInt(digito), 0)
+      }
+      return num
+    }
+
+    function lastBirthday(day, month) {
+      const today = new Date()
+      const currentYear = today.getFullYear()
+      const birthdayThisYear = new Date(currentYear, month - 1, day)
+
+      if (today >= birthdayThisYear) {
+        return currentYear
+      } else {
+        return currentYear - 1
+      }
+    }
+
+    function toggleSection(header) {
+      const content = header.nextElementSibling;
+      const chevron = header.querySelector('.chevron');
+      
+      if (content.classList.contains('expanded')) {
+        content.classList.remove('expanded');
+        header.classList.remove('active');
+        chevron.classList.remove('rotated');
+      } else {
+        content.classList.add('expanded');
+        header.classList.add('active');
+        chevron.classList.add('rotated');
+      }
+    }
+
+    function createSection(title, value, text) {
+      return `
+        <div class="result-item">
+          <div class="result-header">
+            <div class="result-title">${title}</div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+              ${value ? `<div class="result-value">${value}</div>` : ''}
+              <div class="chevron"></div>
+            </div>
+          </div>
+          <div class="result-content">
+            <div class="result-text">${text}</div>
+          </div>
+        </div>
+      `
+    }
+
+    clean.addEventListener('click', () => {
+      document.getElementById('name').value = ''
+      document.getElementById('day').value = ''
+      document.getElementById('month').value = ''
+      document.getElementById('year').value = ''
+      result.innerHTML = ''
+    })
+
+    calculate.addEventListener('click', () => {
+      const name = document.getElementById('name').value.trim()
+      const day = document.getElementById('day').value.trim()
+      const month = document.getElementById('month').value.trim()
+      const year = document.getElementById('year').value.trim()
+
+      if (!name) {
+        alert('Por favor, preencha todos os campos!')
+        return
+      }
+
+      loading.style.display = 'block'
+      result.innerHTML = ''
+
+      setTimeout(() => {
+        const birthday = day + month + year
+        let inputTotal = 0
+        let inputVowels = 0
+        let inputConsoants = 0
+        let inputBirthday = 0
+        let personalYearNumber = 0
+        let personalMonthNumber = 0
+        let personalDayNumber = 0
+        const counter = {}
+        const missing = []
+  
+        for (const key of name) {
+          if (codes.hasOwnProperty(key)) {
+            const code = codes[key]
+            counter[code] = (counter[code] || 0) + 1
+            inputTotal += code
+    
+            if (vowels.includes(key)) {
+              inputVowels += code
+            } else {
+              inputConsoants += code
+            }
+          }
+        }
+  
+        for (let i = 1; i <= 9; i++) {
+          if (!counter.hasOwnProperty(i)) {
+            missing.push(i)
+          }
+        }
+        
+        Object.entries(counter).forEach(([num, quantity]) => {
+          if (quantity <= excesses[num]) {
+            delete counter[num]
+          }
+        })
+
+        for (const char of birthday) {
+          inputBirthday += Number(char)
+        }
+  
+        const strLastBirthday = day + month + lastBirthday(day, month)
+        if (birthday != '')  {
+          for (const char of strLastBirthday) {
+            personalYearNumber += Number(char)
+          }
+        }
+  
+        const today = new Date()
+        if (!masterNumbers.includes(inputVowels)) inputVowels = reduzirDigitos(inputVowels)
+        if (!masterNumbers.includes(inputConsoants)) inputConsoants = reduzirDigitos(inputConsoants)
+        if (!masterNumbers.includes(inputTotal)) inputTotal = reduzirDigitos(inputTotal)
+        if (!masterNumbers.includes(inputBirthday)) inputBirthday = reduzirDigitos(inputBirthday)
+        if (birthday != '')  {
+          personalYearNumber  = reduzirDigitos(personalYearNumber)
+          personalMonthNumber = reduzirDigitos(Number(personalYearNumber) + Number(today.getMonth() + 1))
+          personalDayNumber   = reduzirDigitos(Number(personalMonthNumber) + today.getDate())
+        }
+
+        let html = `
+          <div class="summary-section">
+            <div class="summary-title">Resumo da Sua Numerologia</div>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <div class="summary-label">Número da Alma</div>
+                <div class="summary-value">${inputVowels}</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-label">Número da Personalidade</div>
+                <div class="summary-value">${inputConsoants}</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-label">Número do Destino</div>
+                <div class="summary-value">${inputTotal}</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-label">Número da Lição de Vida</div>
+                <div class="summary-value">${inputBirthday}</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-label">Número do Ano Pessoal</div>
+                <div class="summary-value">${personalYearNumber}</div>
+              </div>
+              <div class="summary-item">
+                <div class="summary-label">Número do Mês Pessoal</div>
+                <div class="summary-value">${personalMonthNumber}</div>
+              </div>
+            </div>
+          </div>
+        `
+
+        // Seções principais
+        html += createSection('Número da Alma', inputVowels, soulText[inputVowels]);
+        html += createSection('Número da Personalidade', inputConsoants, personalityText[inputConsoants]);
+        html += createSection('Número do Destino', inputTotal, destinationText[inputTotal]);
+
+        if (birthday != '')  {
+          html += createSection('Lição de Vida', inputBirthday, lifeLessonText[inputBirthday]);
+        }
+
+        // Números ausentes
+        for (const absence of missing) {
+          html += createSection(`Número Ausente: ${absence}`, absence, absenceText[absence]);
+        }
+
+        // Números em excesso
+        Object.keys(counter).forEach(num => {
+          html += createSection(`Número em Excesso: ${num}`, counter[num], excessesText[num]);
+        });
+
+        // Cristais para números ausentes
+        for (const absence of missing) {
+          html += createSection(`Cristais para Número ${absence}`, absence, crystalsText[absence]);
+        }
+
+        // Ciclos pessoais
+        if (birthday != '')  {
+          html += createSection('Ano Pessoal', personalYearNumber, personalYearText[personalYearNumber]);
+          html += createSection('Mês Pessoal', personalMonthNumber, personalMonthText[personalMonthNumber]);
+          html += createSection('Dia Pessoal', personalDayNumber, personalDayText[personalDayNumber]);
+        }
+
+        loading.style.display = 'none'
+        result.innerHTML = html
+
+        // Adicionar event listeners para os headers
+        document.querySelectorAll('.result-header').forEach(header => {
+          header.addEventListener('click', () => toggleSection(header))
+        })
+      }, 800)
+    })
+
+    const soulText = {
+      "1": "Você traz um grande espírito de iniciativa e liderança, desenvolvido ao longo das suas vidas passadas. Você vivenciou um grande destaque na sociedade, nos negócios ou até no esporte e na cultura. Você gosta de traçar seus caminhos e prefere agir sozinho, tendo dificuldade em aceitar a opinião dos outros. Você aprendeu a ser idealista, lutando obstinadamente pelas suas convicções. Não suporta imposições, preferindo estabelecer e seguir suas próprias regras. A determinação e a força de vontade fizeram de você um pioneiro que aprecia as novidades. Você deve aproveitar sua grande força interior, o que o capacita a tomar iniciativas e a liderar empreitadas. Deve estar atendo para não cair na tentação de achar que sabe tudo e não precisa de contribuição dos outros, podendo assim tornar-se egoísta, dominador e intransigente.",
+      "2": "Ao longo das usas vidas passadas, aprendeu a procurar sempre uma solução para os problemas, garantindo assim a harmonia no lar, no trabalho ou mesmo nos seus relacionamentos pessoais. Amante da paz trabalhou muito bem em grupo, normalmente sob o comando de um líder. Sua Alma lhe confere uma excepcional capacidade de discernimento, através da qual consegue separar o joio do trigo sem dificuldade. Sabe guardar segredos e dar conselhos como ninguém. Sua gentileza e amabilidade atraem principalmente aqueles que nos momentos difíceis procuram um ombro amigo. Você deve tirar proveito desse seu potencial de companheirismo e diplomacia para obter sucesso em tudo aquilo que faz, evitando assim que a indecisão e a insegurança atrapalhem a concretização de seus planos.",
+      "3": "Ao longo das suas vidas passadas, aprendeu a não se abater diante dos problemas e sempre procurou encontrar o lado bom da vida. A alegria, o espírito desarmado e o otimismo foram os seus traços marcantes. Ser feliz é fazer os outros felizes: esse é o seu lema. Seu sorriso estampado no rosto e seu estilo espirituoso são envolventes. Desenvolveu um grande poder de comunicação e uma criatividade aguçada. Nos momentos mais difíceis consegue minimizar o sofrimento, confortando os mais entristecidos. Se o ambiente estiver descontraído, melhor ainda: aí é que você se solta, contagiando os que estão à volta. Você deve capitalizar seu bom humor e otimismo com vistas a atingir os seus objetivos, evitando a superficialidade, a mentira, o narcisismo e a propensão a fazer fofocas, defeitos que podem se manifestar a qualquer hora.",
+      "4": "Ao longo das suas vidas passadas, acumulou um grande espírito prático voltado ao trabalho bem feito. Exigente e perfeccionista aprendeu a agir de forma organizada e sem precipitação. Aprendeu a trabalhar com eficiência e colhendo bons resultados, pois costuma lograr êxito, principalmente material, em tudo aquilo que faz. Desde a decoração de sua casa até o  desenvolvimento de um projeto é cauteloso e não costuma se envolver em aventuras perigosas. Aprendeu a ser prudente, considerando primeiro os obstáculos a serem transpostos para depois avaliar os benefícios. Você deve assumir aquilo que verdadeiramente é: trabalhador, eficiente e meticuloso. Não deve ficar preocupado com acusações e ciúmes, caso contrário pode enveredar para o caminho da improdutividade, negligência e medo.",
+      "5": "Você traz um amor pela liberdade desenvolvido ao longo das suas vidas passadas. Nunca aceitou que alguém interferisse nas suas decisões. Ser feliz, para você, é poder ir e vir. O excesso de rotinas o deixa irritado, pois você prefere o inusitado, o surpreendente e o inesperado. Foge sempre da monotonia; seu desejo insaciável de viajar vem da sua vivência e da sua necessidade de liberdade. É atraído por novas perspectivas. Aventuras não-convencionais o seduzem. Você desenvolveu muitos talentos e possui diversos interesses. Sua mente é brilhante, e sua curiosidade faz com que explore novas idéias sem preconceitos. Deve tomar cuidado caso esteja com dificuldade momentânea de expressar esse seu jeito de ser, para não sucumbir ao vício (drogas, alcoolismo, jogos, etc.) e a atitudes irresponsáveis.",
+      "6": "Você traz um espírito de enorme responsabilidade voltado para a harmonia familiar, desenvolvido ao longo das suas vidas passadas. Fiel no casamento dedica-se com louvor ao bem-estar e à felicidade daqueles que o cercam. Tem uma sensibilidade muito aguçada e é capaz de restabelecer a paz entre aqueles que estão à sua volta. Cumpre seus deveres com primazia e não foge aos seus compromissos. Prefere trabalhar em grupo a trabalhar de forma individual. Você deve aproveitar o dom que possui e construir assim um mundo mais harmônico e justo. No entanto, tome cuidado para não se tornar possessivo.",
+      "7": "Você traz a sabedoria e a justiça desenvolvidas ao longo das suas vidas passadas. Procurou sempre analisar os fatos com profundidade para então chegar a uma conclusão que o levasse a ações seguras. Na gosta que pairem dúvidas sobre as suas atitudes. Consegue através da busca da espiritualidade uma forma de iluminar os seus caminhos. A retidão na conduta é mais importante que o prazer. Prefere as companhias que gostem de filosofar sobre a vida e muitas vezes gosta de ficar só. E aí, sozinho, encontra na introspecção a oportunidade de questionar e analisar tudo o que o cerca. Você aprendeu a entrar em sintonia com você mesmo, desenvolvendo seus próprios recursos. Você deve aproveitar sua espiritualidade e seu sendo refinado de justiça para conquistar seu espaço, mas não pode descuidar, pois tende a entrar em melancolia.",
+      "8": "Você aprendeu os benefícios de uma rígida disciplina, inteligência e eficiência desenvolvidas ao longo das suas vidas passadas, quando teve a oportunidade de colocar sua habilidade executiva em ação. Sua ambição e perspicácia o habilitam a organizar empreendimentos de vulto ou abraçar grandes causas. Sua determinação e sua vitalidade física contribuem para que exerça uma grande liderança nas atividades de que toma parte. É grande o seu desejo de ocupar altas posições e obter prosperidade material. Você é dotado de muita energia, mas precisa aprender a aceitar seus próprios erros e não exigir demais de si próprios. Você deve aproveitar toda sua disposição e capacidade de liderança, e controlar o lado materialista, a intolerância, e em especial a sede de poder.",
+      "9": "Você traz a generosidade e o espírito humanitário desenvolvidos ao longo das suas vidas passadas. Ficou sempre à disposição dos outros, colocando seus próprios assuntos em segundo plano. Você prendeu a se doar em favor da comunidade ou daqueles que mais estima. Abraçou uma causa humanitária, dando não só seu afeto como também seu conhecimento e experiência. É prestativo e coloca-se à disposição para ajudar a resolver qualquer problema. Amigo dedicado e bom amante consegue manter relacionamentos sólidos por muito tempo. Você deve explorar sua capacidade em situações onde pode ser generoso e onde pode usar os seus talentos criativos. Controle suas emoções, caso contrário, terá dificuldade em atingir os seus objetivos.",
+      "11": "Ao longo das suas vidas passadas, desenvolveu a sabedoria e a compreensão, com forte inclinação à espiritualidade. Aprendeu a ter coragem diante de situações inesperadas. De fato, pode aplicar inúmeras vezes o seu conhecimento espiritual nos mais diversos campos, e à medida que for adquirindo mais sabedoria poderá, com seu idealismo, influenciar as outras pessoas. Poderá ser muito requisitado como conselheiro e confidente. Possui uma visão ampla do mundo à sua volta, devendo dedicar-se à realidade e evitando, portanto cair numa vida visionária destituída de senso prático. No entanto, caso você não tenha conseguido viver à altura das vibrações deste Número Mestre, o seu Número de Alma é o 2, que é derivado do 1 + 1.",
+      "22": "Ao longo das suas vidas passadas, aprendeu a ter consciência e percepção superiores e a agir como mestre-construtor querendo interferir na realidade, corrigindo erros e aparando arestas, pelo bem e pela segurança de todos. Idealista, tem uma inteligência privilegiada, espírito de liderança e uma inabalável capacidade de conquistar grandes vitórias em todos os campos de atuação. Tem sempre como meta contribuir para a construção de um mundo melhor. No entanto, caso você não tenha conseguido viver à altura das vibrações deste Número Mestre, o seu Número de Alma é o 4, que é derivado de 2 + 2.",
+      "33": "Ao longo das suas vidas passadas, aprendeu a dirigir sua vida em função do próximo, iluminando o caminho de todos, sacrificando a sua vida particular e inspirando a criação de organizações com fins humanitários. Paciente e caridoso, é despojado de qualquer apego material. Possui uma humildade ímpar e uma grande capacidade de compreender o próximo, o que o torna uma pessoa rara. No entanto, caso você não tenha conseguido viver à altura das vibrações deste Número Mestre, o seu Número de Alma é o 6, que é a soma de 3 + 3."
+    }
+    const personalityText = {
+      "1": "Você transmite uma imagem de liderança, independência e autoconfiança que indica capacidade de enfrentar adversidades. Por isso você será procurado para cuidar de projetos em que essa qualidades sejam necessárias. Os outros vêem em você uma capacidade para assumir o controle de qualquer situação, dirigindo com incomparável eficiência e organização. Se agir com equilíbrio será um líder empreendedor e poderá contar com a confiança e o apoio dos seus comandos. Caso você esteja manifestando os aspectos negativos deste Número, procure melhorar o seu tato, adquirindo um espírito mais diplomático e agindo com mais paciência para não correr o risco de parecer uma pessoa autoritária e egoísta.",
+      "2": "Você transmite uma imagem de pessoa prestativa, companheira e de grande espírito diplomático. Procura seguir um líder e não gosta de ser o centro das atenções, agindo geralmente nos bastidores. Os outros vêem em você alguém com uma preocupação exagerada com a opinião alheia e muita sutileza na sua capacidade de persuasão sobre aqueles que o cercam, jamais demonstrando um comportamento autoritário. É também visto como uma pessoa equilibrada e discreta até na forma de se vestir, e que necessita de um ambiente tranqüilo para atuar positivamente. Caso você esteja manifestando os aspectos negativos desse Número, deve procurar acreditar mais em você para não parecer inseguro diante das situações que não domina.",
+      "3": "Você transmite uma imagem de alegria, afeto e otimismo. Não gosta de perder nenhuma festa, em especial aquelas onde pode dar vazão ao seu talento artístico, ao seu espírito comunicativo e ao seu charme. As pessoas vêem em você uma pessoa descontraída, imbuída de um incomparável senso de humor. O estilo maleável e a mete fértil dão a essa personalidade condições de tomar parte nos momentos mais difíceis consegue encontrar um lado positivo, ou pelo menos tirar uma lição do que está acontecendo. Caso você esteja manifestando os aspectos negativos desse Número, deverá demonstrar seriedade para que não seja visto como uma pessoa fofoqueira, imatura e que age de maneira irresponsável em qualquer situação.",
+      "4": "Você transmite uma imagem de solidez e eficiência. Sustenta uma aparência de pessoa confiável e produtiva. Não gosta de superficialidade, desonestidade e covardia. Os outros vêem você como alguém que tem uma grande capacidade produtiva e age com muita prudência. Jamais se deixa envolver por propostas levianas e sedutoras, esforçando-se para cumprir seus compromissos. Fiel a regulamentos e normas, é pontual e gosta de seguir uma rotina. Demonstra um apego aos bons costumes: conservador prefere vestir-se de forma sóbria e clássica, sem nenhuma extravagância. Mas se você estiver manifestando os aspectos negativos desse Número, deve procurar aceitar mais opiniões dos outros para não parecer inflexível, demasiadamente controlador e apegado a detalhes.",
+      "5": "Você transmite uma imagem de pessoa curiosa e impaciente, marcadamente na infância. Na adolescência é visto como amante da aventura, e na fase adulta manifesta um espírito dinâmico. As pessoas vêem em você alguém avesso à rotina. Que gosta de assumir riscos. Atrai as pessoas com o seu magnetismo, e tem muito senso prático. O passado já ficou para trás, o futuro algum dia chegará; o que importa mesmo é o presente, o que está acontecendo agora. Gosta de liberdade, ambientes novos e não recusa nenhum convite para viagens. Mas se você estiver manifestando os aspectos negativos deste Número, deve procurar ser mais paciente, concentrando-se naquilo que faz: só assim evitará dispersar suas energias. Sua grande sensualidade pode dificultar a manutenção de relacionamentos fiéis e duradouros.",
+      "6": "Você transmite desde criança uma imagem de afetuosidade e serenidade. Demonstra uma preocupação em buscar a verdade e a justiça. A beleza e a harmonia parecem fazer parte dos seus interesses. As pessoas vêem em você alguém de espírito bondoso, amigável e até mesmo protetor, o que lhe confere uma grande confiabilidade. Demonstra um apego ao lar e à família, sendo dedicado ao casamento e um excelente anfitrião. Mas se você estiver manifestando os aspectos negativos deste Número, deve procurar perdoar os erros dos outros, para não correr o risco de ser visto como uma pessoa orgulhosa.",
+      "7": "Quando criança demonstra uma propensão a desenvolver no futuro trabalhos intelectuais e uma rejeição a atividades que gerem desgaste físico. Os outros o vêem como uma pessoa intelectualmente dotada, com uma intuição aguçada e intensamente voltada para a vida espiritual. Você parece solitário, absorvido pelos seus pensamentos. Tem uma aparência distinta e refinada e veste-se com sobriedade. Transmite uma aversão a intimidades e brincadeiras fora de hora. Pode ser atraído por atividades excêntricas. Mas se estiver manifestado os aspectos negativos desse Número, você aparentará ser uma pessoa que prefere ficar isolada, não confiando nos outros e centrando-se em si próprio.",
+      "8": "Quando criança transmite uma imagem de pessoa prestativa e trabalhadora, cuidando com muito zelo dos seus pertences, em especial do dinheiro. Já na fase adulta demonstra um interesse por projetos ambiciosos, nos quais possa assumir o controle e atingir rapidamente a independência financeira. Você aparenta ter muita vitalidade e disposição em toda atividade que participa, tanto profissional como assistencial, ou mesmo em situações emergenciais. Tem aparência de gente bem-sucedida, preocupada em causar boa impressão, dispensando artigos baratos e optando sempre pelo que está na moda, em especial produtos de grife. Mas se você estiver manifestando os aspectos negativos desse Número, parecerá uma pessoa autoritária, excessivamente crítica e imbuída de um forte espírito de competição.",
+      "9": "Desde criança transmite grande preocupação pelo próximo, dividindo seu lanche na escola e dando brinquedos ou roupas que aqueles que mais necessitam. Sonha com profissões em que possa ajudar os outros, tais como de médico ou bombeiro, ou com atividades altamente rentáveis, para que tenha condições de construir um mundo melhor. Os outros vêem em você alguém com um talento especial, com um desejo de ajudar todos sem esperar nenhuma recompensa. Você é desprovido de qualquer preconceito. As pessoas o reconhecem pelo seu espírito hospitaleiro e afetuoso; você luta não só pelos seus ideais, mas também pelos dos outros. Mas se estiver manifestando os aspectos negativos desse Número, você parecerá uma pessoa pouco confiável, lenta na tomada de decisões, exatamente porque não consegue julgar com a razão. Pode também parecer uma pessoa egoísta e perdida na busca de objetivos utópicos.",
+      "11": "Você apresenta no começo da vida muitos medos e dúvidas em relação à sua intuição, assim manifestações extra-sensoriais. Com o tempo, após muito estudo e dedicação, vai adquirindo confiança para expressar o Potencial que adquiriu durante as suas vidas. Os outros vêem em você alguém que está sempre à procura de Paz e Harmonia entre os Homens. Seu espírito de liderança se manifesta de forma pacífica, imbuído dos mais elevados ideais. Você atrai a atenção ao falar e agir, servindo como exemplo. Sua imagem o dirige para as áreas da arte, psicologia e diplomacia. Tem uma tendência especial para as artes na televisão. Mas quem tem esse Número só conseguirá orientar e ensinar a todos como um verdadeiro mestre se agir com humildade. Caso você não esteja conseguindo viver à altura das vibrações deste Número Mestre, estará projetando uma imagem de grande dependência, distanciamento da realidade e obsessão por suas fantasias.",
+      "22": "Você transmite uma imagem de quem procura alcançar o sucesso no plano material para reverte-lo também em projetos humanit6ários filantrópicos. As pessoas vêem em você muita paciência e perseverança. É admirado pelo seu espírito diplomático e refinado, superando os problemas que surgem com eficiência e praticidade. Faz o melhor que pode para chegar ao seu objetivo. É determinado. É muito procurado porque transmite uma imagem de quem resolve os problemas de maneira prática e criativa. Caso você não esteja conseguido viver à altura das vibrações deste Número Mestre, poderá demonstrar ser uma pessoa centrada no trabalho, negligenciando tudo à sua volta, até mesmo a sua família.",
+      "33": "Se estiver realizando esse Número Mestre de forma plena, transmitirá uma imagem de humildade e generosidade ímpar. Demonstra que sempre coloca o seu amor, o seu tempo e todos os seus bens materiais à disposição dos outros. Tal idealismo humanitário se manifesta de várias formas, desde participações em projetos grandiosos até situações mais simples, como recolher um animalzinho doente na rua e leva-lo para casa. As pessoas vêem em você alguém dotado de uma grande humildade e amor fraternal. Procura ajudar o próximo sem quere receber nada em troca, nem mesmo um simples elogio. Caso você não esteja conseguindo viver à altura das vibrações deste Número Mestre, poderá parecer alguém completamente fora de sintonia com a realidade e fora do mundo em que vive."
+    }
+    const destinationText = {
+      "1": "Liderança - Você deve aproveitar as oportunidades que a vida oferece, aprendendo a desenvolver o seu potencial interior marcado por uma grande autoconfiante e capacidade de tomar a iniciativa. Você deverá pôr em prática sua capacidade empreendedora liderando projetos originais e exclusivos. Seus talentos permitirão que você tenha o seu próprio negócio, ou atue em atividades em que pelo menos você exerça a liderança, planejando e dirigindo suas ações. Você terá êxito se aproveitar às oportunidades que surgem no campo da pesquisa científica, no comando político, como designer ou ocupando posições de direção. Em suma, em tudo em que haja pioneirismo e a visão focada no futuro possa ser valorizada. No entanto, deve evitar o autoritarismo e o orgulho. É importante que tome a iniciativa, mas nunca esqueça que não fazemos nada sozinhos, mas sim em parceria com os outros.",
+      "2": "Diplomacia - Pacifismo - Você deve seguir pela vida com a missão de ajudar o próximo e semear a paz, tanto na família quanto no trabalho ou na sociedade. Você age com a emoção e a intuição. É sentimental e romântico, e gosta de fazer parcerias, valorizando a relação no casamento. Deverá pôr em prática sua capacidade diplomática, aproveitando o seu tato para lidar com os mais diferente problemas e encontrar soluções para situações difíceis que surgirem pela vida. Saberá esperar para agir no momento certo. Pode usar a sua capacidade ímpar de observar e analisar os detalhes. Você terá êxito se aproveitar às oportunidades que surgem no campo da diplomacia, em relações públicas, como professor ou em trabalhos que envolvam muita negociação. Deve evitar o pessimismo, a dependência excessiva de outras pessoas e o melindre por fatos insignificantes.",
+      "3": "Comunicação Deve seguir os caminhos da vida desenvolvendo sua imaginação fértil, sua excepcional capacidade de comunicação e suas inegáveis habilidades artísticas. Rindo, brincando, usando o senso de humor, com uma incomparável capacidade de fazer relacionamentos, você deve aproveitar este seu espírito alegre e otimista para motivar a todos. Você atrai as pessoas tanto para a amizade como para o amor. Falante e líder natural, conquista facilmente popularidade. Gosta de gozar a vida, apreciando a boa comida, a música em geral, roupas bonitas; com certeza, adora ganhar presentes. Você terá êxito se aproveitar às oportunidades que surgirem no campo do entretenimento, na área financeira e em profissões que envolvam a comunicação ou a criatividade, tais como as de escritor, artista, vendedor, orador, fotógrafo, músico, jornalista ou executivo de propaganda e marketing. Não desperdice suas energias em várias direções. Procure não se meter em assuntos alheios. Evite fofocas e nunca manipule as pessoas.",
+      "4": "Construção - Deve seguir pela vida desenvolvendo a autodisciplina e a eficiência, a fim de chegar a resultados concretos em atividades que tenham importância. A honestidade e a responsabilidade fazem parte do seu caráter. É conservador e gosta de viver de acordo com as regras e a tradição. Você deverá aproveitar seu potencial planejando suas ações de forma sistemática. É o Número da Terra: você tem uma ligação muito forte com construção, matemática, física, mecânica, administração pública. Gosta de planejar, ficando mais à vontade para trabalhar em atividades mais concretas, como as de engenheiro, médico, escritor, e em posições de gerência em que a disciplina, a atenção a detalhes e a busca da perfeição sejam fundamentais. Deverá agir de forma prática e realista, pois muitas vezes poderá se atrapalhar na solução dos assuntos mais simples. Tome cuidado ao julgar os outros, pois você tem uma forte propensão a separar tudo entre certo e errado, tornando-se extremamente crítico. Evite a obsessão pela rotina e aceite as mudanças com mais tranqüilidade.",
+      "5": "Versatilidade - Deve seguir pela vida usando a sua própria agilidade mental e a sua capacidade de resolver rapidamente os problemas, podendo adaptar-se então às constantes mudanças. Você deverá pôr em prática seu potencial, agindo com maleabilidade e versatilidade. Como você tem um pensamento livre, acaba não se apegando a bens materiais. Seus relacionamentos não serão duradouros quando estiver lidando com pessoas demasiadamente limitadas a responsabilidades e rotinas. Você possui uma energia latente, é importante e está sempre à procura de mudanças e novas aventuras, expondo-se assim às mais diferentes experiências. Você terá êxito se aproveitar às oportunidades que envolverem contato com o público, pois é fluente na comunicação oral. Poderá atuar como vendedor, publicitário, guia de turismo, escritor, orador ou apresentador de TV. Deve controlar a sua dificuldade em conviver com regras e normas, pois corre o risco de não terminar as atividades e negócios que iniciou. Você precisa de liberdade, mas acima de tudo deve estar consciente de que o mais difícil é conviver com ela.",
+      "6": "Responsabilidade - Deve seguir os caminhos da vida desenvolvendo o equilíbrio, a responsabilidade e o amor, sendo uma pessoa prestativa tanto dentro da família como na comunidade e no ambiente de trabalho. Agindo assim, sentirá uma grande alegria de viver. Você deverá pôr em prática seu potencial agindo com justiça, orientando aqueles que o procuram. Ama a beleza, gosta das artes e aprecia uma casa bem-arrumada. Normalmente as pessoas que têm este Número procuram uma atividade que vise o benefício dos outros. Você terá êxito se aproveitar às oportunidades que surgirem trabalhando como decorador, professor, designer, psicólogo, enfermeiro, consultor, ou responsável por projetos comunitário. Você tende a ter empregos duradouros e apenas um casamento ao longo da vida. Cuidado, pois pode tornar-se superprotetor, ou então exigente demais, eternamente insatisfeito com os resultados alcançados.",
+      "7": "Análise Deve seguir pela vida desenvolvendo a sabedoria, a intuição e a espiritualidade. Você deverá pôr em prática seu potencial questionando, analisando, refletindo, buscando respostas sobre o significado da vida no seu próprio EU interior. É uma pessoa intelectualmente curiosa, que valoriza a educação e o conhecimento. Sua missão na vida é procurar compreender, e assim obter o seu desenvolvimento. É atraído por lugares tranqüilos junto à água e à natureza. Sua freqüente propensão à introspecção pode acabar afastando-o do convívio social, e embora seja procurado para orientar, nem sempre é compreendido. Você terá êxito se aproveitar às oportunidades que surgirem trabalhando em pesquisa e análise científica, composição de músicas, literatura, química, ciências ocultas. Precisa tomar cuidado com as manifestações negativas do seu Número, que são o orgulho e a arrogância. Pode ter dificuldade em adaptar-se a lugares e pessoas diferentes do seu convívio, o que limita suas possibilidades de crescimento pessoal.",
+      "8": "Tenacidade - Dever seguir os caminhos da vida desenvolvendo a autoconfiança, a ambição, o poder e a habilidade em lidar com o dinheiro de forma responsável, podendo chegar a uma posição de destaque na área financeira. Você deverá pôr em prática seu potencial agindo com eficiência e determinação, a fim de resolver problemas desenvolvendo métodos para aumentar a eficiência. É importante que aprenda a trabalhar em grupo. Buscará a independência financeira desde cedo, procurando abrir as portas para a riqueza material. Você terá êxito se aproveitar às oportunidades que surgirem trabalhando na administração de empresas, na área financeira, em bancos, empresas públicas e hospitais. Por outro lado, você nunca pode se deixar atrair de maneira obsessiva pelo prazer que o poder e o dinheiro podem proporcionar, pois corre o risco de tornar-se materialista, voltando-se obsessivamente para o acúmulo de bens. Caso esteja vivenciando os aspectos negativos desse Número, será uma pessoa intolerante, arrogante e radical. Nunca estará satisfeito, tornando-se um sério candidato à depressão.",
+      "9": "Fraternidade - Deve seguir pela vida trabalhando pelo próximo. A sua missão estará focada na transmissão de sabedoria. Você deverá pôr em prática seu potencial desenvolvendo a compaixão e a fraternidade, despojando-se de qualquer tipo de preconceito. Sua prioridade é resolver os problemas dos outros, dispensando qualquer tipo de retribuição. Você atrai ass pessoas e consegue influenciá-las. Terá êxito se aproveitar às oportunidades que surgirem, trabalhando em organizações de proteção ao meio ambiente ou como professor, líder religioso, veterinário, enfim, você possui muitos talentos nas mais diversas áreas. Caso vivencie os aspectos negativos desse Número, poderá tornar-se possessivo, demasiadamente ansioso. Deve tomar cuidado par anão sucumbir às tentações que a fama traz, sob pena de jamais concretizar seus mais nobres objetivos.",
+      "11": "Inspiração - No seu caminho há um enorme potencial para transformar a vida das outras pessoas e proporcionar condições melhores de vida para quem precisa. Você trabalha para aperfeiçoar e reformar. Deve permitir que a intuição e a criatividade orientem o seu trabalho, o seu caminho que é cheio de obstáculos e carregado de turbulência. Mas este seu caminho difícil pode trazer-lhe o reconhecimento do seu trabalho através da fama e do sucesso. Se você não conseguir realizar o seu trabalho e a sua missão à altura do ideal deste Número Mestre, então com certeza viverá como um 2. Você terá êxito se aproveitar às oportunidades que surgirem trabalhando com psicólogo, poeta, artista e qualquer profissão que exija um grande potencial criativo. Caso você vivencie os aspectos negativos desse Número, será uma pessoa tensa, com tendência à depressão, extremamente crítica, sonhadora, tendo freqüentemente dificuldade em separar a fantasia da realidade.",
+      "22": "Filantropia - O seu caminho é criar e construir grandes projetos usando os princípios espirituais mais elevados. As grandes realizações são o seu desafio, e você as aborda utilizando métodos não-convencionais. O seu objetivo é trabalhar par o bem de todos, fazendo obras que contribuam para o progresso da humanidade. Vai encontrar muitos obstáculos no seu caminho, mas você tem a habilidade de ultrapassa-los. Caso não consiga viver à altura do ideal tão elevado deste Número Mestre, então viverá como um 4 e suas características. Você terá êxito se aproveitar às oportunidades que surgirem trabalhando em engenharia e administração de projetos para a comunidade, tais como hospitais, creches e asilos, transporte público e bibliotecas públicas. Caso vivencie os aspectos negativos desse Número, será uma pessoa que não aceita erros dos outros e nem a autoridade de terceiros. Tornar-se-á pessimista e mesquinha, pois esquecerá seu lado espiritual, voltando-se somente para o material.",
+      "33": "Justiça Social - O seu caminho é dedicar seu amor a serviço dos outros. Sente-se responsável por estabelecer uma situação de paz e harmonia no mundo. Tem uma intuição aguda e percebe quais são as necessidades das pessoas. Você atrai os outros com o seu jeito acolhedor, amigável e compreensivo. Caso não consiga viver à altura do ideal tão elevado do 33 (é muito difícil), então viverá como um 6 e suas características. Você terá êxito se aproveitar às oportunidades que surgirem trabalhando na área de Direito, e em entidades internacionais voltadas para o bem comum, tais como a Cruz Vermelha. Poderá também ser um líder espiritual."
+    }
+    const lifeLessonText = {
+      "1": "Líder, Independente e Original - Sua Lição de Vida é desenvolver a individualidade e a liderança. Ser o seu próprio chefe, não dependendo de ninguém. Você precisa desenvolver a capacidade executiva, tomando você mesmo a iniciativa e nunca esperando os outros dizerem o que deve ser feito. Deve aproveitar seu dom especial para descobrir novos campos de atuação. Pessoa de vanguarda, sua originalidade e intuição são muito fértil e inesgotável de idéias. Você deve assumir posições de liderança e autoridade, angariando respeito e notoriedade. Se utilizar sua ambição positivamente terá sucesso na vida. Nunca tenha medo de pôr em prática suas idéias e atuar em áreas inovadoras. Você deve aproveitar sua coragem e sua determinação, não se deixando ser envolvido pela arrogância, pelo orgulho e pelo egoísmo.",
+      "2": "Compreensivo, Receptivo e Diplomático - Sua lição de Vida é desenvolver a cooperação com as outras pessoas, estabelecendo a harmonia onde houver conflitos. Mesmo que não seja o astro principal na atividade em que estiver, poderá realizar-se, unindo-se àqueles que têm maior liderança. Você deve aproveitar sua grande paciência e perseverança. Ao imbuir-se de uma atitude de cooperação e diplomacia para com os outros, vai preferir trabalhar em grupos que tenham um objetivo comum, lutando para mantê-los sempre unidos. Aproveite sua diplomacia e sua paciência para convencer facilmente os outros. Seja fiel e procure dedicar-se com afinco ás pessoas que ama. Deve tomar cuidado para não expressar este Número negativamente, pois corre o risco de tornar-se inseguro e dependente, perdendo o rumo da sua vida.",
+      "3": "Otimista, Sociável e Criativo - Sua Lição de Vida é desenvolver a comunicação e a criatividade, aproveitando sua imaginação e o seu artístico. Gosta de conversar e tem muita disposição para a vida. Você deve expressar suas próprias idéias e a sua alegria de viver. Deixe fluir a sua intuição e o dom da palavra conseguirá abrir muitas portas. Suas idéias criativas serão decisivas para a solução dos mais diferentes problemas. Ama a liberdade e abomina a monotonia. É extrovertido e adora fazer parte de grupos sociais. Encontrará forças com facilidade toda vez que se deparar com problemas. Deve evitar dispersar suas atenções, direcionando a sua intensa energia para objetivos mais concretos. Não pode ser excessivamente crítico, tomando cuidado para não se deixar envolver pelo ciúme, pela impaciência ou mesmo pela auto-depreciação.",
+      "4": "Disciplinado, Metódico e Confiável - Sua Lição de Vida é aprender a agir com organização, assumindo apenas os riscos que ofereçam uma boa margem de segurança. Você deve ser abnegado, paciente, honesto e racional, aprendendo a conviver com algumas limitações que a vida possa impor, de ordem física, material e emocional, provocadas pelo ambiente ou por outras pessoas. Deve procurar realizar suas tarefas com responsabilidade e eficiência, dando importância aos detalhes, para conquistar assim a confianças das outras pessoas. Agindo com organização e dedicação, construirá um futuro materialmente seguro. Deve evitar o autoritarismo, a impaciência e a rigidez exagerada, tomando cuidado para não perder o controle quando tudo não é exatamente do jeito que você quer.",
+      "5": "Versátil, Curioso e Aventureiro - Sua Lição de Vida é aprender a usar adequadamente sua liberdade. A vida oferecerá muitas oportunidades, mudanças e aventuras. Somente agindo com responsabilidade, valorizando-se e usando a liberdade de maneira construtiva é que conseguirá o que deseja. Aproveite seus inúmeros talentos e procure desenvolver a versatilidade para poder lidar com as inúmeras experiências que surgirão ao longo do seu caminho. Você deve aproveitar o seu carisma para ter êxito em atividades que envolvam contato com o público. Viagens e novas experiências podem ser transformadas em boas oportunidades para o amadurecimento pessoal. Não abuse da sua grande sensualidade e não permita que a rotina o aborreça, tomando cuidado para não sucumbir à irresponsabilidade, à dispersão e a vícios tais como a bebida e a droga.",
+      "6": "Responsável, Dedicado e Justo Sua Lição de Vida é desenvolver o senso de responsabilidade para com a família e a comunidade. Deve aprender também a ter um bom senso de justiça. Você deve dar ajuda e conforto às pessoas que o procuram, colocando o bem-estar do grupo, da família e da comunidade acima do seu. É fundamental que desenvolva o senso de justiça, aprendendo a encontrar o equilíbrio em situações em que haja conflito. A arte e a beleza o fascinam, e ajudarão a deixa-lo em harmonia com as pessoas e os ambientes que freqüenta.",
+      "7": "Intuitivo, espiritual e Analítico - Sua Lição de Vida é conhecer a si próprio e confiar na sua intuição para então encontrar o seu caminho. Através de um trabalho de autoconhecimento você buscará respostas para os mistérios da vida. Evite aceitar a opinião dos outros como a palavra final, pesquisando bastante até chegar a uma conclusão própria. Você optará por conviver com pessoas que tenham objetivos semelhantes e os mesmos questionamentos. Procure compreender a vida estudando a filosofia em geral e as ciências esotéricas, nas quais encontrará informações e conceitos fundamentais para a sua realização. Esta é uma lição de intensa espiritualidade. Não seja demasiadamente impaciente. Evite também o isolamento, não se deixando envolver pela melancolia. Cuidado para que as dúvidas não o tornem uma pessoa insegura.",
+      "8": "Perseverante, Energético e Determinado - Sua Lição de Vida é aprender a lidar de maneira positiva e ponderada com o mundo material e o poder. Você deverá agir com determinação e conhecimento do que está fazendo. Poderá construir um império comercial e o seu sucesso será motivo de inspiração para muita gente. Aproveite a sua ambição e a sua capacidade de organização. Confie em si próprio e desenvolva a sua grande habilidade administrativa e executiva. É necessário ter excelente equilíbrio e discernimento para julgar e encontrar a verdade. Seja realista e não alimente fantasias. Não pode ser excessivamente ambicioso, tomando cuidado para não se deixar envolver pela avareza, pelo materialismo e pelo egoísmo. Atenção para o abuso de poder.",
+      "9": "Humanitário, Generoso e Tolerante - Sua Lição de Vida é desenvolver a compaixão e a capacidade de doar-se sem esperar nada em troca, pelo simples prazer de ser útil a alguém. Sensível e idealista você poderá ficar freqüentemente desapontado com as imperfeições do mundo. Romântico, quando estiver amando, apaixonar-se-á profundamente. Você é criativo e ao usar seus talentos conseguirá angariar facilmente o reconhecimento público e a amizade dos que o cercam. Você deve aprender a preservar e utilizar as riquezas que vier a acumular em proveito dos mais necessitados. Procure entender que o verdadeiro caminho da felicidade é servir aos outros e nunca agir de forma mesquinha. Suas recompensas virão naturalmente. Nesta lição há lutas e desafios, e o seu crescimento virá em função de como você lida com essas provas. Deve tomar cuidado para não se deixar envolver pelo egoísmo, pela falta de ética e pela indiferença.",
+      "11": "Idealista, Visionário e Inspirado - Este é um Número de importância espiritual, sujeito à ansiedade e instabilidade emocional. Para viver à altura do seu ideal precisará ter talento e coragem. Sua Lição de Vida é aprender a tomar consciência do mundo espiritual e relacionar-se com o mundo material, vivenciando os seus ideais e trabalhando para torna-los realidade. Você é idealista e perfeccionista. O seu magnetismo pessoal e a sua capacidade de compreensão ajudarão a atrair as outras pessoas. Você deve aprender a desenvolver a sua intuição, procurando transmitir todo o seu conhecimento e sabedoria para os outros e abrindo novos caminhos para que estes possam seguir. Deverá ser um autêntico exemplo de vida. Deve tomar cuidado para não ser envolvido pela ambição, a qual poderá trazer a sua ruína, pois o seu sucesso estará sempre associado ao bem da humanidade. Caso não vivencie esta Lição à altura do ideal deste Número Mestre, deve consultar a Lição de Vida 2, que é o resultado da soma de 1 + 1.",
+      "22": "Construtor, Prático e Realizador - Este é um Número Mestre de importância espiritual voltada para a realização material. Sua Lição de Vida é desenvolver sua capacidade de transformar sonhos em grandes obras, que beneficiem muitas pessoas em âmbito nacional ou até mesmo mundial. Você possui as mesmas qualidades do 11, mas em vez de atuar no plano material, prefere atuar mais no plano físico. Você é mestre-construtor e terá o poder de ser bem-sucedido em qualquer área que lhe interessar. Possui alto nível de consciência e uma capacidade ímpar de compreensão. O seu desafio é descobrir como usar todos esses dons de maneira produtiva. Aos poucos você perceberá a sua competência e o seu poder, aumentando a sua autoconfiança. Deve tomar cuidado para não se deixar envolver pela avareza, pela corrupção e pela manipulação. Caso não vivencie esta Lição à altura do ideal deste Número Mestre, deve consultar a Lição de Vida 4, que é o resultado da soma de 2 + 2.",
+      "33": "Doador Incondicional - Sua Lição de Vida é aprender a doar-se em prol de seus semelhantes. Este é um Número de importância espiritual, sujeito a ansiedade e instabilidade emocional. Para viver à altura do seu ideal precisará ter amor incondicional e coragem. Você deve procurar servir aos outros e sua recompensa será destinada á continuidade da sua obra. Jamais conseguirá exercer uma profissão que vise o benefício próprio. Seu exemplo de coragem, determinação e humildade servirá como estímulo à humanidade. No entanto, é muito difícil vivenciar integralmente este Número Mestre, pois ele exige uma entrega pessoal plena. As pessoas que possuem o Número 33 como Lição de Vida dificilmente conseguem viver à altura do potencial deste Número, devendo então consultar a Lição de Vida 6, que é o resultado da soma de 3 + 3.",
+    }
+    const absenceText = {
+      "1": "Desenvolva a iniciativa e força de vontade. Procure resolver seus problemas sozinho. Comece a ser seu próprio líder, só assim conseguirá criar autoconfiança.",
+      "2": "Procure aprender a ouvir, colocando-se no lugar dos outros e desenvolvendo o espírito de cooperação.", 
+      "3": "Procure desenvolver a sociabilidade, a comunicação e a alegria. Seja mais otimista e procure participar de atividades em grupo.",
+      "4": "Procure ser mais organizado e responsável, trabalhando com mais dedicação. Estabeleça um objetivo e trace um plano de ação para atingi-lo.",
+      "5": "Abra-se para o mundo exterior. Liberte-se dos preconceitos e pré-julgamentos que fazemos dos outros; só assim você encontrará novos horizontes.",
+      "6": "Desenvolva a responsabilidade e o equilíbrio interior. Dedique-se mais à fraternidade e à harmonia familiar.",
+      "7": "Desenvolva mais sua espiritualidade. Procure buscar a sua própria essência espiritual através da meditação e estudando religião e filosofia.",
+      "8": "Procure desenvolver a responsabilidade nos assuntos financeiros. Seja mais cuidadoso com o seu dinheiro e esteja atento ao fazer qualquer tipo de negócio.",
+      "9": "Desenvolva a compaixão e a solidariedade. Esteja atento às necessidades dos outros. Respeite a liberdade e o espaço de cada um."
+    }
+    const excessesText = {
+      "1": "Dê uma chance aos outros, não queira fazer tudo sozinho. Tome cuidado com o orgulho e o desejo de autoridade em demasia.",
+      "2": "Não deixe que os outros usem e abusem da sua paciência. Cuidado para não ser explorado.",
+      "3": "Tome cuidado para não falar demais, pondo em risco o que você construiu. Saiba estabelecer um objetivo real na sua vida.",
+      "4": "Cuidado com a obsessão pelo trabalho. Lembre-se da família e dos amigos. Divirta-se mais, e nunca se esqueça de que além das necessidades materiais temos as afetivas e as espirituais.",
+      "5": "Controle a sua ansiedade e procure concentrar mais sua atenção naquilo que você estiver fazendo. Estabeleça objetivos claros.",
+      "6": "Evite proteger demasiadamente as pessoas de quem você gosta, pois elas podem tornar-se extremamente inseguras e dependentes.",
+      "7": "Abra-se para o mundo e compartilhe com os outros os seus conhecimentos. Procure trabalhar em atividades nas quais possa pesquisar e ajudar os seus semelhantes.",
+      "8": "Tome cuidado para não ficar obcecado pelo dinheiro nem se seduzir por uma vida extremamente materialista. Controle o seu desejo de manipular as pessoas.",
+      "9": "Tome cuidado com o seu desejo de resolver os problemas de todo o mundo. É preciso, antes de mais nada, alcançar o equilíbrio emocional."
+    }
+    const crystalsText = {
+      "1": "GRANADA - Força e Vigor - cor: vinho - A Granada vai facilitar o desenvolvimento do potencial do Número 1, aumentando o vigor físico, a força, a energia, a imaginação e a criatividade. Pode auxiliar no tratamento de anemia, pressa baixa, cólicas, problemas menstruais e má circulação sanguínea. É rejuvenescedora. Segure a Granada com as duas mãos, feche os olhos e sinta a sua energia revigorante penetrando pela palma das suas mãos a cada inspiração (três vezes). Finalmente, abra os olhos e repita três vezes: “A Granada me traz a força e a coragem para seguir rumo à vitória”.",
+      "2": "QUARTZO RUTILADO - Segurança e Diplomacia - cor: transparente, levemente amarelada - O Quartzo Rutilado vai facilitar o desenvolvimento do potencial do Número 2, ajudando as pessoas indecisas a criar autoconfiança, autocontrole, paciência e determinação, necessários para superar as suas dificuldades. Pode ajudar na assimilação dos nutrientes e na regeneração dos tecidos, retardando o envelhecimento. Segure o Quartzo Rutilado com as duas mãos, feche os olhos e sinta e energia revigorante penetrando pela palma das suas mãos e cada inspiração (três vezes). Finalmente, abra os olhos e repita três vezes: “O Quartzo Rutilado me beneficia, desenvolvendo a minha autoconfiança e diplomacia”.",
+      "3": "AMAZONITA - Comunicação - cor: verde-turquesa - A Amazonita vai facilitar o desenvolvimento do potencial do Número 3, ajudando as pessoas a melhorar a capacidade de comunicação. Este cristal contribui para o desenvolvimento da eloqüência, da comunicação e da criatividade, afastando os preconceitos e abrindo o caminho para o sucesso profissional. Pode ajudar no equilíbrio do sistema nervoso. Segure a Amazonita com as duas mãos, feche os olhos e sinta a sua energia revigorante penetrando pela palma das suas mãos a cada inspiração (três vezes). Finalmente, abra os olhos e repita três vezes: “A Amazonita me ajuda a dizer as palavras certas na hora certa, com alegria e otimismo”.",
+      "4": "QUARTZO VERDE - Equilíbrio - cor: verde-garrafa - O Quartzo Verde vai facilitar o desenvolvimento do potencial do Número 4, ajudando as pessoas a colocar ordem na sua vida. Traz estabilidade e segurança. É uma das pedras que favorecem o equilíbrio energético do coração e dos pulmões através da sua atividade no chakra cardíaco, o que beneficia a circulação sanguínea e a respiração. Segure o Quartzo verde com as duas mãos, feche os olhos e sinta a sua energia revigorante, penetrando pela palma das suas mãos a cada inspiração (três vezes). Finalmente, abra os olhos e repita três vezes: “O Quartzo Verde traz a estabilidade e a disciplina para o meu trabalho e a minha vida”",
+      "5": "ÁGUA-MARINHA - Paz e Versatilidade - cor: azul-clara, quase esverdeada - A Água-Marinha vai facilitar o desenvolvimento do potencial do Número 5, trazendo a clareza de raciocínio, aliviando medos e fobias, ajudando a desenvolver a tolerância e o sentimento de paz. Colabora com o equilíbrio emocional. Desbloqueia a energia concentrada na região da garganta: cordas vocais, laringe e tireóide. Segure a Água-Marinha com as duas mãos, feche os olhos e sinta a sua energia revigorante penetrando pela palma das suas mãos e cada inspiração (três vezes). Finalmente, abra os olhos e repita três vezes: “A Água-Marinha me acalma e traz paz e novos caminhos”.",
+      "6": "QUARTZO AZUL - Harmonia - cor: azul-escura - O Quartzo Azul vai facilitar o desenvolvimento do potencial do Número 6, favorece a manifestação da harmonia, dissolvendo os traumas emocionais e a depressão. Também ajuda a desenvolver o nosso potencial de Luz e as nossas qualidades interiores. É indicado para problemas de garganta, laringe e timo. Segure o Quartzo Azul com as duas mãos, feche os olhos e sinta a sua energia revigorante penetrando pela palma das suas mãos a cada inspiração (três vezes). Finalmente, abra os olhos e repita três vezes: “O Quartzo Azul me acalma e traz harmonia para os meus relacionamentos familiares e sociais”.",
+      "7": "AMETISTA - Paz Interior - cor: lilás - A Ametista vai facilitar o desenvolvimento do potencial do Número 7, ajudando a ampliar a nossa autoconsciência e a nossa percepção interior. É uma das pedras mais importantes, pois consegue purificar não apenas a nossa energia como a do ambiente em que vivemos ou trabalhamos. A Ametista transforma nossas desarmonias (defeitos) em harmonias (virtudes). Facilita a circulação energética por todas as células, tornando a recuperação física mais rápida. Se colocada sob o travesseiro, permitirá um sono mais tranquilo. Segure a Ametista com as duas mãos, feche os olhos e sinta a sua energia revigorante penetrando pela palma das suas mãos a cada inspiração (três vezes). Finalmente, abra os olhos e repita três vezes: “A Ametista me purifica e ajuda a desenvolver a minha sabedoria”.",
+      "8": "CITRINO - Sucesso Material - cor: laranja - O Citrino vai facilitar o desenvolvimento do potencial do Número 8, aumentando sua autoconfiança e sua segurança, pois seus raios dourados estimulam as atividades no plano físico, atraindo bens matérias. É a pedra do sucesso material. Colabora com o equilíbrio físico e emocional. O Citrino melhora a digestão dos alimentos e dos nossos problemas, assim como protege nosso corpo contra as energias negativas que em de fora. Segure o Citrino com as duas mãos, feche os olhos e sinta a sua energia revigorante penetrando pela palma das mãos a cada inspiração (três vezes). Finalmente, abra os olhos e repita três vezes: “O Citrino me traz o sucesso, o equilíbrio mental e o senso de justiça”.",
+      "9": "QUARTZO ROSA - Amor e Compaixão - cor: rosa - O Quartzo Rosa vai facilitar o desenvolvimento do potencial do Número 9, ajudando a expandir a energia do amor dentro de nós. Dissolve as tristezas, as mágoas, a rejeição e a carência afetiva, deixando em seu lugar o amor e a compaixão. Segure o Quartzo Rosa com as duas mãos, feche os olhos e sinta a sua energia revigorante penetrando pela palma das mãos a cada inspiração (três vezes). Finalmente, abra os olhos e repita três vezes: “O Quartzo Rosa purifica o meu coração e desenvolve a minha compaixão”."
+    }
+    const personalYearText = {
+      "1": "Ação - Este é um ano de muita ação, adequado para você plantar as sementes que determinarão o seu futuro. Como se trata do início de um novo tempo, é fundamental mudar suas atitudes. Seja ambicioso, tenha coragem, confie na sua capacidade e tome a iniciativa. Não permita que ninguém atrapalhe o seu caminho e nunca se deixe influenciar. Visualize o que você quer, estabeleça um objetivo claro e faça um plano de ação. Tudo o que desejar positivamente poderá conseguir.",
+      "2": "Cooperação - Este é um ano de espera. Seja paciente. Não haverá mudanças significativas no plano material. Não se preocupe caso às vezes tenha que recuar. Pode parecer que você deu um passo para a frente e dois para trás, mas a caminhada é assim mesmo. Faça parcerias. Tenha tato e diplomacia.",
+      "3": "Alegria de Viver - Este é um ano para comunicar-se, criar, estar entre as pessoas. Você poderá começar a colher os frutos que plantou dois anos atrás. É um período de expansão e muita atividade. Esteja mais com a família e os amigos. Faça contatos sociais e comerciais. Mas dose bem a sua energia, evitando extravagâncias. Seja otimista e utilize os seus talentos criativos. Desenvolva a sua capacidade mental, estudando e viajando.",
+      "4": "Trabalho - É um período de trabalho duro, e você poderá ter a sensação de limitação, frustração e aborrecimento. Mas não perca a paciência, pois o sucesso vem mais lentamente do que o esperado e no futuro seus esforços serão recompensados. Aproveite o ano para construir sólidas fundações para o futuro, fortalecendo suas relações profissionais. Evite trocar de emprego ou mudar seu local de residência. Seja prático e lógico. E cuidado, pois você pode enfrentar problemas de ruptura em relações sentimentais. Esteja atento a sua saúde física e mental.",
+      "5": "Mudança - É um ano de mudanças. Esteja de malas prontas para enfrentar o imprevisto. É um período ideal para o crescimento pessoal e expansão dos seus horizontes. É tempo propício para mudar de ares: um novo trabalho ou casa nova. Abandone as antigas rotinas. Esteja aberto a oportunidades: viagens, paixões, novas amizades e novos conflitos. Seja flexível, pois tudo pode mudar a qualquer momento.",
+      "6": "Harmonia - Este é um ano centrado no amor, na sua família e na sua comunidade. É um período de assumir responsabilidades e fazer ajustes. Cuide da sua saúde, da sua beleza e do que está à sua volta. As pessoas vão procura-lo em busca de conselhos e ajuda. Ofereça um ombro amigo. É um bom período para constituir um lar, encontrando um parceiro afetivo. Invista na sua casa: compre, reforme e decore. Há boas chances de você atingir o sucesso profissional.",
+      "7": "Análise - Neste ano você precisa dar um tempo, procurando desenvolver mais a sua consciência espiritual. Faça uma avaliação dos passos tomados até agora, dos seus resultados e das ações a serem empreendidas para o futuro. Não force nenhuma situação que possa provocar mudanças radicais. As oportunidades poderão vir ao seu encontro. Procure ter um convívio maior com a natureza. Confie na sua intuição.",
+      "8": "Progresso - Os resultados deste ano vão depender dos seus atos passados e de como você investiu sua energia, a partir do momento em que plantou a sua semente. A princípio é um bom ano para o progresso material. Organize-se. Procure equilibrar-se física e mentalmente. Aproveite cada segundo do seu tempo. Mantenha seu entusiasmo e energia, pois agora você pode realizar mais do que em qualquer um dos últimos sete anos. Mas, cuidado, pois se você perder a calma colocará em risco tudo o que construiu até agora.",
+      "9": "Fechamento e Doação - Este é o ano de fechamento do ciclo. É quando você faz um balanço do passado, desprezando o que não serve mais, e começa a pensar no futuro. Coloque o passado no seu devido lugar. É um período em que você pode estar mais fragilizado. Não vacile; se for preciso, corte os laços que o amarram, para então poder renascer. Finalize os projetos em andamento e não inicie nada muito importante, pois há risco de não ser duradouro. Pense mais nos outros do que em você. Saiba dividir, com quem precisa, todas as coisas. Este é um período de doação, tolerância, abnegação e perdão."
+    }
+    const personalMonthText = {
+      "1": "É tempo para tomar iniciativas, começar novos projetos, dar vida nova a tudo que é velho. Há possibilidade de surgir uma proposta de trabalho; é um mês de intensas atividades. Não hesite, acredite em você e vá em frente.",
+      "2": "Este é um mês para você desenvolver parcerias: o trabalho em grupo e a cooperação serão decisivos para o êxito daquilo que está fazendo. É tempo para encontrar alguém interessante e desfrutar mais da companhia da família e dos amigos. Relaxe e seja paciente.",
+      "3": "A criatividade e a comunicação devem ser desenvolvida neste mês, pois poderão auxilia-lo a encontrar gente nova, abrindo boas perspectivas no plano afetivo e profissional. Seja maleável e diplomático. Tenha sempre senso de humor: você não se arrependerá.",
+      "4": "É tempo de trabalhar, e muito. Deixe a preguiça e a falta de vontade de lado, arregace as mangas e mãos à obra! Mantenha os pés no chão, seja organizado, prático e coerente. Aproveite este mês para construir bases sólidas para projetos futuros.",
+      "5": "Este é um bom mês para você respirar novos ares, fazer mudanças e viajar. Esteja atento às novas oportunidades que poderão surgir e aproveite. Não se deixe abater pelos problemas. Fique tranqüilo e acredite que você poderá conseguir o que quer.",
+      "6": "É tempo para a beleza e a estética. É tempo de harmonia. Procure desenvolve-las em todos os momentos: em casa e no ambiente de trabalho, assim como nas suas relações afetivas. Um novo corte de cabelo, um visual diferente em casa, um novo jardim: você vai se sentir muito melhor.",
+      "7": "É tempo para parar e pensar: avalie o que você está fazendo e procure uma forma de melhorar, ainda mais. É um mês de introspecção e crescimento interior. Mesmo que tenha dificuldade, insista, vai valer a pena. Não perca o equilíbrio, e sempre que possível descanse.",
+      "8": "Este é um mês que pode trazer excelentes oportunidades de ganho financeiro. Mas cuidado, não assuma grandes dívidas, evite desperdiçar seu dinheiro ou gastar tudo o que você tem. É tempo para você ganhar e poupar.",
+      "9": "É tempo para você desenvolver a fraternidade e a compaixão. Aproveite para ajudar sem, no entanto, interferir na vida dos outros. Estenda a mão até para aqueles que jamais poderão retribuir, ou mesmo agradecer. Este é o verdadeiro amor incondicional. É tempo de finalizar projetos e o momento mais apropriado para definir seus relacionamentos. Você está a caminho de um novo ciclo."
+    }
+    const personalDayText = {
+      "1": "É o dia para o início de projetos e relacionamentos. Não perca tempo, acredite em você mesmo e desenvolva as suas habilidades. Este é um dia de muita atividade. Pense e aja positivamente, colocando toda a sua atenção nos seus objetivos. É tempo de ação.",
+      "2": "Este é um dia de grande energia para o relacionamento com outras pessoas: cooperação, assinatura de contratos, associações e parcerias. Seja generoso e receptivos às idéias dos outros. Use o dia para planejar.",
+      "3": "Este é um dia de alegria em que há muito o que fazer: você deverá contagiar a todos com otimismo. Seja produtivo: se trabalhar corretamente, terá um bom dia. Aproveite os seus talentos. É um bom dia para conhecer pessoas e visitar amigos. Bom também para incrementar seus negócios, a fim de expandi-los.",
+      "4": "É dia para trabalhar. Pare e programe o que vai fazer. Planeje e aproveite melhor o seu tempo. Analise os detalhes e não corra riscos desnecessariamente. Tudo parece andar devagar, e uma sensação de limitação atingirá você; mas não se preocupe, é assim mesmo.",
+      "5": "Este é um dia que promete novas oportunidades: viagens, mudanças em geral, novos contatos, novo emprego e novas amizades. Invista nas oportunidades mais promissoras. Seja flexível e abandone os preconceitos. Um novo romance pode acontecer.",
+      "6": "É dia para resolver assuntos junto à família. Alguém poderá procura-lo para obter algum conselho. Usando o seu equilíbrio, você conseguirá ajudar. Poderá conhecer alguém importante para um futuro relacionamento. Cuide da saúde e da casa e evite viajar.",
+      "7": "Fique sozinho por alguns momentos e reflita. É tempo para relaxar e pensar nas suas emoções e no seu lado espiritual. Dê um tempo para os assuntos materiais. Não é um bom dia para relacionamentos e tomadas de decisões importantes. Cuide da saúde descansando.",
+      "8": "Este é um dia propício para fazer negócios. Não desperdice o seu dinheiro, seja organizado, eficiente e perspicaz. Seja responsável e honesto nas suas atitudes. Viaje somente a negócio. Você poderá conhecer alguém que talvez venha a ser muito importante na sua vida.",
+      "9": "É um excelente dia para terminar tudo o que está inacabado, para resolver assuntos pendentes e os mal-entendidos. Não inicie nada importante. Ajude os outros e desenvolva a compaixão. Caso você se sinta deprimido e amargurado, lembre-se de que amanhã iniciará um novo ciclo."
+    }
+  </script>
+</body>
+</html>
