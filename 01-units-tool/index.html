@@ -6,74 +6,29 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/x-icon" href="./icon.png">
 	<link rel="stylesheet" href="libs/4.3.1.bootstrap.min.css">
+	<link rel="stylesheet" href="../style.css">
 	<script src="libs/3.4.1.jquery.min.js"></script>
 	<script src="libs/4.1.1.crypto-js.min.js.js"></script>
 	<script src="libs/vue.global.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 	<title>Units Tool</title>
-	<style>
-		body {
-			background: #4d4d4d;
-		}
-		h1 {
-			text-align: center;
-			font-size: 200%;
-			margin-bottom: 20px;
-		}
-		label, h1 {
-			color: #f0f0f0;
-		}
-		.center {
-			padding: 10px;
-		}
-		#d {
-			background: #333333;
-			margin: auto;
-			border: #dadada solid 1px;
-			border-radius: 15px;
-			padding: 15px;
-		}
-		table {
-			margin-top: 20px;
-		}
-		th {
-			border : solid black 1px;
-			border-radius : 3px;
-			padding : 3px;
-			background : #dadada;
-			font-family: Arial, Helvetica, sans-serif;
-		}
-		td {
-			border : solid black 1px;
-			border-radius : 3px;
-			padding : 3px;
-			background : #f0f0f0;
-			font-family: Arial, Helvetica, sans-serif;
-		}
-		footer {
-			margin-top: 20px;
-			text-align: center;
-		}
-		#author {
-			margin-top: 20px;
-			color: rgb(230, 230, 230);
-		}
-	</style>
 </head>
-<body>
-	<h1>Units Tool</h1>
+<body class="units-tool">
+	<main>
+		<h1>Units Tool</h1>
 
-	<div id="app" class="center"></div>
+		<div id="app" class="center"></div>
 
-	<footer>
-		<a href="https://github.com/evandroad/unit-tool">
-			<img src="https://img.icons8.com/glyph-neue/48/000000/github.png"/>
-		</a>
-		<a href="https://www.linkedin.com/in/evandro-abreu-domingues/">
-			<img src="https://img.icons8.com/color/48/000000/linkedin-circled--v1.png"/>
-		</a>
-		<div id="author"><span>Created by Evandro Abreu Domingues</span></div>
-	</footer>
+		<footer>
+			<a href="https://github.com/evandroad/unit-tool">
+				<img src="https://img.icons8.com/glyph-neue/48/000000/github.png"/>
+			</a>
+			<a href="https://www.linkedin.com/in/evandro-abreu-domingues/">
+				<img src="https://img.icons8.com/color/48/000000/linkedin-circled--v1.png"/>
+			</a>
+			<div id="author"><span>Created by Evandro Abreu Domingues</span></div>
+		</footer>
+	</main>
 
 	<script>
 		class Notify {
@@ -104,90 +59,19 @@
 			}
 
 			_notify(message = '', type, position = this.position) {
-				const style = document.createElement('style')
-				style.textContent = this._getCssNotify()
-				document.head.appendChild(style)
-				
 				const snackbar = document.createElement("div")
 				snackbar.id = 'snackbar'
+				snackbar.classList.add(
+					position == 'bottom' ? 'show-b' : 'show-t',
+					`type-${type || 'default'}`
+				)
 				document.body.appendChild(snackbar)
 
-				if (position == 'bottom') {
-					snackbar.style.bottom = '30px'
-					snackbar.className = 'show-b'
-				} else {
-					snackbar.style.top = '30px'
-					snackbar.className = 'show-t'
-				}
-				
 				snackbar.innerText = message
-				const { bg, cl} = this._getColorNotify(type)
-				snackbar.style.backgroundColor = bg
-				snackbar.style.color = cl
 			
 				setTimeout(() => {
 					snackbar.remove()
-					style.remove()
 				}, this.timeout)
-			}
-			
-			_getColorNotify(type) {
-				switch (type) {
-					case 'success':
-						return { bg: '#09b809', cl: 'white' }
-					case 'error':
-						return { bg: '#f73535', cl: 'white' }
-					case 'info':
-						return { bg: '#35bdf3', cl: 'white' }
-					case 'warning':
-						return { bg: '#d3d014', cl: 'white' }
-					default:
-						return { bg: '#e6e6e6', cl: 'black' }
-				}
-			}
-			
-			_getCssNotify() {
-				return `
-					#snackbar {
-						visibility: hidden;
-						min-width: 250px;
-						margin-left: -125px;
-						background-color: #d3d014;
-						color: #fff;
-						text-align: center;
-						border-radius: 6px;
-						padding: 12px;
-						position: fixed;
-						z-index: 1;
-						left: 50%;
-						font-size: 16px;
-						font-family: Arial, Helvetica, sans-serif;
-					}
-					#snackbar.show-t {
-						visibility: visible;
-						animation: fadein-t 0.5s, fadeout-t 0.5s 2.6s;
-					}
-					#snackbar.show-b {
-						visibility: visible;
-						animation: fadein-b 0.5s, fadeout-b 0.5s 2.6s;
-					}
-					@keyframes fadein-t {
-						from {top: 0; opacity: 0;}
-						to {top: 30px; opacity: 1;}
-					}
-					@keyframes fadeout-t {
-						from {top: 30px; opacity: 1;}
-						to {top: 0; opacity: 0;}
-					}
-					@keyframes fadein-b {
-						from {bottom: 0; opacity: 0;}
-						to {bottom: 30px; opacity: 1;}
-					}
-					@keyframes fadeout-b {
-						from {bottom: 30px; opacity: 1;}
-						to {bottom: 0; opacity: 0;}
-					}
-				`
 			}
 		}
 	</script>
@@ -211,7 +95,7 @@
 				<div id="d" class="col-xl-8">
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" style="width: 115px">Hexadecimal:</span>
+							<span class="input-group-text unit-label">Hexadecimal:</span>
 						</div>
 						<input type="text" id="hex" class="form-control" v-model="hex">
 						<div class="input-group-append">
@@ -220,7 +104,7 @@
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" style="width: 115px">Decimal:</span>
+							<span class="input-group-text unit-label">Decimal:</span>
 						</div>
 						<input type="text" id="dec" class="form-control" v-model="dec">
 						<div class="input-group-append">
@@ -229,7 +113,7 @@
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" style="width: 115px">ASCII:</span>
+							<span class="input-group-text unit-label">ASCII:</span>
 						</div>
 						<input type="text" id="asc" class="form-control" v-model="asc">
 						<div class="input-group-append">
@@ -238,7 +122,7 @@
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" style="width: 115px">Binário:</span>
+							<span class="input-group-text unit-label">Binário:</span>
 						</div>
 						<input type="text" id="bin" class="form-control" v-model="bin">
 						<div class="input-group-append">
@@ -247,7 +131,7 @@
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" style="width: 115px">Byte:</span>
+							<span class="input-group-text unit-label">Byte:</span>
 						</div>
 						<input type="text" id="bte" class="form-control" v-model="bte">
 						<div class="input-group-append">
@@ -256,7 +140,7 @@
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" style="width: 115px">Base64:</span>
+							<span class="input-group-text unit-label">Base64:</span>
 						</div>
 						<input type="Text" id="b64" class="form-control" v-model="b64">
 						<div class="input-group-append">
@@ -265,23 +149,23 @@
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" style="width: 115px">Bcrypt:</span>
+							<span class="input-group-text unit-label">Bcrypt:</span>
 						</div>
-						<input type="Text" id="bcr" class="form-control" v-model="bcr" style="width: 70%">
-						<input type="Text" id="salt" class="form-control" v-model="salt" style="width: 1%" placeholder="salt">
+						<input type="Text" id="bcr" class="form-control unit-bcrypt" v-model="bcr">
+						<input type="Text" id="salt" class="form-control unit-salt" v-model="salt" placeholder="salt">
 						<div class="input-group-append">
 							<button class="btn btn-primary" type="button" @click="converterBcr">Converter</button>
 						</div>
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" style="width: 115px">MD5:</span>
+							<span class="input-group-text unit-label">MD5:</span>
 						</div>
 						<input type="Text" id="md5" class="form-control" v-model="md5">
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
-							<span class="input-group-text" style="width: 115px">SHA1:</span>
+							<span class="input-group-text unit-label">SHA1:</span>
 						</div>
 						<input type="Text" id="sh1" class="form-control" v-model="sh1">
 					</div>
