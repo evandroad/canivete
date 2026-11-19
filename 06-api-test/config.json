@@ -145,21 +145,6 @@
       }
     },
     {
-      "name": "consult",
-      "method": "GET",
-      "urn": "/consult/2024/3/Evandro"
-    },
-    {
-      "name": "planning/expenses",
-      "method": "GET",
-      "urn": "/planning/expenses/2024/3"
-    },
-    {
-      "name": "planning/calendar",
-      "method": "GET",
-      "urn": "/planning/calendar/2024/3"
-    },
-    {
       "folder": "Salary",
       "requests": [
         {
