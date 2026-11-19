@@ -758,6 +758,59 @@ h1 {
   color: #d1d5db;
 }
 
+/* App 05: gerador de QR Code */
+.qr-app {
+  color: #f9fafb;
+}
+
+.qr-app .qr-panel {
+  width: min(440px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.qr-app h1 {
+  margin-bottom: 16px;
+  text-align: center;
+  font-size: 1.4rem;
+  letter-spacing: normal;
+}
+
+.qr-app .qr-generate-button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
+}
+
+.qr-app .qr-generate-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px rgba(29, 78, 216, 0.35);
+}
+
+.qr-app .qr-generate-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+  opacity: 0.9;
+}
+
+.qr-app .qr-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.qr-app canvas {
+  max-width: 100%;
+  height: auto;
+  padding: 10px;
+  border-radius: 12px;
+  background: #fff;
+}
+
 /* Comportamento responsivo global e dos apps */
 @media (max-width: 520px) {
   main {
@@ -771,6 +824,10 @@ h1 {
 
   .tutorial-app #mainContainer {
     width: min(100% - 32px, 420px);
+  }
+
+  .qr-app .qr-panel {
+    padding: 20px;
   }
 }
 
