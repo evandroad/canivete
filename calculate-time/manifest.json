@@ -1,0 +1,50 @@
+{
+  "id": "/",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "name": "Calculadora de Horários",
+  "short_name": "Horários",
+  "description": "Aplicativo para cálculo de horários.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0a82fa",
+  "background_color": "#ffffff",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
+  ],
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "615x615",
+      "src": "maskable_icon.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "144x144",
+      "src": "maskable_icon_x144.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "sizes": "192x192",
+      "src": "maskable_icon_x192.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "maskable_icon_x512.png",
+      "type": "image/png"
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+time",
+      "url": "/time?type=%s"
+    }
+  ]
+}

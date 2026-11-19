@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0a82fa">
+  <link rel="manifest" href="/manifest.json">
+  <title>Cálculo de Horários</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #303030;
+    }
+
+    .container {
+      background: rgb(56, 56, 56);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      color: #c9c9c9;
+    }
+
+    h2 { margin-top: 0; }
+
+    input {
+      font-size: 18px;
+      padding: 8px;
+      margin-top: 10px;
+      border: 1px solid #a0a0a0;
+      border-radius: 5px;
+      background-color: #303030;
+      color: #c9c9c9;
+    }
+
+    .resultado {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #2c303d;
+    }
+
+    .resultado h3 { margin-top: 0; }
+
+    strong { color: #5e89ff; }
+    
+    .linha {
+      margin: 8px 0;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Calculadora de Horários</h2>
+
+  <label>Horário inicial:</label><br>
+  <input type="time" id="horaEntrada">
+
+  <div class="resultado" id="intervalo">
+    <h3>Intervalo</h3>
+    <div class="linha">
+      Início do intervalo: <strong id="inicioIntervalo">--:--</strong>
+    </div>
+    <div class="linha">
+      Fim do intervalo: <strong id="fimIntervalo">--:--</strong>
+    </div>
+  </div>
+
+  <div class="resultado" id="saida">
+    <h3>Saída</h3>
+    <div class="linha">
+      Tolerância (-18 min): <strong id="menos18">--:--</strong>
+    </div>
+    <div class="linha">
+      Horário exato: <strong id="horarioExato">--:--</strong>
+    </div>
+    <div class="linha">
+      Tolerância (+18 min): <strong id="mais18">--:--</strong>
+    </div>
+  </div>
+
+  <div style="margin-top: 15px;">
+    <label>Minutos +/-:</label><br>
+    <input type="number" id="minutos">
+
+    <div class="linha" style="margin-top:10px;">
+      Resultado: <strong id="resultadoMinutos">--:--</strong>
+    </div>
+  </div>
+</div>
+
+<script>
+  const INTERVAL_DURATION = 60
+  const TOLERANCE = 18
+  const MINUTES = 48
+  const inputHora = document.getElementById('horaEntrada')
+  const inputMinutos = document.getElementById('minutos')
+
+  function adicionarMinutos(data, minutos) {
+    return new Date(data.getTime() + minutos * 60000)
+  }
+
+  function setDiv(id, value) {
+    document.getElementById(id).textContent = formatarHora(value)
+  }
+
+  function formatarHora(data) {
+    return data.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    })
+  }
+
+  inputHora.addEventListener('input', () => {
+    const valor = inputHora.value
+
+    if (!valor) return
+
+    const [hora, minuto] = valor.split(':').map(Number)
+    const base = new Date()
+    base.setHours(hora, minuto, 0, 0)
+
+    const inicioIntervalo = adicionarMinutos(base, 4 * 60)
+    const fimIntervalo = adicionarMinutos(inicioIntervalo, INTERVAL_DURATION)
+    const horarioExato = adicionarMinutos(base, (8 * 60 + MINUTES) + INTERVAL_DURATION)
+    const mais18 = adicionarMinutos(horarioExato, TOLERANCE)
+    const menos18 = adicionarMinutos(horarioExato, -TOLERANCE)
+
+    setDiv('inicioIntervalo', inicioIntervalo)
+    setDiv('fimIntervalo', fimIntervalo)
+    setDiv('horarioExato', horarioExato)
+    setDiv('mais18', mais18)
+    setDiv('menos18', menos18)
+  })
+
+  function calcularMinutos() {
+    const valorHora = inputHora.value
+
+    if (!valorHora) return
+
+    const [hora, minuto] = valorHora.split(':').map(Number)
+
+    const base = new Date()
+    base.setHours(hora, minuto, 0, 0)
+
+    const horarioExato = adicionarMinutos(base, (8 * 60 + MINUTES) + INTERVAL_DURATION)
+    const minutos = Number(inputMinutos.value || 0)
+
+    let resultado
+
+    if (minutos < 0) {
+      resultado = adicionarMinutos(horarioExato, -TOLERANCE + minutos)
+    } else if (minutos > 0) {
+      resultado = adicionarMinutos(horarioExato, TOLERANCE + minutos)
+    } else {
+      resultado = horarioExato
+    }
+
+    document.getElementById('resultadoMinutos').textContent = formatarHora(resultado)
+  }
+
+  inputMinutos.addEventListener('input', calcularMinutos)
+  inputHora.addEventListener('input', calcularMinutos)
+</script>
+
+</body>
+</html>

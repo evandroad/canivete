@@ -8,5 +8,6 @@ Coleção de projetos pessoais disponíveis em [canivetedev.netlify.app](https:/
 - **Minha Numerologia:** calcula a numerologia com base no nome e na data de nascimento.
 - **Ferramenta de Conversão de Unidades:** converte diferentes unidades de medida.
 - **Diversos Tutoriais e Dicas:** reúne tutoriais e dicas úteis.
+- **Calculadora de Horário de Trabalho:** Calcule o horário de trabalho com base em horas trabalhadas e pausas.
 - **Calculadora de IMC:** calcula o Índice de Massa Corporal e apresenta sua classificação.
 - **Perfil de Evandro:** página pessoal com informações, redes sociais e projetos.
