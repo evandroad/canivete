@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gerador de QR Code</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    .app {
+      background: #020617;
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.7);
+      border: 1px solid #1f2937;
+    }
+
+    h1 {
+      margin: 0 0 12px 0;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      font-size: 0.9rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: #9ca3af;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.6);
+    }
+
+    button {
+      margin-top: 12px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: white;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 20px rgba(79, 70, 229, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: none;
+      opacity: 0.9;
+    }
+
+    .qr-wrapper {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    canvas {
+      background: white;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Gerador de QR Code</h1>
+
+    <input type="text" id="qr-input" placeholder="Ex: https://meusite.com"/>
+    <button id="qr-btn">Gerar QR Code</button>
+
+    <div class="qr-wrapper">
+      <canvas id="qr-canvas"></canvas>
+    </div>
+  </div>
+
+  <script src="lib.js"></script>
+
+  <script>
+    const qr = new QRious({
+      element: document.getElementById('qr-canvas'),
+      size: 240,
+      value: ''
+    });
+
+    const input = document.getElementById('qr-input');
+    const button = document.getElementById('qr-btn');
+
+    button.addEventListener('click', () => {
+      const text = input.value.trim();
+
+      if (!text) {
+        alert('Digite algum texto ou URL para gerar o QR Code.');
+        return;
+      }
+
+      qr.value = text;
+    });
+
+    input.addEventListener('keyup', (e) => {
+      const text = e.target.value.trim();
+      qr.value = text ? text : '';
+    });
+  </script>
+</body>
+</html>
+
