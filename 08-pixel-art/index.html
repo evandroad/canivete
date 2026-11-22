@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style.css">
+  <title>Criador de Pixel Art</title>
+</head>
+
+<body>
+
+<main>
+  <h1>Criador de Pixel Art</h1>
+
+  <p>
+    Defina o tamanho da grade, clique nos quadrados
+    para escolher suas cores e salve como PNG.
+  </p>
+
+  <section class="toolbar">
+    <label>
+      Colunas
+      <input class="app-input" id="columns" type="number" min="1" max="100" value="8">
+    </label>
+
+    <label>
+      Linhas
+      <input class="app-input" id="rows" type="number" min="1" max="100" value="8">
+    </label>
+
+    <label>
+      Tam. pixel (px)
+      <input class="app-input" id="pixelSize" type="number" min="1" max="1000" value="1">
+    </label>
+
+    <button id="saveProject" class="app-button button-secondary">
+      Salvar projeto
+    </button>
+
+    <button id="openProject" class="app-button button-secondary">
+      Abrir projeto
+    </button>
+
+    <input type="file" id="projectFile" accept=".json,application/json" hidden>
+
+    <button id="applySelected" class="app-button button-secondary">
+      Aplicar cor
+    </button>
+
+    <button id="savePngFile" class="app-button button-primary">
+      Salvar PNG
+    </button>
+  </section>
+
+  <div id="gridWrap">
+    <div id="grid"></div>
+  </div>
+</main>
+
+<!-- Modal de seleção de cor -->
+<dialog id="colorDialog">
+  <form id="colorForm">
+    <h2>Escolha a cor do pixel</h2>
+
+    <div class="color-row">
+      <input id="pixelColor" type="color" value="#f53935">
+      <span id="colorValue">#e53935</span>
+    </div>
+
+    <div class="recent-colors-container">
+      <label>Últimas cores utilizadas</label>
+      <div id="recentColors" class="recent-colors"></div>
+    </div>
+
+    <div class="dialog-actions">
+      <button id="cancelColor" type="button" class="app-button button-secondary">
+        Cancelar
+      </button>
+
+      <button type="submit" class="app-button button-primary">
+        Aplicar cor
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(() => {
+
+  const columnsInput = document.querySelector('#columns');
+  const rowsInput = document.querySelector('#rows');
+  const pixelSizeInput = document.querySelector('#pixelSize');
+
+  const grid = document.querySelector('#grid');
+
+  const dialog = document.querySelector('#colorDialog');
+
+  const colorInput = document.querySelector('#pixelColor');
+  const colorValue = document.querySelector('#colorValue');
+  
+  const projectFile = document.querySelector('#projectFile')
+  const recentColorsContainer = document.querySelector('#recentColors')
+  
+  let pixels = []
+  let recentColors = []
+  let currentColumns = 8
+  let currentRows = 8
+  let selectedPixel = null
+  let selectedPixels = new Set()
+
+  const MAX_RECENT_COLORS = 12
+
+  function dimensions() {
+    const columns = Math.max(1, Math.min(100, parseInt(columnsInput.value) || 1));
+    const rows = Math.max(1, Math.min(100, parseInt(rowsInput.value) || 1));
+
+    columnsInput.value = columns;
+    rowsInput.value = rows;
+
+    return { columns, rows };
+  }
+
+  function initializeGrid() {
+    pixels = []
+
+    for (let row = 0; row < currentRows; row++) {
+      pixels[row] = []
+
+      for (let col = 0; col < currentColumns; col++) {
+        pixels[row][col] = '#ffffff'
+      }
+    }
+
+    renderGrid()
+  }
+
+  function renderGrid() {
+    grid.replaceChildren();
+    grid.style.gridTemplateColumns = `repeat(${currentColumns}, 28px)`;
+
+    for (let row = 0; row < currentRows; row++) {
+      for (let col = 0; col < currentColumns; col++) {
+        const pixel = document.createElement('button');
+  
+        pixel.type = 'button';
+        pixel.className = 'pixel';
+        pixel.style.backgroundColor = pixels[row][col] || '#ffffff';
+        pixel.setAttribute('aria-label', `Pixel linha ${row + 1}, coluna ${col + 1}`);
+        const position = `${row}-${col}`
+
+        if (selectedPixels.has(position)) {
+          pixel.classList.add('selected')
+        }
+
+        // Botão esquerdo: abre o modal normalmente
+        pixel.addEventListener('click', () => {
+          openColorPicker(row, col);
+        })
+
+        // Botão direito: seleciona ou desseleciona
+        pixel.addEventListener('contextmenu', (event) => {
+          event.preventDefault()
+          togglePixelSelection(row, col, pixel)
+        })
+  
+        grid.appendChild(pixel)
+      }
+    }
+  }
+
+  function resizeGrid() {
+    const { columns, rows } = dimensions();
+
+    const newPixels = [];
+
+    for (let row = 0; row < rows; row++) {
+      newPixels[row] = [];
+
+      for (let col = 0; col < columns; col++) {
+        newPixels[row][col] = pixels[row]?.[col] || '#ffffff';
+      }
+    }
+
+    pixels = newPixels;
+
+    currentColumns = columns;
+    currentRows = rows;
+
+    renderGrid()
+  }
+
+  function saveProject() {
+    const project = {
+      version: 1,
+      columns: currentColumns,
+      rows: currentRows,
+      pixelSize: Number(pixelSizeInput.value),
+      pixels: pixels,
+      recentColors: recentColors
+    };
+
+    const blob = new Blob([JSON.stringify(project, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = `pixel-art-${currentColumns}x${currentRows}.json`;
+    link.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  async function openProject(file) {
+    try {
+      const project = JSON.parse(await file.text());
+
+      // Valida as informações básicas
+      if (
+        project.version !== 1 ||
+        !Number.isInteger(project.columns) ||
+        !Number.isInteger(project.rows) ||
+        !Number.isInteger(project.pixelSize) ||
+        project.columns < 1 ||
+        project.columns > 100 ||
+        project.rows < 1 ||
+        project.rows > 100 ||
+        project.pixelSize < 1 ||
+        project.pixelSize > 1000
+      ) {
+        throw new Error('Arquivo de projeto inválido.');
+      }
+
+      // Valida a matriz
+      if (
+        !Array.isArray(project.pixels) ||
+        project.pixels.length !== project.rows ||
+        !project.pixels.every(row =>
+          Array.isArray(row) &&
+          row.length === project.columns &&
+          row.every(color =>
+            typeof color === 'string' &&
+            /^#[0-9a-f]{6}$/i.test(color)
+          )
+        )
+      ) {
+        throw new Error('Mapa de pixels inválido.');
+      }
+
+      // Restaura as configurações
+      columnsInput.value = project.columns;
+      rowsInput.value = project.rows;
+      pixelSizeInput.value = project.pixelSize;
+
+      currentColumns = project.columns;
+      currentRows = project.rows;
+      
+      // Restaura o mapa de cores
+      pixels = project.pixels.map(row => [...row])
+
+      // Restaura as cores recentes
+      recentColors = Array.isArray(project.recentColors)
+        ? project.recentColors.filter(color =>
+          typeof color === 'string' &&
+          /^#[0-9a-f]{6}$/i.test(color)
+        ).slice(0, MAX_RECENT_COLORS)
+        : [];
+
+      selectedPixels.clear()
+
+      // Reconstrói a grade
+      renderGrid()
+      renderRecentColors()
+    } catch (error) {
+      alert('Não foi possível abrir o projeto: ' + error.message);
+    }
+  }
+
+  function savePng() {
+    const pixelSize = Math.max(1, Math.min(1000, parseInt(pixelSizeInput.value) || 1))
+
+    pixelSizeInput.value = pixelSize
+
+    const canvas = document.createElement('canvas')
+
+    canvas.width = currentColumns * pixelSize
+    canvas.height = currentRows * pixelSize
+
+    const context = canvas.getContext('2d')
+
+    context.fillStyle = '#ffffff'
+
+    context.fillRect(0, 0, canvas.width, canvas.height)
+
+    for (let row = 0; row < currentRows; row++) {
+      for (let col = 0; col < currentColumns; col++) {
+        context.fillStyle = pixels[row][col] || '#ffffff'
+        context.fillRect(col * pixelSize, row * pixelSize, pixelSize, pixelSize)
+      }
+    }
+
+    // Gera o arquivo PNG
+    canvas.toBlob(blob => {
+      if (!blob) {
+        alert('Não foi possível criar o PNG.')
+        return
+      }
+
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+
+      link.href = url
+      link.download = `pixel-art-${currentColumns}x${currentRows}-${pixelSize}px.png`
+      link.click()
+
+      URL.revokeObjectURL(url)
+    }, 'image/png')
+  }
+
+  function renderRecentColors() {
+    recentColorsContainer.replaceChildren();
+    recentColors.forEach(color => {
+      const button = document.createElement('button')
+
+      button.type = 'button'
+      button.className = 'recent-color'
+      button.style.backgroundColor = color
+      button.title = color
+      button.setAttribute('aria-label', `Usar cor ${color}`)
+
+      button.addEventListener('click', () => {
+        applyPixelColor(color)
+        dialog.close()
+      })
+
+      recentColorsContainer.appendChild(button)
+    })
+  }
+
+  function applyPixelColor(color) {
+    if (selectedPixels.size > 0) {
+      selectedPixels.forEach(position => {
+        const [row, col] = position.split('-').map(Number)
+  
+        // Atualiza a matriz
+        pixels[row][col] = color
+  
+        // Calcula a posição do elemento na grade
+        const index = row * currentColumns + col
+  
+        // Atualiza visualmente o pixel
+        const pixelElement = grid.children[index]
+  
+        pixelElement.style.backgroundColor = color
+        pixelElement.classList.remove('selected')
+      })
+
+      // Limpa a lista de selecionados
+      selectedPixels.clear()
+    } else if (selectedPixel !== null) {
+      const { row, col } = selectedPixel
+
+      // Atualiza a matriz
+      pixels[row][col] = color
+
+      // Calcula a posição do elemento na grade
+      const index = row * currentColumns + col
+
+      // Atualiza visualmente o pixel
+      grid.children[index].style.backgroundColor = color
+
+      selectedPixel = null
+    }
+
+    // Atualiza o histórico
+    recentColors = recentColors.filter(c => c !== color)
+    recentColors.unshift(color)
+    recentColors = recentColors.slice(0, MAX_RECENT_COLORS)
+
+    renderRecentColors()
+  }
+
+  function togglePixelSelection(row, col, element) {
+    const position = `${row}-${col}`;
+
+    if (selectedPixels.has(position)) {
+      selectedPixels.delete(position);
+      element.classList.remove('selected');
+    } else {
+      selectedPixels.add(position);
+      element.classList.add('selected');
+    }
+  }
+
+  function openColorPicker(row, col) {
+    selectedPixel = { row, col }
+
+    colorInput.value = pixels[row][col]
+    colorValue.textContent = colorInput.value
+
+    renderRecentColors()
+
+    dialog.showModal()
+  }
+
+  function openColorPickerForSelection() {
+    if (selectedPixels.size === 0) {
+      alert('Selecione pelo menos um pixel.');
+      return;
+    }
+
+    const firstPosition = [...selectedPixels][0];
+    const [row, col] = firstPosition.split('-').map(Number);
+
+    colorInput.value = pixels[row][col];
+    colorValue.textContent = colorInput.value;
+
+    renderRecentColors()
+
+    dialog.showModal()
+  }
+
+  // Atualiza o código hexadecimal da cor
+  colorInput.addEventListener('input', () => colorValue.textContent = colorInput.value)
+
+  // Aplica a cor selecionada
+  document.querySelector('#colorForm').addEventListener('submit', event => {
+    event.preventDefault()
+    applyPixelColor(colorInput.value)
+    dialog.close()
+  })
+
+  // Cancela a seleção
+  document.querySelector('#cancelColor').addEventListener('click', () => dialog.close())
+
+  // ATUALIZA AUTOMATICAMENTE AO ALTERAR AS DIMENSÕES
+  columnsInput.addEventListener('change', resizeGrid)
+  rowsInput.addEventListener('change', resizeGrid)
+
+  document.querySelector('#saveProject').addEventListener('click', saveProject)
+
+  document.querySelector('#openProject').addEventListener('click', () => projectFile.click())
+
+  document.querySelector('#savePngFile').addEventListener('click', savePng)
+
+  projectFile.addEventListener('change', async () => {
+    const file = projectFile.files[0];
+
+    if (!file) return;
+
+    await openProject(file);
+
+    projectFile.value = '';
+  });
+
+  document.querySelector('#applySelected').addEventListener('click', openColorPickerForSelection)
+
+  initializeGrid()
+})()
+</script>
+
+</body>
+</html>
