@@ -17,7 +17,9 @@ export default {
               </svg>
             </router-link>
           </div>
+
           <h2 id="summaryTitle">Summary</h2>
+
           <li id="summaryItem" v-for="command in commands">
             <a href="javascript:void(0)" @click="scrollToElement(command.title)">{{ command.number }} - {{ command.title }}</a>
           </li>
@@ -26,6 +28,7 @@ export default {
 
       <div id="contentBody">
         <h1>{{ title }}</h1>
+
         <template v-for="command in commands">
           <h2 :id="command.title">{{ command.number }} - {{ command.title }}</h2>
           <div class="markdown-body" v-html="marked(command.content)"></div>

@@ -14,9 +14,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background:
-    radial-gradient(ellipse at 15% 0%, rgba(99, 102, 241, 0.18), transparent 38rem),
-    #111827;
+  background: radial-gradient(ellipse at 15% 0%, rgba(99, 102, 241, 0.18), transparent 38rem), #111827;
 }
 
 main {
@@ -353,7 +351,8 @@ h1 {
 
 /* App 02: tutoriais */
 .tutorial-app {
-  background: var(--color_2);
+  min-height: 100vh;
+  background: var(--color_1);
   color: var(--font);
 }
 
@@ -361,6 +360,7 @@ h1 {
   width: 100%;
   margin: 20px auto;
   text-align: center;
+  letter-spacing: -0.035em;
 }
 
 .tutorial-app h2 {
@@ -376,7 +376,7 @@ h1 {
   flex-direction: column;
   width: min(1120px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 12px 0 64px;
+  padding: 52px 0 64px;
 }
 
 .tutorial-app .header {
@@ -387,7 +387,8 @@ h1 {
 
 .tutorial-app #description {
   max-width: 860px;
-  margin: 12px auto 28px;
+  margin: 12px auto 32px;
+  color: var(--font);
   line-height: 1.65;
 }
 
@@ -395,31 +396,38 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
   justify-items: center;
-  gap: 24px;
+  gap: 28px;
 }
 
 .tutorial-app .card {
   width: 100%;
   min-width: 0;
   max-width: 260px;
-  padding: 16px;
-  border: 1px solid var(--color_3);
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--color_4) 55%, transparent);
   border-radius: 18px;
   background: var(--color_2);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.tutorial-app .card:hover {
+  transform: translateY(-4px);
+  border-color: var(--tutorial-link);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.20);
 }
 
 .tutorial-app .card img {
   display: block;
-  height: 5em;
-  max-width: 100%;
+  width: 72px;
+  height: 72px;
   margin: 0 auto;
-  border-radius: 8px;
-  object-fit: cover;
+  border-radius: 10px;
+  object-fit: contain;
 }
 
 .tutorial-app .card h2 {
-  margin: 10px 0;
+  margin: 14px 0 10px;
   text-align: center;
   font-size: 18px;
 }
@@ -427,14 +435,18 @@ h1 {
 .tutorial-app .card button {
   display: block;
   width: 100%;
-  padding: 8px;
-  border: 0;
+  padding: 0;
+  border: 1px solid var(--tutorial-link);
+  border-radius: 8px;
   background: transparent;
   font-size: 1em;
 }
 
 .tutorial-app .card button a {
+  display: block;
+  padding: 9px 12px;
   color: var(--tutorial-link, #0366d6);
+  font-weight: 650;
   text-decoration: none;
 }
 
@@ -446,27 +458,30 @@ h1 {
 /* Conteúdo dos tutoriais e navegação lateral */
 .tutorial-app #contentMenu {
   margin: 0;
-  margin-bottom: 20px;
   padding: 0;
   list-style-type: none;
 }
 
 .tutorial-app #sidenav {
   position: fixed;
-  z-index: 1;
+  z-index: 10;
   top: 0;
   left: 0;
-  width: 20%;
-  height: 97.5%;
-  overflow-x: hidden;
-  padding: 20px 10px 0;
+  width: 260px;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px 14px;
+  border-right: 1px solid color-mix(in srgb, var(--color_4) 45%, transparent);
   background-color: var(--color_3);
+  scrollbar-width: thin;
 }
 
 .tutorial-app #logoHome {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 112px;
+  margin-bottom: 8px;
 }
 
 .tutorial-app svg path {
@@ -479,29 +494,49 @@ h1 {
 }
 
 .tutorial-app #summaryTitle {
-  padding-left: 15px;
+  margin: 0 0 12px;
+  padding-left: 12px;
   color: var(--font);
 }
 
+.tutorial-app #summaryItem {
+  list-style: none;
+  border-radius: 8px;
+}
+
 .tutorial-app #summaryItem:hover {
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: var(--color_2);
 }
 
 .tutorial-app #summaryItem a {
   display: block;
-  padding: 6px 8px 6px 16px;
+  padding: 8px 10px 8px 12px;
   color: var(--font);
-  font-size: 18px;
+  font-size: 15px;
+  line-height: 1.35;
   text-decoration: none;
 }
 
 .tutorial-app #contentBody {
-  margin-bottom: 20px;
-  margin-left: 20%;
-  padding: 0 10px;
-  background-color: var(--color_2);
+  width: calc(100% - 260px);
+  min-height: 100vh;
+  margin-left: 260px;
+  padding: 48px clamp(24px, 5vw, 72px) 64px;
+  background: var(--color_6);
   font-size: 18px;
+}
+
+.tutorial-app #contentBody > h1 {
+  max-width: 980px;
+  margin: 0 auto 36px;
+  text-align: left;
+}
+
+.tutorial-app #contentBody > h2 {
+  max-width: 980px;
+  margin: 34px auto 12px;
+  scroll-margin-top: 24px;
 }
 
 .tutorial-app #btnTop {
@@ -524,12 +559,14 @@ h1 {
 
 /* Conteúdo Markdown */
 .tutorial-app .markdown-body {
-  background-color: var(--color_2);
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent !important;
   color: var(--font);
 }
 
 .tutorial-app .markdown-body p {
-  width: 80%;
   line-height: 1.65;
 }
 
@@ -544,7 +581,8 @@ h1 {
 }
 
 .tutorial-app .markdown-body pre {
-  width: 80%;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .tutorial-app .markdown-body th,
@@ -982,7 +1020,18 @@ input[type="color"] {
   }
 
   .tutorial-app #contentBody {
+    width: 100%;
     margin-left: 0;
+    padding: 32px 20px 48px;
+  }
+
+  .tutorial-app #mainContainer {
+    padding-top: 36px;
+  }
+
+  .tutorial-app .switch {
+    top: 12px;
+    right: 12px;
   }
 }
 

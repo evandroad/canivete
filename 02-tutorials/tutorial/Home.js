@@ -16,7 +16,7 @@ export default {
 
       <section class="gallery">
         <div class="card" v-for="card in mainCards">
-          <img :src="card.image ? 'img/' + card.image : 'img/desconhecido.png' "></img>
+          <img :src="card.image ? 'img/' + card.image : 'img/desconhecido.png'" :alt="card.title">
           <h2>{{ card.title }}</h2>
           <button><router-link :to="{ name: 'tutorial', params: { tutorial: card.title }}">Leia mais</router-link></button>
         </div>
