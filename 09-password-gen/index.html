@@ -5,40 +5,48 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
+	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 	<script src="https://unpkg.com/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
 	<script src="script.js"></script>
 	<title>password-generator</title>
 </head>
-<body>
-	<div id="app" class="container" x-data="data()">
-		<h1>Password Generator</h1>
 
-		<div class="controls">
-			<div class="filters">
-				<span class="active" id="random">Random</span>
-				<span id="formatted">Formatted</span>
+<body class="min-h-screen bg-[#111827]">
+	<main class="min-h-screen bg-[radial-gradient(ellipse_at_15%_0%,rgba(99,102,241,0.18),transparent_38rem)] bg-no-repeat flex flex-col items-center">
+		<div id="app" class="w-2xl mt-12 p-6 flex flex-col items-center bg-[#192233] rounded-2xl shadow-lg border border-[#293449]" x-data="data()">
+			<h1 class="text-2xl font-bold text-center text-gray-300">Password Generator</h1>
+	
+			<div class="text-gray-400 m-4 space-x-2">
+				<span @click="changeFilter('random')" class="border border-gray-700 rounded-full px-4 py-1" :class="filter == 'random' ? 'text-[#3C87FF]' : 'hover:text-gray-300 cursor-pointer'">
+					Random
+				</span>
+				<span @click="changeFilter('formatted')" class="border border-gray-700 rounded-full px-4 py-1" :class="filter == 'formatted' ? 'text-[#3C87FF]' : 'hover:text-gray-300 cursor-pointer'">
+					Formatted
+				</span>
 			</div>
-		</div>
+	
+			<div x-show="filter == 'random'" class="flex flex-col gap-4 w-md">
+				<input type="number" x-model="number" class="text-gray-300 w-full border border-gray-600 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite o tamanho da senha aleatória">
+				<button @click="generateRandom" class="bg-blue-500/60 hover:bg-blue-600/50 text-gray-300 font-bold py-2 px-4 rounded-md cursor-pointer">Generate Random</button>
+			</div>
+			
+			<div x-show="filter == 'formatted'" class="flex flex-col items-center gap-4 w-md text-gray-400">
+				<p>
+					<b>Digite M:</b> Para uma letra maiúscula<br>
+					<b>Digite m:</b> Para uma letra minúscula<br>
+					<b>Digite n:</b> Para número<br>
+					<b>Digite s:</b> Para um símbolo
+				</p>
+				<p x-show="format.length > 0" x-text="'Tamanho: ' + format.length"></p>
 
-		<div id="fornatted" x-show="filter == 'random'">
-			<input id="number" type="number" x-model="number" placeholder="Digite o tamanho da senha aleatória">
-			<button id="btnGenerateRandom" @click="generateRandom">Generate Random</button>
+				<input type="text" x-model="format" @input="format = format.replace(/[^Mmns]/g, '')" class="text-gray-300 w-full border border-gray-600 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite o formato desejado">
+				<button @click="generateFormatted" class="bg-blue-500/60 hover:bg-blue-600/50 text-white font-bold py-2 px-4 rounded-md cursor-pointer">Generate Formatted</button>
+			</div>
+			
+			<div class="text-gray-300 w-full text-center text-2xl p-2" x-text="response"></div>
+	
+			<button x-show="response" @click="clear" class="bg-red-500/60 hover:bg-red-600/50 text-white font-bold py-2 px-4 rounded-md cursor-pointer">Clear</button>
 		</div>
-		
-		<div id="fornatted" x-show="filter == 'formatted'">
-			<p>
-				Digite M: Para uma letra maiúscula<br>
-				Digite m: Para uma letra minúscula<br>
-				Digite n: Para número<br>
-				Digite s: Para um símbolo
-			</p>
-			<input id="format" type="text" x-model="format" placeholder="Digite o formato desejado">
-			<button id="btnGenerateformatted" @click="generateFormatted">Generate Formatted</button>
-		</div>
-		
-		<div id="response" x-text="response"></div>
-
-		<button id="btnClear" x-show="response" @click="clear">Clear</button>
-	</div>
+	</main>
 </body>
 </html>

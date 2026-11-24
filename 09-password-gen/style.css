@@ -1,14 +1,14 @@
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
+} */
 
-body {
+/* body {
     background-image: linear-gradient(to right, rgb(51, 170, 250) , rgb(3, 117, 170));
-}
+} */
 
-h1 {
+/* h1 {
     text-align: center;
 }
 
@@ -22,37 +22,37 @@ h1 {
     padding: 20px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.2em;
-}
+} */
 
 
-.controls {
+/* .controls {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 18px 25px;
     border-bottom: 1px solid #ccc;
-}
+} */
 
-.filters {
+/* .filters {
   margin: 0px auto;
-}
+} */
 
-.filters span{
+/* .filters span{
     margin: 0 8px;
     font-size: 17px;
     color: #444444;
     cursor: pointer;
-}
+} */
 
-.filters span:first-child{
+/* .filters span:first-child{
     margin-left: 0;
-}
+}*/
 
 .filters span.active{
     color: #3C87FF;
-}
+} 
 
-p {
+/* p {
     padding: 10px 80px 0px;
     font-size: 0.8em;
     color: rgb(173, 173, 173);
@@ -68,9 +68,9 @@ input {
   	border-radius: 5px;
   	padding: 10px;
   	border: 1px solid #999;
-}
+} */
 
-button {
+/* button {
     display: block;
     border: none;
     opacity: 0.6;
@@ -102,4 +102,4 @@ button:active {
     margin-top: 20px;
     text-align: center;
     font-size: 1.2em;
-}
+} */

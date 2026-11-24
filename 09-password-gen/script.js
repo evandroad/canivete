@@ -13,18 +13,6 @@ function data() {
       getRandomInt(max) { return Math.floor(Math.random() * max + 1) },
       getRandom(min, max) { return Math.floor(Math.random() * (max - min) + min) }
     },
-    init() {
-      var filters = document.querySelectorAll(".filters span")
-
-      filters.forEach(btn => {
-        btn.addEventListener("click", () => {
-          document.querySelector("span.active").classList.remove("active")
-          this.filter = btn.id
-          btn.classList.add("active")
-          this.clear()
-        })
-      })
-    },
     generateRandom() {
       this.response = ''
 
@@ -75,6 +63,12 @@ function data() {
       this.number = ''
       this.format = ''
       this.response = ''
+    },
+    changeFilter(filter) {
+      this.filter = filter
+      this.response = ''
+      this.number = ''
+      this.format = ''
     }
   }
 }

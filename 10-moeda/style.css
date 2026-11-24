@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: linear-gradient(to right, rgb(51, 170, 250) , rgb(3, 117, 170));
+}
+
+.main {
+  width: 40%;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px rgba(50, 50, 50, 0.4);
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2em; 
+  background-color: white;
+}
+
+form {
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.a {
+  text-align: center;
+  font-size: 18px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.gap {
+  display: flex;
+  gap: 5px;
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <script src="script.js"></script>
+  <title>Moeda</title>
+</head>
+<body>
+  <div id="app" class="main container" x-data="data()">
+    <div class="text-center">
+      <h1 class="h3 mb-3 font-weight-normal">Moeda<span></h1>
+    </div>
+
+    <div class="form-group">
+      <label>Valor:</label>
+      <input type="Text" id="quantidade" class="form-control" autofocus x-model="quantity">
+    </div>
+
+    <div class="form-group">
+      <label>De:</label>
+      <select id="moeda1" class="form-control" x-model="coinFrom">
+        <option></option>
+        <template x-for="coin in coins">
+          <option :value="coin.sigla">
+            <span x-text="coin.pais"></span> - <span x-text="coin.moeda"></span>
+          </option>
+        </template>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <button class="btn btn-success btn-block" @click="inverter">&uarr;&darr;</button>
+    </div>
+
+    <div class="form-group">
+      <label>Para:</label>
+      <select id="moeda2" class="form-control" x-model="coinTo">
+        <option></option>
+        <template x-for="coin in coins">
+          <option :value="coin.sigla">
+            <span x-text="coin.pais"></span> - <span x-text="coin.moeda"></span>
+          </option>
+        </template>
+      </select>
+    </div>
+
+    <div class="form-group gap center">
+      <button class="btn btn-primary" @click="consultaMoeda">Calcular</button>
+      <button class="btn btn-secondary" @click="limpar">Limpar</button>
+    </div>
+
+    <div id="return" x-html="response"></div>
+  </div>
+</body>
+</html>
