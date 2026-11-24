@@ -50,120 +50,121 @@
         </button>
       </div>
       
-      <div class="cep-results" id="ceps"></div>
+      <div id="ceps" class="cep-results">
+        <span id="msg-ceps"></span>
+        <table id="table-ceps" class="cep-results-table">
+          <thead>
+            <tr>
+              <th>CEP</th>
+              <th>Logradouro</th>
+              <th>Bairro</th>
+              <th>Cidade</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="table-ceps-body"></tbody>
+        </table>
+      </div>
     </div>
   </main>
 
   <script>
+    const cep = getElement('cep')
+    const returnDiv = getElement("return")
+    const estado = getElement("estado")
+    const cidade = getElement("cidade")
+    const rua = getElement("rua")
+    const msgCeps = getElement("msg-ceps")
+    const tableCeps = getElement("table-ceps")
+    const tableCepsBody = getElement("table-ceps-body")
+
     window.onload = () => {
-      getInput('cep').onkeyup = () => {
-        setValue(getValue('cep').replace(/[^0-9]+/gi, ""), 'cep')
+      tableCeps.style.display = 'none'
+
+      cep.onkeyup = () => {
+        cep.value = cep.value.replace(/[^0-9]+/gi, "")
       }
     }
 
-    function getInput(id) { return document.getElementById(id)}
-
-    function getValue(id) { return document.getElementById(id).value }
-
-    function setValue(response, id) { document.getElementById(id).value = response }
-
     async function consultaCep() {
       try {
-        var cep = document.getElementById("cep").value
-        var url = `https://viacep.com.br/ws/${cep}/json/`
+        var url = `https://viacep.com.br/ws/${cep.value}/json/`
         const response = await fetch(url)
         const endereco = await response.json()
 
-        document.getElementById('return').innerHTML = 'CEP: ' + endereco.cep + '<br>' + 
+        returnDiv.innerHTML = 'CEP: ' + endereco.cep + '<br>' + 
         'Logradouro: ' + endereco.logradouro + '<br>' +
         'Bairro: ' + endereco.bairro + '<br>' +
         'Cidade: ' + endereco.localidade + '<br>' +
         'Estado: ' + endereco.uf + '<br>';
       } catch {
-        document.getElementById('return').innerHTML = 'Endereço não encontrado.' 
+        returnDiv.innerHTML = 'Endereço não encontrado.' 
       }
-    }
-
-    function limparCampos() {
-      document.getElementById("cep").value = ''
-      document.getElementById('return').innerHTML = ''
-    }
-
-    function limparCeps() {
-      document.getElementById("estado").value = ''
-      document.getElementById("cidade").value = ''
-      document.getElementById("rua").value = ''
-      document.getElementById('ceps').innerHTML = ''
     }
 
     async function consultaEndereco() {
       try {
-        var estado = document.getElementById("estado").value
-        var cidade = document.getElementById("cidade").value
-        var rua = document.getElementById("rua").value
-        
-        var ceps = document.getElementById("ceps");
-        ceps.innerText = "";
+        const cepsDiv = document.getElementById("ceps");
 
-        const url = `https://viacep.com.br/ws/${estado}/${cidade}/${rua}/json/`
-        const response = await fetch(url)
-        const cep = await response.json()
-                    
-        if (cep.length > 0) {
-            var tabela = document.createElement('table')
-            tabela.className = 'cep-results-table'
-              var thead = document.createElement('thead')
-                var tr = document.createElement('tr');
-                  var th = document.createElement('th');
-                  th.innerHTML = 'CEP';
-                  tr.appendChild(th);
-                  var th = document.createElement('th');
-                  th.innerHTML = 'Logradouro';
-                  tr.appendChild(th);
-                  var th = document.createElement('th');
-                  th.innerHTML = 'Bairro';
-                  tr.appendChild(th);
-                  var th = document.createElement('th');
-                  th.innerHTML = 'Cidade';
-                  tr.appendChild(th);
-                  var th = document.createElement('th');
-                  th.innerHTML = 'Estado';
-                  tr.appendChild(th);
-              thead.appendChild(tr);
-            tabela.appendChild(thead);
-            ceps.appendChild(tabela)
-        } else {
+        if (estado.value.length < 2 || cidade.value.length < 3 || rua.value.length < 3) {
           var p = document.createElement('p')
-          p.innerHTML = 'Nenhum CEP encontrado'
-          ceps.appendChild(p)
+          p.innerHTML = 'Preencha todos os campos corretamente'
+          msgCeps.innerHTML = ''
+          msgCeps.appendChild(p)
+          return
         }
 
-        for (i = 0; i < cep.length; i++) {
-          var tbody = document.createElement('tbody');
-            var tr = document.createElement('tr')
-              var td = document.createElement('td');
-              td.innerHTML = cep[i].cep
-              tr.appendChild(td);
-              var td = document.createElement('td');
-              td.innerHTML = cep[i].logradouro
-              tr.appendChild(td);
-              var td = document.createElement('td');
-              td.innerHTML = cep[i].bairro
-              tr.appendChild(td);
-              var td = document.createElement('td');
-              td.innerHTML = cep[i].localidade
-              tr.appendChild(td);
-              var td = document.createElement('td');
-              td.innerHTML = cep[i].uf
-              tr.appendChild(td);
-            tbody.appendChild(tr);
-          tabela.appendChild(tbody);
+        const url = `https://viacep.com.br/ws/${estado.value}/${cidade.value}/${rua.value}/json/`
+        const response = await fetch(url)
+        const ceps = await response.json()
+                    
+        if (ceps.length <= 0) {
+          var p = document.createElement('p')
+          p.innerHTML = 'Nenhum CEP encontrado'
+          msgCeps.appendChild(p)
+          return
+        }
+        
+        msgCeps.innerHTML = ''
+        tableCeps.style.display = ''
+        tableCepsBody.innerHTML = ''
+
+        for (i = 0; i < ceps.length; i++) {
+          const tr = document.createElement('tr')
+          tr.appendChild(getTD(ceps[i].cep))
+          tr.appendChild(getTD(ceps[i].logradouro))
+          tr.appendChild(getTD(ceps[i].bairro))
+          tr.appendChild(getTD(ceps[i].localidade))
+          tr.appendChild(getTD(ceps[i].uf))
+          tableCepsBody.appendChild(tr)
         }
       } catch {
         var p = document.createElement('p')
         p.innerHTML = 'CEP não encontrado'
-        ceps.appendChild(p)
+        msgCeps.appendChild(p)
       }
+    }
+
+    function limparCampos() {
+      cep.value = ''
+      returnDiv.innerHTML = ''
+    }
+
+    function limparCeps() {
+      estado.value = ''
+      cidade.value = ''
+      rua.value = ''
+      msgCeps.innerHTML = ''
+      tableCepsBody.innerHTML = ''
+      tableCeps.style.display = 'none'
+    }
+
+    function getElement(id) { return document.getElementById(id)}
+    
+    function getTD(value) {
+      var td = document.createElement('td');
+      td.innerHTML = value;
+      return td;
     }
   </script>
 </body>
