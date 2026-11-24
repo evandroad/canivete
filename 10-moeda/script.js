@@ -28,7 +28,7 @@ function data() {
           var total = data[this.coinFrom][this.coinTo] * this.quantity
           this.response = `
             Moeda:  ${this.coinFrom} -> ${this.coinTo}<br> 
-            Valor:  ${total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+            Valor:  ${total.toLocaleString('pt-br',{minimumFractionDigits: 2, maximumFractionDigits: 2})}
           ` 
         })
         .catch(e => console.log(e))
