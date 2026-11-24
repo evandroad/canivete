@@ -3,56 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="../style.css">
   <title>CEP</title>
 </head>
 <body class="cep-app">
-  <main>
-    <div id="d" class="app-panel cep-panel">
+  <main id="app">
+    <div class="app-panel cep-panel">
       <h1>Buscar Endereço</h1>
       
-      <div class="form-group">
-        <label>Digite seu CEP:</label>
-        <input type="text" id="cep" name="cep" class="form-control app-input" size="15" maxlength="8" placeholder="Só números">
-      </div>
-      <div class="form-group">
-        <button class="btn button-primary" type="button" onclick="consultaCep()">
+      <label>Digite seu CEP:</label>
+      <input type="text" v-model="cep" class="form-control app-input" @input="cep = cep.replace(/[^0-9]/g, '')" maxlength="8" placeholder="Só números">
+
+      <div class="flex space-x-2 mt-4">
+        <button class="app-button button-primary" type="button" @click="consultaCep">
           Consultar
         </button>
-        <button class="btn button-secondary" type="button" onclick="limparCampos()">
+        <button class="app-button button-secondary" type="button" @click="limparCampos">
           Limpar
         </button>
       </div>
       
-      <div class="cep-result" id="return"></div>
+      <div class="cep-result" v-if="address && !address.erro">
+        <p><b>CEP:</b> {{ address.cep }}</p>
+        <p><b>Logradouro:</b> {{ address.logradouro }}</p>
+        <p><b>Bairro:</b> {{ address.bairro }}</p>
+        <p><b>Cidade:</b> {{ address.localidade }}</p>
+        <p><b>Estado:</b> {{ address.uf }}</p>
+      </div>
+
+      <p v-if="addressError " class="text-danger mt-4">{{ addressError }}</p>
       
       <h2>Buscar CEP</h2>
       
       <div class="form-group">
         <label>Estado:</label>
-        <input type="text" id="estado" name="estado" class="form-control app-input" placeholder="Sigla (duas letras)">
+        <input type="text" v-model="estado" name="estado" class="form-control app-input" placeholder="Sigla (duas letras)">
       </div>
       <div class="form-group">
         <label>Cidade:</label>
-        <input type="text" id="cidade" name="cidade" class="form-control app-input" placeholder="No mínimo 3 letras">
+        <input type="text" v-model="cidade" name="cidade" class="form-control app-input" placeholder="No mínimo 3 letras">
       </div>
       <div class="form-group">
         <label>Rua:</label>
-        <input type="text" id="rua" name="rua" class="form-control app-input" placeholder="No mínimo 3 letras">
+        <input type="text" v-model="rua" name="rua" class="form-control app-input" placeholder="No mínimo 3 letras">
       </div>
-      <div class="form-group">
-        <button class="btn button-primary" type="button" onclick="consultaEndereco()">
+      <div class="flex space-x-2 mt-4">
+        <button class="app-button button-primary" type="button" @click="consultaEndereco">
           Consultar
         </button>
-        <button class="btn button-secondary" type="button" onclick="limparCeps()">
+        <button class="app-button button-secondary" type="button" @click="limparCeps">
           Limpar
         </button>
       </div>
       
-      <div id="ceps" class="cep-results">
-        <span id="msg-ceps"></span>
-        <table id="table-ceps" class="cep-results-table">
+      <div class="cep-results">
+        <div class="mt-4">{{ msgCeps }}</div>
+
+        <table v-if="ceps.length > 0" class="cep-results-table">
           <thead>
             <tr>
               <th>CEP</th>
@@ -62,110 +70,21 @@
               <th>Estado</th>
             </tr>
           </thead>
-          <tbody id="table-ceps-body"></tbody>
+          <tbody>
+            <tr v-for="cep in ceps" :key="cep.cep">
+              <td>{{ cep.cep }}</td>
+              <td>{{ cep.logradouro }}</td>
+              <td>{{ cep.bairro }}</td>
+              <td>{{ cep.localidade }}</td>
+              <td>{{ cep.uf }}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
   </main>
 
-  <script>
-    const cep = getElement('cep')
-    const returnDiv = getElement("return")
-    const estado = getElement("estado")
-    const cidade = getElement("cidade")
-    const rua = getElement("rua")
-    const msgCeps = getElement("msg-ceps")
-    const tableCeps = getElement("table-ceps")
-    const tableCepsBody = getElement("table-ceps-body")
-
-    window.onload = () => {
-      tableCeps.style.display = 'none'
-
-      cep.onkeyup = () => {
-        cep.value = cep.value.replace(/[^0-9]+/gi, "")
-      }
-    }
-
-    async function consultaCep() {
-      try {
-        var url = `https://viacep.com.br/ws/${cep.value}/json/`
-        const response = await fetch(url)
-        const endereco = await response.json()
-
-        returnDiv.innerHTML = 'CEP: ' + endereco.cep + '<br>' + 
-        'Logradouro: ' + endereco.logradouro + '<br>' +
-        'Bairro: ' + endereco.bairro + '<br>' +
-        'Cidade: ' + endereco.localidade + '<br>' +
-        'Estado: ' + endereco.uf + '<br>';
-      } catch {
-        returnDiv.innerHTML = 'Endereço não encontrado.' 
-      }
-    }
-
-    async function consultaEndereco() {
-      try {
-        const cepsDiv = document.getElementById("ceps");
-
-        if (estado.value.length < 2 || cidade.value.length < 3 || rua.value.length < 3) {
-          var p = document.createElement('p')
-          p.innerHTML = 'Preencha todos os campos corretamente'
-          msgCeps.innerHTML = ''
-          msgCeps.appendChild(p)
-          return
-        }
-
-        const url = `https://viacep.com.br/ws/${estado.value}/${cidade.value}/${rua.value}/json/`
-        const response = await fetch(url)
-        const ceps = await response.json()
-                    
-        if (ceps.length <= 0) {
-          var p = document.createElement('p')
-          p.innerHTML = 'Nenhum CEP encontrado'
-          msgCeps.appendChild(p)
-          return
-        }
-        
-        msgCeps.innerHTML = ''
-        tableCeps.style.display = ''
-        tableCepsBody.innerHTML = ''
-
-        for (i = 0; i < ceps.length; i++) {
-          const tr = document.createElement('tr')
-          tr.appendChild(getTD(ceps[i].cep))
-          tr.appendChild(getTD(ceps[i].logradouro))
-          tr.appendChild(getTD(ceps[i].bairro))
-          tr.appendChild(getTD(ceps[i].localidade))
-          tr.appendChild(getTD(ceps[i].uf))
-          tableCepsBody.appendChild(tr)
-        }
-      } catch {
-        var p = document.createElement('p')
-        p.innerHTML = 'CEP não encontrado'
-        msgCeps.appendChild(p)
-      }
-    }
-
-    function limparCampos() {
-      cep.value = ''
-      returnDiv.innerHTML = ''
-    }
-
-    function limparCeps() {
-      estado.value = ''
-      cidade.value = ''
-      rua.value = ''
-      msgCeps.innerHTML = ''
-      tableCepsBody.innerHTML = ''
-      tableCeps.style.display = 'none'
-    }
-
-    function getElement(id) { return document.getElementById(id)}
-    
-    function getTD(value) {
-      var td = document.createElement('td');
-      td.innerHTML = value;
-      return td;
-    }
-  </script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
