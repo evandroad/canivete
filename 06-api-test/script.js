@@ -86,9 +86,9 @@ function data() {
 					this.status = response.status
 
           if (response.status === 204) {
-              this.result = '204 No Content'
-              this.isLoading = false
-              return null
+						this.result = '204 No Content'
+						this.isLoading = false
+						return null
           }
 
 					return response.json()

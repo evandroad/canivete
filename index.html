@@ -6,128 +6,118 @@
   <meta name="theme-color" content="#111827">
   <title>Meus projetos</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-  <main>
+  <main id="app">
     <header>
       <p class="eyebrow">Coleção de projetos</p>
       <h1>Ferramentas e Utilitários</h1>
       <p class="intro">Uma seleção de apps e experimentos. Escolha um card para abrir o projeto.</p>
     </header>
 
-    <section class="projects" id="projects" aria-label="Projetos"></section>
+    <section class="projects" aria-label="Projetos">
+      <a v-for="projeto in projetos" :key="projeto.link" :href="projeto.link" :aria-label="`Abrir ${projeto.nome}`" class="project-card">
+        <div class="preview" aria-hidden="true">
+          <iframe :src="projeto.previa" :title="`Prévia do ${projeto.nome}`" loading="lazy" tabindex="-1"></iframe>
+        </div>
+
+        <div class="project-info">
+          <h2>{{ projeto.nome }}</h2>
+          <p>{{ projeto.descricao }}</p>
+
+          <span class="open-project">
+            Abrir projeto
+            <span aria-hidden="true">→</span>
+          </span>
+        </div>
+      </a>
+    </section>
   </main>
+
   <script>
-    const projetos = [
-      {
-        nome: "Ferramenta de Conversão de Unidades",
-        descricao: "Converta unidades de medida de forma rápida e fácil.",
-        link: "./01-units-tool/",
-        previa: "./01-units-tool/index.html"
-      },
-      {
-        nome: "Diversos Tutoriais e Dicas",
-        descricao: "Descubra tutoriais e dicas úteis para aprimorar suas habilidades.",
-        link: "./02-tutorials/tutorial",
-        previa: "./02-tutorials/tutorial/index.html"
-      },
-      {
-        nome: "Calculadora de IMC",
-        descricao: "Calcule o Índice de Massa Corporal (IMC) e descubra sua classificação.",
-        link: "./03-bmi/",
-        previa: "./03-bmi/index.html"
-      },
-      {
-        nome: "Buscador de CEP",
-        descricao: "Consulte endereços pelo CEP ou encontre CEPs usando um endereço.",
-        link: "./04-cep/",
-        previa: "./04-cep/index.html"
-      },
-      {
-        nome: "Gerador de QR Code",
-        descricao: "Crie códigos QR para compartilhar links e informações.",
-        link: "./05-qrcode-gen/",
-        previa: "./05-qrcode-gen/index.html"
-      },
-      {
-        nome: "Teste de API Rest",
-        descricao: "Teste e valide endpoints de API RESTful.",
-        link: "./06-api-test/",
-        previa: "./06-api-test/index.html"
-      },
-      {
-        nome: "Listas de Tarefas",
-        descricao: "Crie e gerencie suas listas de tarefas de forma simples e eficiente.",
-        link: "./07-todo-list/",
-        previa: "./07-todo-list/index.html"
-      },
-      {
-        nome: "Editor de Pixel Art",
-        descricao: "Crie e edite imagens de pixel art de forma simples e eficiente.",
-        link: "./08-pixel-art/",
-        previa: "./08-pixel-art/index.html"
-      },
-      {
-        nome: "Calculadora de Horário de Trabalho",
-        descricao: "Calcule o horário de trabalho com base em horas trabalhadas e pausas.",
-        link: "./09-calculate-time/",
-        previa: "./09-calculate-time/index.html"
-      },
-      {
-        nome: "Perfil de Evandro",
-        descricao: "Uma página pessoal com informações sobre Evandro, incluindo links para redes sociais e projetos.",
-        link: "./10-evandro/",
-        previa: "./10-evandro/index.html"
-      },
-      {
-        nome: "Minha Numerologia",
-        descricao: "Explore a numerologia do seu nome e da sua data de nascimento.",
-        link: "./11-numerologia/",
-        previa: "./11-numerologia/index.html"
+    const { createApp } = Vue;
+
+    createApp({
+      setup() {
+        const projetos = [
+          {
+            nome: "Ferramenta de Conversão de Unidades",
+            descricao: "Converta unidades de medida de forma rápida e fácil.",
+            link: "./01-units-tool/",
+            previa: "./01-units-tool/index.html"
+          },
+          {
+            nome: "Diversos Tutoriais e Dicas",
+            descricao: "Descubra tutoriais e dicas úteis para aprimorar suas habilidades.",
+            link: "./02-tutorials/tutorial",
+            previa: "./02-tutorials/tutorial/index.html"
+          },
+          {
+            nome: "Calculadora de IMC",
+            descricao: "Calcule o Índice de Massa Corporal (IMC) e descubra sua classificação.",
+            link: "./03-bmi/",
+            previa: "./03-bmi/index.html"
+          },
+          {
+            nome: "Buscador de CEP",
+            descricao: "Consulte endereços pelo CEP ou encontre CEPs usando um endereço.",
+            link: "./04-cep/",
+            previa: "./04-cep/index.html"
+          },
+          {
+            nome: "Gerador de QR Code",
+            descricao: "Crie códigos QR para compartilhar links e informações.",
+            link: "./05-qrcode-gen/",
+            previa: "./05-qrcode-gen/index.html"
+          },
+          {
+            nome: "Teste de API Rest",
+            descricao: "Teste e valide endpoints de API RESTful.",
+            link: "./06-api-test/",
+            previa: "./06-api-test/index.html"
+          },
+          {
+            nome: "Listas de Tarefas",
+            descricao: "Crie e gerencie suas listas de tarefas de forma simples e eficiente.",
+            link: "./07-todo-list/",
+            previa: "./07-todo-list/index.html"
+          },
+          {
+            nome: "Editor de Pixel Art",
+            descricao: "Crie e edite imagens de pixel art de forma simples e eficiente.",
+            link: "./08-pixel-art/",
+            previa: "./08-pixel-art/index.html"
+          },
+          {
+            nome: "Gerador de Senha",
+            descricao: "Crie senhas seguras escolhendo o tamanho e os critérios.",
+            link: "./09-password-gen",
+            previa: "./09-password-gen/index.html"
+          },
+          {
+            nome: "Calculadora de Horário de Trabalho",
+            descricao: "Calcule o horário de trabalho com base em horas trabalhadas e pausas.",
+            link: "./10-calculate-time/",
+            previa: "./10-calculate-time/index.html"
+          },
+          {
+            nome: "Perfil de Evandro",
+            descricao: "Uma página pessoal com informações sobre Evandro, incluindo links para redes sociais e projetos.",
+            link: "./11-evandro/",
+            previa: "./11-evandro/index.html"
+          },
+          {
+            nome: "Minha Numerologia",
+            descricao: "Explore a numerologia do seu nome e da sua data de nascimento.",
+            link: "./12-numerologia/",
+            previa: "./12-numerologia/index.html"
+          }
+        ];
+
+        return { projetos };
       }
-    ];
-
-    const listaProjetos = document.getElementById("projects");
-
-    for (const projeto of projetos) {
-      const card = document.createElement("a");
-      card.className = "project-card";
-      card.href = projeto.link;
-      card.setAttribute("aria-label", `Abrir ${projeto.nome}`);
-
-      const preview = document.createElement("div");
-      preview.className = "preview";
-      preview.setAttribute("aria-hidden", "true");
-
-      const iframe = document.createElement("iframe");
-      iframe.src = projeto.previa;
-      iframe.title = `Prévia do ${projeto.nome}`;
-      iframe.loading = "lazy";
-      iframe.tabIndex = -1;
-      preview.appendChild(iframe);
-
-      const info = document.createElement("div");
-      info.className = "project-info";
-
-      const titulo = document.createElement("h2");
-      titulo.textContent = projeto.nome;
-
-      const descricao = document.createElement("p");
-      descricao.textContent = projeto.descricao;
-
-      const abrir = document.createElement("span");
-      abrir.className = "open-project";
-      abrir.append("Abrir projeto ");
-
-      const seta = document.createElement("span");
-      seta.setAttribute("aria-hidden", "true");
-      seta.textContent = "→";
-      abrir.appendChild(seta);
-
-      info.append(titulo, descricao, abrir);
-      card.append(preview, info);
-      listaProjetos.appendChild(card);
-    }
+    }).mount('#app')
   </script>
 </body>
 </html>

@@ -5,14 +5,14 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="10-style.css">
+	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="../style.css">
 	<link rel="shortcut icon" type="image/x-png" href="dev.png"/>
 	<script src="https://kit.fontawesome.com/0416c4eefa.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-	<script src="10-script.js"></script>
+	<script src="script.js"></script>
 	<title>Test API</title>
 </head>
 <body>
@@ -248,7 +248,7 @@
 					<div style="display: flex; justify-content: space-between;">
 						<h2>Response</h2>
 						<span x-show="status">Status: 
-							<span id="status" :style="{background: (status >= 200 || status <= 299) ? 'green' : 'red', borderRadius: '5px', margin: '5px', padding: '3px'}" x-text="status"></span>
+							<span id="status" :style="{background: (status >= 200 && status <= 299) ? 'green' : 'red', borderRadius: '5px', margin: '5px', padding: '3px'}" x-text="status"></span>
 						</span>
 					</div>
 					<pre id="result" :style="{background: result ? '#0f0f0f' : '#242424', borderRadius: '5px', margin: '5px', padding: '3px'}" x-text="result"></pre>

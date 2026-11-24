@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<script src="https://unpkg.com/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
+	<script src="script.js"></script>
+	<title>password-generator</title>
+</head>
+<body>
+	<div id="app" class="container" x-data="data()">
+		<h1>Password Generator</h1>
+
+		<div class="controls">
+			<div class="filters">
+				<span class="active" id="random">Random</span>
+				<span id="formatted">Formatted</span>
+			</div>
+		</div>
+
+		<div id="fornatted" x-show="filter == 'random'">
+			<input id="number" type="number" x-model="number" placeholder="Digite o tamanho da senha aleatória">
+			<button id="btnGenerateRandom" @click="generateRandom">Generate Random</button>
+		</div>
+		
+		<div id="fornatted" x-show="filter == 'formatted'">
+			<p>
+				Digite M: Para uma letra maiúscula<br>
+				Digite m: Para uma letra minúscula<br>
+				Digite n: Para número<br>
+				Digite s: Para um símbolo
+			</p>
+			<input id="format" type="text" x-model="format" placeholder="Digite o formato desejado">
+			<button id="btnGenerateformatted" @click="generateFormatted">Generate Formatted</button>
+		</div>
+		
+		<div id="response" x-text="response"></div>
+
+		<button id="btnClear" x-show="response" @click="clear">Clear</button>
+	</div>
+</body>
+</html>
