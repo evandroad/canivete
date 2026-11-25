@@ -17,6 +17,8 @@ function data() {
 		activeLink: null,
 		isLoading: false,
 		showInsertUrl: false,
+		showCreateFolder: false,
+		showInsertRequest: false,
 		selectedRequest: null,
 		isContextMenuVisible: false,
 		isContextMenuFolderVisible: false,
@@ -186,37 +188,56 @@ function data() {
 		},
 		saveRequest() {
 			if (!this.activeLink) {
-				$('#insertRequest').modal('show')
+				this.showInsertRequest = true
 				return
 			}
 		
-			var request = {
-				name: this.activeLink.name,
-				method: this.method,
-				urn: this.endpoint,
-			}
+			const request = {
+        ...this.activeLink,
+        method: this.method,
+        urn: this.endpoint
+    	}
 		
 			if (this.method == 'POST' || this.method == 'PUT') {
 				try {
 					const requestBody = JSON.parse(this.body);
-					if (typeof requestBody === 'object' && requestBody !== null) {
-						request['body'] = requestBody;
-					} else {
-						request['body'] = {};
-					}
+					request.body = typeof requestBody === 'object' && requestBody !== null ? requestBody : {}
 				} catch (error) {
-					request['body'] = {};
+					request['body'] = {}
+				}
+			} else {
+        delete request.body
+    	}
+
+			let found = false
+
+			for (const item of this.data.requests) {
+				if (!item.requests) continue
+
+				const index = item.requests.findIndex(r => r === this.activeLink)
+
+				if (index !== -1) {
+					item.requests.splice(index, 1, request)
+					found = true
+					break
 				}
 			}
-		
-			const index = this.data.requests.findIndex(obj => obj.name === this.activeLink.name && obj.method === this.method)
-		
-			if (index !== -1) {
-				this.data.requests.splice(index, 1);
+
+			if (!found) {
+				const index = this.data.requests.findIndex(r => r === this.activeLink)
+
+				if (index !== -1) {
+					this.data.requests.splice(index, 1, request)
+					found = true
+				}
 			}
-			
-			this.data.requests.splice(index, 0, request)
-			localStorage.setItem('config', JSON.stringify(this.data))
+
+			if (found) {
+				this.activeLink = request
+				localStorage.setItem('config', JSON.stringify(this.data))
+			} else {
+				console.log('Request não encontrado:', this.activeLink)
+			}
 		},
 		createRequest() {
 			const index = this.data.requests.findIndex(objeto => objeto.name === this.addName && objeto.method === this.method)
@@ -240,23 +261,16 @@ function data() {
 			this.addName = ''
 			this.data.requests.push(request)
 			localStorage.setItem('config', JSON.stringify(this.data))
+			this.showInsertRequest = false
 		},
 		saveAsRequest() {
 			this.addName = this.activeLink.name
-			$('#insertRequest').modal('show')
+			this.showInsertRequest = true
 		},
 		removeRequest() {
-			this.data.requests = this.data.requests.filter(objeto => {
-				if (objeto.requests) {
-					objeto.requests = objeto.requests.filter(req =>
-						req.name !== this.activeLink.name ||
-						req.method !== this.activeLink.method
-					)
-
-					return true
-				}
-				return objeto.name !== this.activeLink.name || objeto.method !== this.activeLink.method
-			})
+			this.data.requests = this.data.requests.filter(objeto =>
+				objeto.name !== this.activeLink.name || objeto.method !== this.activeLink.method || objeto.folder !== this.activeLink.folder
+			)
 			this.method = ''
 			this.endpoint = ''
 			this.body = ''
@@ -337,14 +351,29 @@ function data() {
 			this.data.requests.push({folder: this.folder, requests: []})
 			this.folder = ''
 			localStorage.setItem('config', JSON.stringify(this.data))
+			this.showCreateFolder = false
 		},
 		moveRequest(folder) {
 			this.isContextMenuFoldersVisible = false
-			const targetRequest = this.data.requests.find(request => request.folder === folder)
-			targetRequest.requests.push(this.selectedRequest)
-			this.data.requests = this.data.requests.filter(request =>
-				request.name !== this.selectedRequest.name || request.method !== this.selectedRequest.method
-			)
+			const selectedRequest = this.selectedRequest
+			const targetFolder = this.data.requests.find(request => request.folder === folder)
+			if (!targetFolder) return
+
+		  for (const item of this.data.requests) {
+        if (item.requests) {
+					const index = item.requests.indexOf(selectedRequest)
+
+					if (index !== -1) {
+						item.requests.splice(index, 1)
+						break
+					}
+        }
+    	}
+
+			const rootIndex = this.data.requests.indexOf(selectedRequest)
+			if (rootIndex !== -1) this.data.requests.splice(rootIndex, 1)
+
+			targetFolder.requests.push(selectedRequest)
 			localStorage.setItem('config', JSON.stringify(this.data))
 		},
 		moveOutOfTheFolder() {
@@ -356,9 +385,14 @@ function data() {
 			this.isContextMenuVisible = false
 		},
 		deleteFolder() {
-			this.data.requests = this.data.requests.filter(folder => folder !== this.selectedFolder)
+  		const folder = this.selectedFolder
+
+			this.data.folders = this.data.folders.filter(item => item !== folder)
+			this.data.requests = this.data.requests.filter(request => request.folder !== folder)
+
 			localStorage.setItem('config', JSON.stringify(this.data))
-			this.selectedFolder = null;
+
+			this.selectedFolder = null
 			this.isContextMenuFolderVisible = false
 		}
 	}

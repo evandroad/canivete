@@ -1,211 +1,214 @@
 {
   "urls": [
-    "http://super-api.atwebpages.com"
+    "http://super-api.atwebpages.com",
+    ""
+  ],
+  "folders": [
+    "Bank",
+    "Card",
+    "Bill",
+    "Salary",
+    "Generic"
   ],
   "requests": [
     {
-      "folder": "Bank",
-      "requests": [
-        {
-          "name": "bank",
-          "method": "GET",
-          "urn": "/bank/2024-01-17/Nubank/Evandro"
-        },
-        {
-          "name": "bank",
-          "method": "POST",
-          "urn": "/bank",
-          "body": {
-            "date": "2024-01-17",
-            "description": "Teste",
-            "value": "1,00",
-            "category": "Teste",
-            "holder": "Evandro",
-            "bank": "Nubank",
-            "person": "Casa"
-          }
-        },
-        {
-          "name": "bank",
-          "method": "PUT",
-          "urn": "/bank",
-          "body": {
-            "date": "2024-01-17",
-            "description": "Teste",
-            "value": "1,00",
-            "category": "Teste",
-            "holder": "Evandro",
-            "bank": "Nubank",
-            "person": "Casa",
-            "id": "10036"
-          }
-        },
-        {
-          "name": "bank",
-          "method": "DELETE",
-          "urn": "/bank/10036"
-        }
-      ]
+      "name": "bank",
+      "method": "GET",
+      "urn": "/bank/2024-01-17/Nubank/Evandro",
+      "folder": "Bank"
     },
     {
-      "folder": "Card",
-      "requests": [
-        {
-          "name": "card",
-          "method": "GET",
-          "urn": "/card/2024/1/Nubank/Evandro"
-        },
-        {
-          "name": "card",
-          "method": "POST",
-          "urn": "/card",
-          "body": {
-            "date": "2024-01-18",
-            "person": "Evandro",
-            "description": "Bazar",
-            "value": "1.00",
-            "installment": "1",
-            "holder": "Evandro",
-            "card": "Nubank",
-            "category": "Lazer"
-          }
-        },
-        {
-          "name": "card",
-          "method": "PUT",
-          "urn": "/card",
-          "body": {
-            "date": "2024-01-18",
-            "person": "Evandro",
-            "description": "Bazar",
-            "value": "10,00",
-            "installment": "1",
-            "holder": "Evandro",
-            "card": "Nubank",
-            "category": "Lazer",
-            "id": "2890"
-          }
-        },
-        {
-          "name": "card",
-          "method": "DELETE",
-          "urn": "/card/2890"
-        }
-      ]
+      "name": "bank",
+      "method": "POST",
+      "urn": "/bank",
+      "body": {
+        "date": "2024-01-17",
+        "description": "Teste",
+        "value": "1,00",
+        "category": "Teste",
+        "holder": "Evandro",
+        "bank": "Nubank",
+        "person": "Casa"
+      },
+      "folder": "Bank"
     },
     {
-      "folder": "Bill",
-      "requests": [
-        {
-          "name": "bill",
-          "method": "GET",
-          "urn": "/bill/2024/1"
-        },
-        {
-          "name": "bill",
-          "method": "POST",
-          "urn": "/bill",
-          "body": {
-            "year": "2024",
-            "month": "02",
-            "bill": "Luz",
-            "value": "80.00"
-          }
-        },
-        {
-          "name": "bill",
-          "method": "PUT",
-          "urn": "/bill",
-          "body": {
-            "year": "2024",
-            "month": "02",
-            "bill": "Luz",
-            "value": "90.00"
-          }
-        },
-        {
-          "name": "bill",
-          "method": "DELETE",
-          "urn": "/bill/2024/2/Luz"
-        }
-      ]
+      "name": "bank",
+      "method": "PUT",
+      "urn": "/bank",
+      "body": {
+        "date": "2024-01-17",
+        "description": "Teste",
+        "value": "1,00",
+        "category": "Teste",
+        "holder": "Evandro",
+        "bank": "Nubank",
+        "person": "Casa",
+        "id": "10036"
+      },
+      "folder": "Bank"
     },
     {
-      "folder": "Salary",
-      "requests": [
-        {
-          "name": "salary",
-          "method": "GET",
-          "urn": "/salary/2024/3"
-        },
-        {
-          "name": "salary",
-          "method": "POST",
-          "urn": "/salary",
-          "body": {
-            "date": "2024-03-15",
-            "lastMonth": "03",
-            "person": "Evandro",
-            "value": "1570"
-          }
-        },
-        {
-          "name": "salary",
-          "method": "PUT",
-          "urn": "/salary",
-          "body": {
-            "date": "2024-02-01",
-            "lastMonth": "02",
-            "person": "Evandro",
-            "value": "90.00"
-          }
-        },
-        {
-          "name": "salary",
-          "method": "DELETE",
-          "urn": "/salary/2024-03-18/3/Evandro"
-        }
-      ]
+      "name": "bank",
+      "method": "DELETE",
+      "urn": "/bank/10036",
+      "folder": "Bank"
     },
     {
-      "folder": "Expense",
-      "requests": [
-        {
-          "name": "expense",
-          "method": "GET",
-          "urn": "/expense/2024/3"
-        },
-        {
-          "name": "expense",
-          "method": "POST",
-          "urn": "/expense",
-          "body": {
-            "date": "2024-03-01",
-            "lastMonth": "3",
-            "description": "Alimentação",
-            "value": "400"
-          }
-        },
-        {
-          "name": "expense",
-          "method": "PUT",
-          "urn": "/expense",
-          "body": {
-            "date": "2024-03-15",
-            "lastMonth": "03",
-            "description": "Alimentação",
-            "value": "500",
-            "currentDate": "2024-03-15",
-            "currentDescription": "Alimentação",
-            "currentValue": "400"
-          }
-        },
-        {
-          "name": "expense",
-          "method": "DELETE",
-          "urn": "/expense/2024-03-01/10/Alimentação"
-        }
-      ]
+      "name": "card",
+      "method": "GET",
+      "urn": "/card/2024/1/Nubank/Evandro",
+      "folder": "Card"
+    },
+    {
+      "name": "card",
+      "method": "POST",
+      "urn": "/card",
+      "body": {
+        "date": "2024-01-18",
+        "person": "Evandro",
+        "description": "Bazar",
+        "value": "1.00",
+        "installment": "1",
+        "holder": "Evandro",
+        "card": "Nubank",
+        "category": "Lazer"
+      },
+      "folder": "Card"
+    },
+    {
+      "name": "card",
+      "method": "PUT",
+      "urn": "/card",
+      "body": {
+        "date": "2024-01-18",
+        "person": "Evandro",
+        "description": "Bazar",
+        "value": "10,00",
+        "installment": "1",
+        "holder": "Evandro",
+        "card": "Nubank",
+        "category": "Lazer",
+        "id": "2890"
+      },
+      "folder": "Card"
+    },
+    {
+      "name": "card",
+      "method": "DELETE",
+      "urn": "/card/2890",
+      "folder": "Card"
+    },
+    {
+      "name": "bill",
+      "method": "GET",
+      "urn": "/bill/2024/1",
+      "folder": "Bill"
+    },
+    {
+      "name": "bill",
+      "method": "POST",
+      "urn": "/bill",
+      "body": {
+        "year": "2024",
+        "month": "02",
+        "bill": "Luz",
+        "value": "80.00"
+      },
+      "folder": "Bill"
+    },
+    {
+      "name": "bill",
+      "method": "PUT",
+      "urn": "/bill",
+      "body": {
+        "year": "2024",
+        "month": "02",
+        "bill": "Luz",
+        "value": "90.00"
+      },
+      "folder": "Bill"
+    },
+    {
+      "name": "bill",
+      "method": "DELETE",
+      "urn": "/bill/2024/2/Luz",
+      "folder": "Bill"
+    },
+    {
+      "name": "salary",
+      "method": "GET",
+      "urn": "/salary/2024/3",
+      "folder": "Salary"
+    },
+    {
+      "name": "salary",
+      "method": "POST",
+      "urn": "/salary",
+      "body": {
+        "date": "2024-03-15",
+        "lastMonth": "03",
+        "person": "Evandro",
+        "value": "1570"
+      },
+      "folder": "Salary"
+    },
+    {
+      "name": "salary",
+      "method": "PUT",
+      "urn": "/salary",
+      "body": {
+        "date": "2024-02-01",
+        "lastMonth": "02",
+        "person": "Evandro",
+        "value": "90.00"
+      },
+      "folder": "Salary"
+    },
+    {
+      "name": "salary",
+      "method": "DELETE",
+      "urn": "/salary/2024-03-18/3/Evandro",
+      "folder": "Salary"
+    },
+    {
+      "name": "generic",
+      "method": "GET",
+      "urn": "/generic/2026",
+      "folder": "Generic"
+    },
+    {
+      "name": "expense",
+      "method": "POST",
+      "urn": "/expense",
+      "body": {
+        "date": "2024-03-01",
+        "lastMonth": "3",
+        "description": "Alimentação",
+        "value": "400"
+      },
+      "folder": "Generic"
+    },
+    {
+      "name": "expense",
+      "method": "PUT",
+      "urn": "/expense",
+      "body": {
+        "date": "2024-03-15",
+        "lastMonth": "03",
+        "description": "Alimentação",
+        "value": "500",
+        "currentDate": "2024-03-15",
+        "currentDescription": "Alimentação",
+        "currentValue": "400"
+      },
+      "folder": "Generic"
+    },
+    {
+      "name": "expense",
+      "method": "DELETE",
+      "urn": "/expense/2024-03-01/10/Alimentação",
+      "folder": "Generic"
     },
     {
       "name": "login",
@@ -214,16 +217,20 @@
       "body": {
         "login": "evandro",
         "password": "2e59ad9b10b197ae7683771908ab6efb"
-      }
+      },
+      "folder": ""
+    },
+    {
+      "name": "health",
+      "method": "GET",
+      "urn": "/health",
+      "folder": ""
     },
     {
       "name": "status",
       "method": "GET",
-      "urn": "/"
-    },
-    {
-      "folder": "Main",
-      "requests": []
+      "urn": "/",
+      "folder": ""
     }
   ]
 }

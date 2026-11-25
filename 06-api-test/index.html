@@ -49,6 +49,68 @@
 					</div>
 				</div>
 			</div>
+
+			<div x-show="showCreateFolder" x-cloak x-transition.opacity @keydown.escape.window="showCreateFolder = false" @click.self="showCreateFolder = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+				<div x-show="showCreateFolder" x-transition @click.stop class="w-full max-w-lg overflow-hidden rounded-xl bg-gray-800 shadow-2xl">
+					<!-- Header -->
+					<div class="flex items-center justify-between border-b border-gray-700 px-6 py-4">
+						<h2 class="text-sm font-semibold text-white">Criar Pasta</h2>
+						<button type="button" @click="showCreateFolder = false" class="text-3xl leading-none text-gray-400 transition hover:text-white">
+							&times;
+						</button>
+					</div>
+
+					<!-- Body -->
+					<div class="p-6">
+						<form @submit.prevent="newFolder">
+							<div class="mb-5">
+								<label for="folder" class="mb-2 block text-sm font-medium text-gray-300">Nome:</label>
+								<input type="text" x-model="folder" placeholder="Nome da Pasta" class="w-full rounded-lg border border-gray-500 bg-gray-800 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20">
+							</div>
+
+							<div class="flex justify-end gap-3">
+								<button type="button" @click="showCreateFolder = false" class="rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-600">
+									Cancelar
+								</button>
+								<button type="submit" @click="newFolder" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500">
+									Salvar
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div x-show="showInsertRequest" x-cloak x-transition.opacity @keydown.escape.window="showInsertRequest = false" @click.self="showInsertRequest = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+				<div x-show="showInsertRequest" x-transition @click.stop class="w-full max-w-lg overflow-hidden rounded-xl bg-gray-800 shadow-2xl">
+					<!-- Header -->
+					<div class="flex items-center justify-between border-b border-gray-700 px-6 py-4">
+						<h2 class="text-sm font-semibold text-white">Criar Requisição</h2>
+						<button type="button" @click="showInsertRequest = false" class="text-3xl leading-none text-gray-400 transition hover:text-white">
+							&times;
+						</button>
+					</div>
+
+					<!-- Body -->
+					<div class="p-6">
+						<form @submit.prevent="createRequest">
+							<div class="mb-5">
+								<label for="addName" class="mb-2 block text-sm font-medium text-gray-300">Nome:</label>
+								<input type="text" x-model="addName" placeholder="Nome da Requisição" class="w-full rounded-lg border border-gray-500 bg-gray-800 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20">
+							</div>
+
+							<div class="flex justify-end gap-3">
+								<button type="button" @click="showInsertRequest = false" class="rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-600">
+									Cancelar
+								</button>
+								<button type="submit" @click="createRequest" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500">
+									Salvar
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 	
 			<div class="modal fade" id="insertRequest" tabindex="-1" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered">
@@ -64,26 +126,6 @@
 									<input type="text" class="form-control" id="addName" autofocus x-model="addName">
 								</div>
 								<button type="button" data-bs-dismiss="modal" class="btn btn-primary mb-3" @click="createRequest">Salvar</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-	
-			<div class="modal fade" id="createFolder" tabindex="-1" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5">Nome da Pasta</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form>
-								<div class="mb-3">
-									<label for="folder" class="col-form-label">Nome:</label>
-									<input type="text" class="form-control" id="folder" autofocus x-model="folder">
-								</div>
-								<button type="button" data-bs-dismiss="modal" class="btn btn-primary mb-3" @click="newFolder">Salvar</button>
 							</form>
 						</div>
 					</div>
@@ -133,35 +175,49 @@
 				<div id="divEndpoints" class="col-sm-12">
 					<h2 style="display: flex; justify-content: space-between">
 						Endpoints
-						<button class="new-folder" data-bs-toggle="modal" data-bs-target="#createFolder">
-							<i style="color: #cacaca" class="fa-solid fa-folder-plus"></i>
+						<button type="button" @click="showCreateFolder = true" class="rounded-lg p-2 text-white transition">
+							<i class="fa-solid fa-folder-plus hover:text-gray-300"></i>
 						</button>
 					</h2>
 
-					<template x-for="(item, index) in data.requests" :key="index">
-						<div>
-							<template x-if="item.folder">
-								<details @contextmenu.prevent="showContextMenuFolder($event, item)">
-									<summary x-text="item.folder"></summary>
+					<template x-for="folder in data.folders" :key="folder">
+						<details @contextmenu.prevent="showContextMenuFolder($event, folder)">
+								<summary x-text="folder"></summary>
 
-									<template x-for="(request, itemIndex) in item.requests" :key="itemIndex">
+								<template
+										x-for="(request, index) in data.requests.filter(r => r.folder === folder)"
+										:key="index"
+								>
 										<div class="link">
-											<a class="ml" href="#" :style="isActive(request) ? linkFolder : {}" @click.prevent="handleItem(request)" @contextmenu.prevent.stop="showContextMenuRequest($event, request)" x-text="request.name"></a>
-											<span x-text="request.method"></span>
-										</div>
-									</template>
-								</details>
-							</template>
+												<a
+														class="ml"
+														href="#"
+														:style="isActive(request) ? linkFolder : {}"
+														@click.prevent="handleItem(request)"
+														@contextmenu.prevent.stop="showContextMenuRequest($event, request)"
+														x-text="request.name"
+												></a>
 
-							<template x-if="item.name">
-								<div class="link">
-									<a href="#" :style="isActive(item) ? link : {}" @click.prevent="handleItem(item)" @contextmenu.prevent="showContextMenuRequest($event, item)"
-									x-text="item.name"></a>
-									<span x-text="item.method"></span>
-								</div>
-							</template>
+												<span x-text="request.method"></span>
+										</div>
+								</template>
+						</details>
+				</template>
+
+				<!-- Requests que estão na raiz -->
+				<template x-for="(request, index) in data.requests.filter(r => !r.folder)" :key="index">
+						<div class="link">
+								<a
+										href="#"
+										:style="isActive(request) ? link : {}"
+										@click.prevent="handleItem(request)"
+										@contextmenu.prevent="showContextMenuRequest($event, request)"
+										x-text="request.name"
+								></a>
+
+								<span x-text="request.method"></span>
 						</div>
-					</template>
+				</template>
 				</div>
 			</div>
 	
