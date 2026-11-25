@@ -16,6 +16,7 @@ function data() {
 		folder: '',
 		activeLink: null,
 		isLoading: false,
+		showInsertUrl: false,
 		selectedRequest: null,
 		isContextMenuVisible: false,
 		isContextMenuFolderVisible: false,
@@ -138,20 +139,26 @@ function data() {
 			if (this.data.urls.length <= 0) {
 				this.addUrl = this.url
 			}
+			this.showInsertUrl = true
 		},
 		insertUrl() {
-			this.data.urls.push(this.addUrl)
+			if (!this.data.urls.includes(this.addUrl)) {
+				this.data.urls.push(this.addUrl)
+				return
+			}
 			this.url = this.addUrl
 			this.addUrl = ''
 			localStorage.setItem('config', JSON.stringify(this.data))
+			this.showInsertUrl = false
 		},
 		removeUrl() {
-			var indice = this.data.urls.indexOf(this.url)
+			const indice = this.data.urls.indexOf(this.url)
 			
 			if (indice !== -1) {
 				this.data.urls.splice(indice, 1)
 			}
-			
+	
+    	this.url = this.data.urls[0] || ''
 			localStorage.setItem('config', JSON.stringify(this.data))
 		},
 		handleFileSelect() {

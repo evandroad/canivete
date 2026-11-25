@@ -9,8 +9,7 @@
 	<link rel="stylesheet" href="../style.css">
 	<link rel="shortcut icon" type="image/x-png" href="dev.png"/>
 	<script src="https://kit.fontawesome.com/0416c4eefa.js" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 	<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 	<script src="script.js"></script>
 	<title>Test API</title>
@@ -20,22 +19,33 @@
 
 	<main>
 		<div id="app" class="row" x-data="data()">
-			<div class="modal fade" id="insertUrl" tabindex="-1" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5">Inserir URL</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form>
-								<div class="mb-3">
-									<label for="addUrl" class="col-form-label">URL:</label>
-									<input type="text" class="form-control" id="addUrl" x-model="addUrl">
-								</div>
-								<button type="button" data-bs-dismiss="modal" class="btn btn-primary mb-3" @click="insertUrl">Salvar</button>
-							</form>
-						</div>
+			<div x-show="showInsertUrl" x-cloak x-transition.opacity @keydown.escape.window="showInsertUrl = false" @click.self="showInsertUrl = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+				<div x-show="showInsertUrl" x-transition @click.stop class="w-full max-w-lg overflow-hidden rounded-xl bg-gray-800 shadow-2xl">
+					<!-- Header -->
+					<div class="flex items-center justify-between border-b border-gray-700 px-6 py-4">
+						<h2 class="text-sm font-semibold text-white">Inserir URL</h2>
+						<button type="button" @click="showInsertUrl = false" class="text-2xl leading-none text-gray-400 transition hover:text-white">
+							&times;
+						</button>
+					</div>
+
+					<!-- Body -->
+					<div class="p-6">
+						<form @submit.prevent="insertUrl">
+							<div class="mb-5">
+								<label for="addUrl" class="mb-2 block text-sm font-medium text-gray-300">URL:</label>
+								<input type="text" x-model="addUrl" placeholder="https://exemplo.com" class="w-full rounded-lg border border-gray-600 bg-gray-900 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20">
+							</div>
+
+							<div class="flex justify-end gap-3">
+								<button type="button" @click="showInsertUrl = false" class="rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-600">
+									Cancelar
+								</button>
+								<button type="submit" @click="insertUrl" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500">
+									Salvar
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -177,16 +187,15 @@
 							
 							<div class="col-md-7">
 								<label for="url">URL:</label>
-								<input type="text" class="form-control" x-model="url" x-show="data.urls.length <= 0">
-								<select class="form-select" x-model="url" x-show="data.urls.length > 0">
-									<template x-for="(url, index) in data.urls" :key="index">
-										<option :value="url" x-text="url"></option>
+								<select class="form-select" x-model="url">
+									<template x-for="(item, index) in data.urls" :key="index">
+										<option :value="item" x-text="item"></option>
 									</template>
 								</select>
 							</div>
 	
 							<div class="col-md-1 d-flex align-items-end justify-content-center">
-								<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#insertUrl" @click="openInsertUrl">
+								<button type="button" @click="openInsertUrl" class="rounded-lg bg-green-600 p-2 text-white transition hover:bg-green-500">
 									<svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
 										<path d="M64 80c-8.8 0-16 7.2-16 16V416c0 8.8 7.2 16 16 16H384c8.8 0 16-7.2 16-16V96c0-8.8-7.2-16-16-16H64zM0 96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM200 344V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H248v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/>
 									</svg>
