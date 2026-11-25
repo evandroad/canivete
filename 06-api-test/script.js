@@ -246,9 +246,17 @@ function data() {
 			$('#insertRequest').modal('show')
 		},
 		removeRequest() {
-			this.data.requests = this.data.requests.filter(objeto =>
-				objeto.name !== this.activeLink.name || objeto.method !== this.activeLink.method
-			)
+			this.data.requests = this.data.requests.filter(objeto => {
+				if (objeto.requests) {
+					objeto.requests = objeto.requests.filter(req =>
+						req.name !== this.activeLink.name ||
+						req.method !== this.activeLink.method
+					)
+
+					return true
+				}
+				return objeto.name !== this.activeLink.name || objeto.method !== this.activeLink.method
+			})
 			this.method = ''
 			this.endpoint = ''
 			this.body = ''
@@ -269,8 +277,10 @@ function data() {
 			this.isContextMenuVisible = false
 			document.addEventListener('click', this.closeContextMenuOutside)
 		},
-		showContextMenuFolder(event) {
+		showContextMenuFolder(event, folder) {
 			event.preventDefault()
+			this.selectedFolder = folder;
+			console.log('Pasta selecionada:', this.selectedFolder)
 			this.contextMenuPosition = { x: event.pageX, y: event.pageY }
 			this.isContextMenuFolderVisible = true
 			this.isContextMenuFoldersVisible = false
@@ -301,6 +311,28 @@ function data() {
 			const currentIndex = this.data.requests.indexOf(this.selectedRequest)
 			const newIndex = currentIndex + 1
 			this.moveRequestToPosition(newIndex)
+		},
+		moveFolderToPosition(newIndex) {
+			const currentIndex = this.data.requests.indexOf(this.selectedFolder)
+
+			if (currentIndex === -1 || newIndex < 0 || newIndex >= this.data.requests.length) {
+				return
+			}
+
+			const removedItem = this.data.requests.splice(currentIndex, 1)[0]
+			this.data.requests.splice(newIndex, 0, removedItem)
+			localStorage.setItem('config', JSON.stringify(this.data))
+		},
+		moveFolderUp() {
+			console.log(this.selectedFolder)
+			const currentIndex = this.data.requests.indexOf(this.selectedFolder)
+			this.moveFolderToPosition(currentIndex - 1)
+			this.isContextMenuFolderVisible = false
+		},
+		moveFolderDown() {
+			const currentIndex = this.data.requests.indexOf(this.selectedFolder)
+			this.moveFolderToPosition(currentIndex + 1)
+			this.isContextMenuFolderVisible = false
 		},
 		newFolder() {
 			this.data.requests.push({folder: this.folder, requests: []})

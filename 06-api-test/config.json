@@ -131,20 +131,6 @@
       ]
     },
     {
-      "name": "status",
-      "method": "GET",
-      "urn": "/"
-    },
-    {
-      "name": "login",
-      "method": "POST",
-      "urn": "/login",
-      "body": {
-        "login": "evandro",
-        "password": "2e59ad9b10b197ae7683771908ab6efb"
-      }
-    },
-    {
       "folder": "Salary",
       "requests": [
         {
@@ -222,24 +208,22 @@
       ]
     },
     {
+      "name": "login",
+      "method": "POST",
+      "urn": "/login",
+      "body": {
+        "login": "evandro",
+        "password": "2e59ad9b10b197ae7683771908ab6efb"
+      }
+    },
+    {
+      "name": "status",
+      "method": "GET",
+      "urn": "/"
+    },
+    {
       "folder": "Main",
-      "requests": [
-        {
-          "name": "main/cardWe",
-          "method": "GET",
-          "urn": "/main/cardWe/2024/1"
-        },
-        {
-          "name": "main/bank",
-          "method": "GET",
-          "urn": "/main/bank/2024/1"
-        },
-        {
-          "name": "main/card",
-          "method": "GET",
-          "urn": "/main/card/2024/1"
-        }
-      ]
+      "requests": []
     }
   ]
 }

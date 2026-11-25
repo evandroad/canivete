@@ -24,7 +24,7 @@
 					<!-- Header -->
 					<div class="flex items-center justify-between border-b border-gray-700 px-6 py-4">
 						<h2 class="text-sm font-semibold text-white">Inserir URL</h2>
-						<button type="button" @click="showInsertUrl = false" class="text-2xl leading-none text-gray-400 transition hover:text-white">
+						<button type="button" @click="showInsertUrl = false" class="text-3xl leading-none text-gray-400 transition hover:text-white">
 							&times;
 						</button>
 					</div>
@@ -34,7 +34,7 @@
 						<form @submit.prevent="insertUrl">
 							<div class="mb-5">
 								<label for="addUrl" class="mb-2 block text-sm font-medium text-gray-300">URL:</label>
-								<input type="text" x-model="addUrl" placeholder="https://exemplo.com" class="w-full rounded-lg border border-gray-600 bg-gray-900 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20">
+								<input type="text" x-model="addUrl" placeholder="https://exemplo.com" class="w-full rounded-lg border border-gray-500 bg-gray-800 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20">
 							</div>
 
 							<div class="flex justify-end gap-3">
@@ -92,7 +92,7 @@
 	
 			<div>
 				<template x-if="isContextMenuVisible">
-					<div class="context-menu" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}">
+					<div class="context-menu" @click.outside="isContextMenuVisible = false" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}">
 						<ul style="display: flex; flex-direction: row">
 							<li @click="moveRequestUp()"><i class="fa-solid fa-arrow-up"></i></li>
 							<li @click="moveRequestDown()"><i class="fa-solid fa-arrow-down"></i></li>
@@ -104,7 +104,7 @@
 	
 			<div>
 				<template x-if="isContextMenuFolderVisible">
-					<div class="context-menu" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}">
+					<div class="context-menu" @click.outside="isContextMenuFolderVisible = false" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}">
 						<ul style="display: flex; flex-direction: row">
 							<li @click="moveFolderUp()"><i class="fa-solid fa-arrow-up"></i></li>
 							<li @click="moveFolderDown()"><i class="fa-solid fa-arrow-down"></i></li>
@@ -135,26 +135,30 @@
 							<i style="color: #cacaca" class="fa-solid fa-folder-plus"></i>
 						</button>
 					</h2>
-					<template x-for="(request, index) in data.requests">
-						<template x-if="request.folder">
-							<details @contextmenu.prevent="showContextMenuFolder($event)">
-								<summary x-text="request.folder"></summary>
-								<template x-for="(request, index) in request.requests">
-									<div class="link">
-										<a class="ml" href="#" :style="isActive(request) ? linkFolder : {}" :key="index" @click.prevent="handleItem(request)" @contextmenu.prevent="showContextMenuRequest($event, request)" x-text="request.name"></a>
-										<span x-text="request.method"></span>
-									</div>
-								</template>
-							</details>
-						</template>
-					</template>
-					<template x-for="(request, index) in data.requests">
-						<template x-if="request.name">
-							<div class="link">
-								<a href="#" :style="isActive(request) ? link : {}" :key="index" @click.prevent="handleItem(request)" @contextmenu.prevent="showContextMenuRequest($event, request)" x-text="request.name"></a>
-								<span x-text="request.method"></span>
-							</div>
-						</template>
+
+					<template x-for="(item, index) in data.requests" :key="index">
+						<div>
+							<template x-if="item.folder">
+								<details @contextmenu.prevent="showContextMenuFolder($event, item)">
+									<summary x-text="item.folder"></summary>
+
+									<template x-for="(request, itemIndex) in item.requests" :key="itemIndex">
+										<div class="link">
+											<a class="ml" href="#" :style="isActive(request) ? linkFolder : {}" @click.prevent="handleItem(request)" @contextmenu.prevent="showContextMenuRequest($event, request)" x-text="request.name"></a>
+											<span x-text="request.method"></span>
+										</div>
+									</template>
+								</details>
+							</template>
+
+							<template x-if="item.name">
+								<div class="link">
+									<a href="#" :style="isActive(item) ? link : {}" @click.prevent="handleItem(item)" @contextmenu.prevent="showContextMenuRequest($event, item)"
+									x-text="item.name"></a>
+									<span x-text="item.method"></span>
+								</div>
+							</template>
+						</div>
 					</template>
 				</div>
 			</div>
