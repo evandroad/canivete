@@ -280,7 +280,6 @@ function data() {
 		showContextMenuFolder(event, folder) {
 			event.preventDefault()
 			this.selectedFolder = folder;
-			console.log('Pasta selecionada:', this.selectedFolder)
 			this.contextMenuPosition = { x: event.pageX, y: event.pageY }
 			this.isContextMenuFolderVisible = true
 			this.isContextMenuFoldersVisible = false
@@ -303,14 +302,15 @@ function data() {
 		},
 		moveRequestUp() {
 			const currentIndex = this.data.requests.indexOf(this.selectedRequest)
-			console.log(currentIndex)
 			const newIndex = currentIndex - 1
 			this.moveRequestToPosition(newIndex)
+			this.isContextMenuVisible = false
 		},
 		moveRequestDown() {
 			const currentIndex = this.data.requests.indexOf(this.selectedRequest)
 			const newIndex = currentIndex + 1
 			this.moveRequestToPosition(newIndex)
+			this.isContextMenuVisible = false
 		},
 		moveFolderToPosition(newIndex) {
 			const currentIndex = this.data.requests.indexOf(this.selectedFolder)
@@ -324,7 +324,6 @@ function data() {
 			localStorage.setItem('config', JSON.stringify(this.data))
 		},
 		moveFolderUp() {
-			console.log(this.selectedFolder)
 			const currentIndex = this.data.requests.indexOf(this.selectedFolder)
 			this.moveFolderToPosition(currentIndex - 1)
 			this.isContextMenuFolderVisible = false
@@ -347,6 +346,20 @@ function data() {
 				request.name !== this.selectedRequest.name || request.method !== this.selectedRequest.method
 			)
 			localStorage.setItem('config', JSON.stringify(this.data))
+		},
+		moveOutOfTheFolder() {
+			const folder = this.data.requests.find(item => item.requests && item.requests.includes(this.selectedRequest))
+			if (!folder) return
+			folder.requests = folder.requests.filter(request => request !== this.selectedRequest)
+			this.data.requests.push(this.selectedRequest)
+			localStorage.setItem('config', JSON.stringify(this.data))
+			this.isContextMenuVisible = false
+		},
+		deleteFolder() {
+			this.data.requests = this.data.requests.filter(folder => folder !== this.selectedFolder)
+			localStorage.setItem('config', JSON.stringify(this.data))
+			this.selectedFolder = null;
+			this.isContextMenuFolderVisible = false
 		}
 	}
 }

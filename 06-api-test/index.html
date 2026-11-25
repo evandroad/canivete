@@ -97,6 +97,7 @@
 							<li @click="moveRequestUp()"><i class="fa-solid fa-arrow-up"></i></li>
 							<li @click="moveRequestDown()"><i class="fa-solid fa-arrow-down"></i></li>
 							<li @click="showContextMenuFolders($event)"><i class="fa-solid fa-turn-up"></i></li>
+							<li @click="moveOutOfTheFolder()"><i class="fa-solid fa-turn-down"></i></li>
 						</ul>
 					</div>
 				</template>
@@ -108,6 +109,7 @@
 						<ul style="display: flex; flex-direction: row">
 							<li @click="moveFolderUp()"><i class="fa-solid fa-arrow-up"></i></li>
 							<li @click="moveFolderDown()"><i class="fa-solid fa-arrow-down"></i></li>
+							<li @click="deleteFolder()"><i class="fa-solid fa-trash"></i></li>
 						</ul>
 					</div>
 				</template>
@@ -115,7 +117,7 @@
 	
 			<div>
 				<template x-if="isContextMenuFoldersVisible">
-					<div  class="context-menu" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}">
+					<div  class="context-menu" @click.outside="isContextMenuFoldersVisible = false" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}">
 						<ul>
 							<template x-for="(request, index) in data.requests" :key="index">
 								<template x-if="request.folder">
@@ -144,7 +146,7 @@
 
 									<template x-for="(request, itemIndex) in item.requests" :key="itemIndex">
 										<div class="link">
-											<a class="ml" href="#" :style="isActive(request) ? linkFolder : {}" @click.prevent="handleItem(request)" @contextmenu.prevent="showContextMenuRequest($event, request)" x-text="request.name"></a>
+											<a class="ml" href="#" :style="isActive(request) ? linkFolder : {}" @click.prevent="handleItem(request)" @contextmenu.prevent.stop="showContextMenuRequest($event, request)" x-text="request.name"></a>
 											<span x-text="request.method"></span>
 										</div>
 									</template>
