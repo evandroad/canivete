@@ -23,7 +23,7 @@ function data() {
 		isContextMenuFoldersVisible: false,
 		contextMenuPosition: { x: 0, y: 0 },
 		link: {
-			backgroundColor: '#555',
+			backgroundColor: '#243544',
 			borderRadius: '5px',
 			marginLeft: '-5px',
 			paddingLeft: '5px',
@@ -31,9 +31,9 @@ function data() {
 			color: '#66b3ff'
 		},
 		linkFolder: {
-			backgroundColor: '#555',
+			backgroundColor: '#243544',
 			borderRadius: '5px',
-			marginLeft: '5px',
+			marginLeft: '8px',
 			paddingLeft: '5px',
 			paddingRight: '5px',
 			color: '#66b3ff'

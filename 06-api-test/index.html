@@ -16,12 +16,13 @@
 <body class="min-h-screen bg-[#111827]">
 	<main class="min-h-screen bg-[radial-gradient(ellipse_at_15%_0%,rgba(99,102,241,0.18),transparent_38rem)] bg-no-repeat flex flex-col items-center">
 		<h1 class="text-gray-300 text-4xl my-4">Test API</h1>
+
 		<div id="app" class="flex flex-row text-gray-300 grid grid-cols-[2fr_3fr_3fr] w-5/6 gap-2" x-data="data()">
 			<div x-show="showInsertUrl" x-cloak x-transition.opacity @keydown.escape.window="showInsertUrl = false" @click.self="showInsertUrl = false" class="fixed inset-0 z-50 flex items-center justify-center p-4">
 				<div x-show="showInsertUrl" x-transition @click.stop class="w-full max-w-lg overflow-hidden rounded-xl bg-gray-800 shadow-2xl">
 					<div class="flex items-center justify-between border-b border-gray-700 px-6 py-4">
 						<h2 class="text-sm font-semibold text-white">Inserir URL</h2>
-						<button type="button" @click="showInsertUrl = false" class="text-3xl leading-none text-gray-400 transition hover:text-white">
+						<button type="button" @click="showInsertUrl = false" class="text-3xl leading-none text-gray-400 transition hover:text-white cursor-pointer">
 							&times;
 						</button>
 					</div>
@@ -34,10 +35,10 @@
 							</div>
 
 							<div class="flex justify-end gap-3">
-								<button type="button" @click="showInsertUrl = false" class="rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-600">
+								<button type="button" @click="showInsertUrl = false" class="rounded-lg bg-gray-700/50 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-700 cursor-pointer">
 									Cancelar
 								</button>
-								<button type="submit" @click="insertUrl" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500">
+								<button type="submit" @click="insertUrl" class="rounded-lg bg-blue-600/50 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 cursor-pointer">
 									Salvar
 								</button>
 							</div>
@@ -143,109 +144,45 @@
 				</template>
 			</div>
 	
+			<!-- Endpoint -->
 			<div class="border border-gray-600/60 rounded-lg p-4 h-150">
 				<div class="flex items-center justify-between">
 					<h2 class="text-lg font-semibold">Endpoints</h2>
-					<button type="button" @click="showCreateFolder = true" class="rounded-lg p-2 text-white transition">
+					<button type="button" @click="showCreateFolder = true" class="rounded-lg p-2 text-white transition cursor-pointer">
 						<i class="fa-solid fa-folder-plus hover:text-gray-300"></i>
 					</button>
 				</div>
 
-				<template x-for="folder in data.folders" :key="folder">
-					<details @contextmenu.prevent="showContextMenuFolder($event, folder)">
-						<summary x-text="folder"></summary>
-
-						<template x-for="(request, index) in data.requests.filter(r => r.folder === folder)" :key="index">
-							<div class="link">
-								<a class="ml" href="#" :style="isActive(request) ? linkFolder : {}" @click.prevent="handleItem(request)" @contextmenu.prevent.stop="showContextMenuRequest($event, request)" x-text="request.name"></a>
-								<span x-text="request.method"></span>
-							</div>
-						</template>
-					</details>
-				</template>
-
-				<template x-for="(request, index) in data.requests.filter(r => !r.folder)" :key="index">
-					<div class="link">
-						<a href="#" :style="isActive(request) ? link : {}" @click.prevent="handleItem(request)" @contextmenu.prevent="showContextMenuRequest($event, request)"
-							x-text="request.name"></a>
-						<span x-text="request.method"></span>
-					</div>
-				</template>
+				<div class="flex flex-col gap-2">
+					<template x-for="folder in data.folders" :key="folder">
+						<details @contextmenu.prevent="showContextMenuFolder($event, folder)">
+							<summary x-text="folder"></summary>
+	
+							<template x-for="(request, index) in data.requests.filter(r => r.folder === folder)" :key="index">
+								<div>
+									<a class="ml-2" href="#" :style="isActive(request) ? linkFolder : {}" @click.prevent="handleItem(request)" @contextmenu.prevent.stop="showContextMenuRequest($event, request)" x-text="request.name"></a>
+									<span x-text="request.method"></span>
+								</div>
+							</template>
+						</details>
+					</template>
+	
+					<template x-for="(request, index) in data.requests.filter(r => !r.folder)" :key="index">
+						<div class="flex justify-between">
+							<a href="#" :style="isActive(request) ? link : {}" @click.prevent="handleItem(request)" @contextmenu.prevent="showContextMenuRequest($event, request)"
+								x-text="request.name"></a>
+							<span x-text="request.method" class="bg-gray-800 text-white px-2 py-0 rounded-full"></span>
+						</div>
+					</template>
+				</div>
 			</div>
 
-			<div class="border border-gray-600/60 rounded-lg p-4">
+			<!-- Request -->
+			<div class="border border-gray-600/60 rounded-lg p-4 w-full">
 				<h2 class="text-lg font-semibold my-1">Request</h2>
 				
-				<div class="flex flex-col justify-between items-center h-full">
-					<div class="flex flex-col gap-2">
-						<div class="grid grid-cols-[minmax(0,1fr)_100px] items-end gap-2">
-							<div>
-								<label for="formFile" class="mb-1 block text-sm font-medium text-gray-300">
-									Carregar de arquivo
-								</label>
-								<input type="file" id="formFile" @change="handleFileSelect" class="block w-full rounded-lg border border-gray-600 bg-gray-800 text-sm text-gray-300
-								file:mr-3 file:border-0 file:bg-gray-700 file:px-3 file:py-1 file:text-white hover:file:bg-gray-600 cursor-pointer">
-							</div>
-
-							<button type="button" @click="saveFile" class="rounded-lg px-4 py-1 text-white transition bg-blue-800/60 hover:bg-blue-900 cursor-pointer">
-								Salvar
-							</button>
-						</div>
-
-						<div class="grid grid-cols-[3fr_1fr] items-end gap-2">
-							<div>
-								<label class="mb-1 block text-sm font-medium text-gray-300">Nome:</label>
-								<input type="text" x-model="formRequest.name" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-1 text-white outline-none focus:border-blue-500">
-							</div>
-	
-							<div>
-								<label class="mb-1 block text-sm font-medium text-gray-300">Method:</label>
-								<select x-model="formRequest.method" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-2 py-1 text-white outline-none focus:border-blue-500">
-									<option value=""></option>
-									<option value="GET">GET</option>
-									<option value="POST">POST</option>
-									<option value="PUT">PUT</option>
-									<option value="DELETE">DELETE</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="grid grid-cols-[8fr_1fr_1fr] items-end gap-2">
-							<div>
-								<label class="mb-1 block text-sm font-medium text-gray-300">URL:</label>
-								<select x-model="url" class="w-full min-w-0 rounded-lg border border-gray-600 bg-gray-800 px-2 py-1 text-white outline-none focus:border-blue-500">
-									<template x-for="(item, index) in data.urls" :key="index">
-										<option :value="item" x-text="item"></option>
-									</template>
-								</select>
-							</div>
-
-							<button type="button" @click="openInsertUrl" title="Adicionar URL" class="flex h-8 items-center justify-center rounded-lg bg-green-600 text-white transition hover:bg-green-500">
-								<i class="fa-solid fa-plus"></i>
-							</button>
-
-							<button type="button" @click="removeUrl" title="Remover URL" class="flex h-8 items-center justify-center rounded-lg bg-red-600 text-white transition hover:bg-red-500">
-								<i class="fa-solid fa-trash"></i>
-							</button>
-						</div>
-
-						<div>
-							<label class="mb-1 block text-sm font-medium text-gray-300">Endpoint:</label>
-							<input type="text" x-model="formRequest.endpoint" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-1 text-white outline-none focus:border-blue-500">
-						</div>
-
-						<div>
-							<label class="mb-1 block text-sm font-medium text-gray-300">Token:</label>
-							<input type="text" x-model="formRequest.token" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-1 text-white outline-none focus:border-blue-500">
-						</div>
-
-						<div x-show="formRequest.method === 'POST' || formRequest.method === 'PUT'">
-							<label class="mb-1 block text-sm font-medium text-gray-300">Body:</label>
-							<textarea rows="6" x-model="formRequest.body" class="w-full resize-y rounded-lg border border-gray-600 bg-gray-800 px-3 py-2 font-mono text-sm text-white outline-none focus:border-blue-500"></textarea>
-						</div>
-					</div>
-					
-					<div class="">
+				<div class="flex flex-col justify-between items-center gap-1">
+					<div class="w-full flex justify-center items-center gap-1 my-2">
 						<button type="button" class="rounded-lg py-1 px-2 text-white transition bg-blue-800/60 hover:bg-blue-900 cursor-pointer" @click="makeRequest">
 							<template x-if="!isLoading">
 								<span>Enviar</span>
@@ -267,17 +204,83 @@
 							Remover
 						</button>
 					</div>
+
+					<div class="grid grid-cols-[minmax(0,1fr)_100px] items-end gap-2 w-full">
+						<div>
+							<label for="formFile" class="mb-1 block text-sm font-medium text-gray-300">
+								Carregar de arquivo
+							</label>
+							<input type="file" id="formFile" @change="handleFileSelect" class="block w-full rounded-lg border border-gray-600 bg-gray-800 text-sm text-gray-300
+							file:mr-3 file:border-0 file:bg-gray-700 file:px-3 file:py-1 file:text-white hover:file:bg-gray-600 cursor-pointer">
+						</div>
+
+						<button type="button" @click="saveFile" class="rounded-lg px-4 py-1 text-white transition bg-blue-800/60 hover:bg-blue-900 cursor-pointer">
+							Salvar
+						</button>
+					</div>
+
+					<div class="grid grid-cols-[3fr_1fr] items-end gap-2 w-full">
+						<div>
+							<label class="mb-1 block text-sm font-medium text-gray-300">Nome:</label>
+							<input type="text" x-model="formRequest.name" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-1 text-white outline-none focus:border-blue-500">
+						</div>
+
+						<div>
+							<label class="mb-1 block text-sm font-medium text-gray-300">Method:</label>
+							<select x-model="formRequest.method" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-2 py-1 text-white outline-none focus:border-blue-500">
+								<option value=""></option>
+								<option value="GET">GET</option>
+								<option value="POST">POST</option>
+								<option value="PUT">PUT</option>
+								<option value="DELETE">DELETE</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="grid grid-cols-[8fr_1fr_1fr] items-end gap-2 w-full">
+						<div>
+							<label class="mb-1 block text-sm font-medium text-gray-300">URL:</label>
+							<select x-model="url" class="w-full min-w-0 rounded-lg border border-gray-600 bg-gray-800 px-2 py-1 text-white outline-none focus:border-blue-500">
+								<template x-for="(item, index) in data.urls" :key="index">
+									<option :value="item" x-text="item"></option>
+								</template>
+							</select>
+						</div>
+
+						<button type="button" @click="openInsertUrl" title="Adicionar URL" class="flex h-8 items-center justify-center rounded-lg bg-green-600/50 text-white transition hover:bg-green-700 cursor-pointer">
+							<i class="fa-solid fa-plus"></i>
+						</button>
+
+						<button type="button" @click="removeUrl" title="Remover URL" class="flex h-8 items-center justify-center rounded-lg bg-red-600/50 text-white transition hover:bg-red-700 cursor-pointer">
+							<i class="fa-solid fa-trash"></i>
+						</button>
+					</div>
+
+					<div class="w-full">
+						<label class="mb-1 block text-sm font-medium text-gray-300">Endpoint:</label>
+						<input type="text" x-model="formRequest.endpoint" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-1 text-white outline-none focus:border-blue-500">
+					</div>
+
+					<div class="w-full">
+						<label class="mb-1 block text-sm font-medium text-gray-300">Token:</label>
+						<input type="text" x-model="token" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-1 text-white outline-none focus:border-blue-500">
+					</div>
+
+					<div x-show="formRequest.method === 'POST' || formRequest.method === 'PUT'" class="w-full">
+						<label class="mb-1 block text-sm font-medium text-gray-300">Body:</label>
+						<textarea rows="6" x-model="formRequest.body" class="w-full resize-y rounded-lg border border-gray-600 bg-gray-800 px-3 py-2 font-mono text-sm text-white outline-none focus:border-blue-500"></textarea>
+					</div>
 				</div>
 			</div>
 
-			<div class="border border-gray-600/60 rounded-lg p-4">
+			<div class="border border-gray-600/60 rounded-lg p-4 max-w-200 overflow-y-auto">
 				<div class="flex items-center justify-between">
 					<h2 class="text-lg font-semibold my-1">Response</h2>
 					<span x-show="status">Status: 
 						<span id="status" :style="{background: (status >= 200 && status <= 299) ? 'green' : 'red', borderRadius: '5px', margin: '5px', padding: '3px'}" x-text="status"></span>
 					</span>
 				</div>
-				<pre id="result" class="bg-gray-800 text-white font-mono text-sm rounded-lg p-2 m-2" x-text="result"></pre>
+				<pre id="result" class="bg-gray-800 text-white font-mono text-sm rounded-lg p-2 m-2 overflow-y-auto" x-text="result"></pre>
 			</div>
 		</div>
 	</main>
