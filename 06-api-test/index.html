@@ -27,21 +27,19 @@
 					</div>
 
 					<div class="p-6">
-						<form @submit.prevent="insertUrl">
-							<div class="mb-5">
-								<label for="addUrl" class="mb-2 block text-sm font-medium text-gray-300">URL:</label>
-								<input type="text" x-model="addUrl" placeholder="https://exemplo.com" class="w-full rounded-lg border border-gray-500 bg-gray-800 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20">
-							</div>
+						<div class="mb-5">
+							<label for="addUrl" class="mb-2 block text-sm font-medium text-gray-300">URL:</label>
+							<input type="text" x-model="addUrl" placeholder="https://exemplo.com" class="w-full rounded-lg border border-gray-500 bg-gray-800 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20">
+						</div>
 
-							<div class="flex justify-end gap-3">
-								<button type="button" @click="showInsertUrl = false" class="rounded-lg bg-gray-700/50 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-700 cursor-pointer">
-									Cancelar
-								</button>
-								<button type="submit" @click="insertUrl" class="rounded-lg bg-blue-600/50 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 cursor-pointer">
-									Salvar
-								</button>
-							</div>
-						</form>
+						<div class="flex justify-end gap-3">
+							<button type="button" @click="showInsertUrl = false" class="rounded-lg bg-gray-700/50 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-700 cursor-pointer">
+								Cancelar
+							</button>
+							<button type="submit" @click="insertUrl" class="rounded-lg bg-blue-600/50 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 cursor-pointer">
+								Salvar
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -56,50 +54,19 @@
 					</div>
 
 					<div class="p-6">
-						<form @submit.prevent="newFolder">
-							<div class="mb-5">
-								<label for="addFolder" class="mb-2 block text-sm font-medium text-gray-300">Nome:</label>
-								<input type="text" x-model="addFolder" placeholder="Nome da Pasta" class="w-full rounded-lg border border-gray-500 bg-gray-800 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20">
-							</div>
+						<div class="mb-5">
+							<label for="addFolder" class="mb-2 block text-sm font-medium text-gray-300">Nome:</label>
+							<input type="text" x-model="addFolder" placeholder="Nome da Pasta" class="w-full rounded-lg border border-gray-500 bg-gray-800 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20">
+						</div>
 
-							<div class="flex justify-end gap-3">
-								<button type="button" @click="showCreateFolder = false" class="rounded-lg bg-gray-700 px-4 py-1 text-sm font-medium text-gray-200 transition hover:bg-gray-600 cursor-pointer">
-									Cancelar
-								</button>
-								<button type="submit" @click="newFolder" class="rounded-lg bg-blue-600/50 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 cursor-pointer">
-									Salvar
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-
-			<div x-show="showInsertRequest" x-cloak x-transition.opacity @keydown.escape.window="showInsertRequest = false" @click.self="showInsertRequest = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-				<div x-show="showInsertRequest" x-transition @click.stop class="w-full max-w-lg overflow-hidden rounded-xl bg-gray-800 shadow-2xl">
-					<div class="flex items-center justify-between border-b border-gray-700 px-6 py-4">
-						<h2 class="text-sm font-semibold text-white">Criar Requisição</h2>
-						<button type="button" @click="showInsertRequest = false" class="text-3xl leading-none text-gray-400 transition hover:text-white cursor-pointer">
-							&times;
-						</button>
-					</div>
-
-					<div class="p-6">
-						<form @submit.prevent="createRequest">
-							<div class="mb-5">
-								<label for="addName" class="mb-2 block text-sm font-medium text-gray-300">Nome:</label>
-								<input type="text" x-model="addName" placeholder="Nome da Requisição" class="w-full rounded-lg border border-gray-500 bg-gray-800 px-4 py-2.5 text-white placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20">
-							</div>
-
-							<div class="flex justify-end gap-3">
-								<button type="button" @click="showInsertRequest = false" class="rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-600 cursor-pointer">
-									Cancelar
-								</button>
-								<button type="submit" @click="createRequest" class="rounded-lg bg-blue-600/50 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 cursor-pointer">
-									Salvar
-								</button>
-							</div>
-						</form>
+						<div class="flex justify-end gap-3">
+							<button type="button" @click="showCreateFolder = false" class="rounded-lg bg-gray-700 px-4 py-1 text-sm font-medium text-gray-200 transition hover:bg-gray-600 cursor-pointer">
+								Cancelar
+							</button>
+							<button type="submit" @click="newFolder" class="rounded-lg bg-blue-600/50 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 cursor-pointer">
+								Salvar
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -168,13 +135,13 @@
 
 				<div class="flex flex-col gap-2">
 					<template x-for="folder in data.folders" :key="folder">
-						<details @contextmenu.prevent="showContextMenuFolder($event, folder)">
-							<summary x-text="folder"></summary>
+						<details @contextmenu.prevent="showContextMenuFolder($event, folder)" class="group">
+							<summary x-text="folder" class="cursor-pointer transition-colors duration-150 hover:!text-gray-500"></summary>
 	
 							<template x-for="(request, index) in data.requests.filter(r => r.folder === folder)" :key="index">
-								<div>
-									<a class="ml-2" href="#" :style="isActive(request) ? linkFolder : {}" @click.prevent="handleItem(request)" @contextmenu.prevent.stop="showContextMenuRequest($event, request)" x-text="request.name"></a>
-									<span x-text="request.method"></span>
+								<div class="flex justify-between">
+									<a class="ml-2 cursor-pointer text-blue-500 hover:text-blue-300" href="#" :style="isActive(request) ? linkFolder : {}" @click.prevent="handleItem(request)" @contextmenu.prevent.stop="showContextMenuRequest($event, request)" x-text="request.name"></a>
+									<span x-text="request.method" class="bg-gray-800 text-white px-2 py-0 rounded-full"></span>
 								</div>
 							</template>
 						</details>
@@ -183,7 +150,7 @@
 					<template x-for="(request, index) in data.requests.filter(r => !r.folder)" :key="index">
 						<div class="flex justify-between">
 							<a href="#" :style="isActive(request) ? link : {}" @click.prevent="handleItem(request)" @contextmenu.prevent="showContextMenuRequest($event, request)"
-								x-text="request.name"></a>
+								x-text="request.name" class="cursor-pointer text-blue-500 hover:text-blue-300"></a>
 							<span x-text="request.method" class="bg-gray-800 text-white px-2 py-0 rounded-full"></span>
 						</div>
 					</template>
@@ -210,7 +177,7 @@
 						<button type="button" class="rounded-lg py-1 px-2 text-white transition bg-green-600/60 hover:bg-green-700 cursor-pointer" @click="saveRequest">
 							Salvar
 						</button>
-						<button type="button" class="rounded-lg py-1 px-2 text-white transition bg-green-600/60 hover:bg-green-700 cursor-pointer" @click="saveAsRequest" x-show="activeLink">
+						<button type="button" class="rounded-lg py-1 px-2 text-white transition bg-green-600/60 hover:bg-green-700 cursor-pointer" @click="createRequest" x-show="activeLink">
 							Salvar Como
 						</button>
 						<button type="button" class="rounded-lg py-1 px-2 text-white transition bg-red-600/60 hover:bg-red-700 cursor-pointer" @click="removeRequest" x-show="activeLink">
@@ -286,6 +253,7 @@
 				</div>
 			</div>
 
+			<!-- Response -->
 			<div class="border border-gray-600/60 rounded-lg p-4 max-w-200 overflow-y-auto">
 				<div class="flex items-center justify-between">
 					<h2 class="text-lg font-semibold my-1">Response</h2>
@@ -293,7 +261,7 @@
 						<span id="status" :style="{background: (status >= 200 && status <= 299) ? 'green' : 'red', borderRadius: '5px', margin: '5px', padding: '3px'}" x-text="status"></span>
 					</span>
 				</div>
-				<pre class="bg-gray-800 text-white font-mono text-sm rounded-lg p-2 m-2 max-h-[500px] overflow-y-auto overflow-x-auto whitespace-pre-wrap break-words" x-text="result"></pre>
+				<pre x-show="result.length > 0" class="bg-gray-800 text-white font-mono text-sm rounded-lg p-2 m-2 max-h-[500px] overflow-y-auto overflow-x-auto whitespace-pre-wrap break-words" x-text="result"></pre>
 			</div>
 		</div>
 	</main>

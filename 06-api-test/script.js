@@ -66,13 +66,13 @@ function data() {
 			return this.activeLink === item
 		},
 		makeRequest() {
-			if (this.formRequest.method == '') {
+			if (this.formRequest.method == undefined) {
 				alert('Escolha um método.')
 				return
 			}
 	
 			this.isLoading = true
-	
+
 			var options = {
 				method: this.formRequest.method,
 				headers: {
@@ -189,21 +189,26 @@ function data() {
 			})
 		},
 		saveRequest() {
+			if (!this.formRequest.name) {
+				alert('Por favor, preencha o nome da requisição.')
+				return
+			}
+
 			if (!this.activeLink) {
-				this.showInsertRequest = true
+				this.createRequest()
 				return
 			}
 		
 			const request = {
         ...this.activeLink,
-				name: this.name,
-        method: this.method,
-        endpoint: this.endpoint
+				name: this.formRequest.name,
+        method: this.formRequest.method,
+        endpoint: this.formRequest.endpoint
     	}
 		
-			if (this.method == 'POST' || this.method == 'PUT') {
+			if (this.formRequest.method == 'POST' || this.formRequest.method == 'PUT') {
 				try {
-					const requestBody = JSON.parse(this.body);
+					const requestBody = JSON.parse(this.formRequest.body);
 					request.body = typeof requestBody === 'object' && requestBody !== null ? requestBody : {}
 				} catch (error) {
 					request['body'] = {}
@@ -223,29 +228,36 @@ function data() {
 
 			if (found) {
 				this.activeLink = request
-				// localStorage.setItem('config', JSON.stringify(this.data))
 			} else {
 				console.log('Request não encontrado:', this.activeLink)
 			}
 		},
 		createRequest() {
+			if (!this.formRequest.name) {
+				alert('Por favor, preencha o nome da requisição.')
+				return
+			}
+
 			const request = {
 				...this.activeLink,
 				...this.request,
-				name: this.addName
+				id: crypto.randomUUID(),
+				name: this.formRequest.name,
+				method: this.formRequest.method || '',
+        endpoint: this.formRequest.endpoint,
+				folder: ''
 			}
 			console.log(request)
 	
-			if (this.method == 'POST' || this.method == 'PUT') {
-				request['body'] = JSON.parse(this.request.body)
+			if (this.formRequest.method == 'POST' || this.formRequest.method == 'PUT') {
+				request['body'] = JSON.parse(this.formRequest.body)
 			}
 
 			this.activeLink = request
 		
 			this.addName = ''
 			this.data.requests.push(request)
-			console.log(this.data.requests)
-			// localStorage.setItem('config', JSON.stringify(this.data))
+			localStorage.setItem('config', JSON.stringify(this.data))
 			this.showInsertRequest = false
 		},
 		saveAsRequest() {
@@ -254,12 +266,16 @@ function data() {
 		},
 		removeRequest() {
 			this.data.requests = this.data.requests.filter(objeto =>
-				objeto.name !== this.activeLink.name || objeto.method !== this.activeLink.method || objeto.folder !== this.activeLink.folder
+				objeto.name !== this.activeLink.name ||
+				objeto.method !== this.activeLink.method ||
+				objeto.folder !== this.activeLink.folder ||
+				objeto.endpoint !== this.activeLink.endpoint
 			)
 			this.method = ''
 			this.endpoint = ''
 			this.body = ''
 			this.activeLink = null
+			this.formRequest = {}
 			localStorage.setItem('config', JSON.stringify(this.data))
 		},
 		showContextMenuRequest(event, request) {

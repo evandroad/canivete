@@ -216,7 +216,7 @@
       "endpoint": "/login",
       "body": {
         "login": "evandro",
-        "password": "2e59ad9b10b197ae7683771908ab6efb"
+        "password": "senha"
       },
       "folder": ""
     },
