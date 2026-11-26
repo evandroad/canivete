@@ -14,13 +14,13 @@
     {
       "name": "bank",
       "method": "GET",
-      "urn": "/bank/2024-01-17/Nubank/Evandro",
+      "endpoint": "/bank/2024-01-17/Nubank/Evandro",
       "folder": "Bank"
     },
     {
       "name": "bank",
       "method": "POST",
-      "urn": "/bank",
+      "endpoint": "/bank",
       "body": {
         "date": "2024-01-17",
         "description": "Teste",
@@ -35,7 +35,7 @@
     {
       "name": "bank",
       "method": "PUT",
-      "urn": "/bank",
+      "endpoint": "/bank",
       "body": {
         "date": "2024-01-17",
         "description": "Teste",
@@ -51,19 +51,19 @@
     {
       "name": "bank",
       "method": "DELETE",
-      "urn": "/bank/10036",
+      "endpoint": "/bank/10036",
       "folder": "Bank"
     },
     {
       "name": "card",
       "method": "GET",
-      "urn": "/card/2024/1/Nubank/Evandro",
+      "endpoint": "/card/2024/1/Nubank/Evandro",
       "folder": "Card"
     },
     {
       "name": "card",
       "method": "POST",
-      "urn": "/card",
+      "endpoint": "/card",
       "body": {
         "date": "2024-01-18",
         "person": "Evandro",
@@ -79,7 +79,7 @@
     {
       "name": "card",
       "method": "PUT",
-      "urn": "/card",
+      "endpoint": "/card",
       "body": {
         "date": "2024-01-18",
         "person": "Evandro",
@@ -96,19 +96,19 @@
     {
       "name": "card",
       "method": "DELETE",
-      "urn": "/card/2890",
+      "endpoint": "/card/2890",
       "folder": "Card"
     },
     {
       "name": "bill",
       "method": "GET",
-      "urn": "/bill/2024/1",
+      "endpoint": "/bill/2024/1",
       "folder": "Bill"
     },
     {
       "name": "bill",
       "method": "POST",
-      "urn": "/bill",
+      "endpoint": "/bill",
       "body": {
         "year": "2024",
         "month": "02",
@@ -120,7 +120,7 @@
     {
       "name": "bill",
       "method": "PUT",
-      "urn": "/bill",
+      "endpoint": "/bill",
       "body": {
         "year": "2024",
         "month": "02",
@@ -132,19 +132,19 @@
     {
       "name": "bill",
       "method": "DELETE",
-      "urn": "/bill/2024/2/Luz",
+      "endpoint": "/bill/2024/2/Luz",
       "folder": "Bill"
     },
     {
       "name": "salary",
       "method": "GET",
-      "urn": "/salary/2024/3",
+      "endpoint": "/salary/2024/3",
       "folder": "Salary"
     },
     {
       "name": "salary",
       "method": "POST",
-      "urn": "/salary",
+      "endpoint": "/salary",
       "body": {
         "date": "2024-03-15",
         "lastMonth": "03",
@@ -156,7 +156,7 @@
     {
       "name": "salary",
       "method": "PUT",
-      "urn": "/salary",
+      "endpoint": "/salary",
       "body": {
         "date": "2024-02-01",
         "lastMonth": "02",
@@ -168,19 +168,19 @@
     {
       "name": "salary",
       "method": "DELETE",
-      "urn": "/salary/2024-03-18/3/Evandro",
+      "endpoint": "/salary/2024-03-18/3/Evandro",
       "folder": "Salary"
     },
     {
       "name": "generic",
       "method": "GET",
-      "urn": "/generic/2026",
+      "endpoint": "/generic/2026",
       "folder": "Generic"
     },
     {
-      "name": "expense",
+      "name": "generic",
       "method": "POST",
-      "urn": "/expense",
+      "endpoint": "/expense",
       "body": {
         "date": "2024-03-01",
         "lastMonth": "3",
@@ -190,9 +190,9 @@
       "folder": "Generic"
     },
     {
-      "name": "expense",
+      "name": "generic",
       "method": "PUT",
-      "urn": "/expense",
+      "endpoint": "/expense",
       "body": {
         "date": "2024-03-15",
         "lastMonth": "03",
@@ -205,15 +205,15 @@
       "folder": "Generic"
     },
     {
-      "name": "expense",
+      "name": "generic",
       "method": "DELETE",
-      "urn": "/expense/2024-03-01/10/Alimentação",
+      "endpoint": "/expense/2024-03-01/10/Alimentação",
       "folder": "Generic"
     },
     {
       "name": "login",
       "method": "POST",
-      "urn": "/login",
+      "endpoint": "/login",
       "body": {
         "login": "evandro",
         "password": "2e59ad9b10b197ae7683771908ab6efb"
@@ -223,13 +223,13 @@
     {
       "name": "health",
       "method": "GET",
-      "urn": "/health",
+      "endpoint": "/health",
       "folder": ""
     },
     {
       "name": "status",
       "method": "GET",
-      "urn": "/",
+      "endpoint": "/",
       "folder": ""
     }
   ]

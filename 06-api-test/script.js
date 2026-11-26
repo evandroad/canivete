@@ -4,16 +4,14 @@ function data() {
 			urls: [''],
 			requests: []
 		},
+		formRequest: {},
 		url: '',
-		method: '',
-		endpoint: '',
-		body: '',
 		token: '',
 		result: '',
 		status: '',
 		addUrl: '',
 		addName: '',
-		folder: '',
+		addFolder: '',
 		activeLink: null,
 		isLoading: false,
 		showInsertUrl: false,
@@ -50,19 +48,25 @@ function data() {
 	
 			this.url = this.data.urls[0]
 		},
-		handleItem(request) {
-			this.activeLink = request;
-			this.method = request.method
-			this.endpoint = request.urn
-			this.body = JSON.stringify(request.body, null, 2)
-			this.result = ''
-			this.status = ''
+		handleItem(item) {
+			this.activeLink = item;
+
+			this.formRequest = {
+				name: item.name || '',
+				method: item.method || '',
+				endpoint: item.endpoint || '',
+				body: item.body ? JSON.stringify(item.body, null, 2) : '',
+				folder: item.folder || ''
+			};
+
+			this.result = '';
+			this.status = '';
 		},
-		isActive(request) {
-			return this.activeLink === request;
+		isActive(item) {
+			return this.activeLink === item
 		},
 		makeRequest() {
-			if (this.method == '') {
+			if (this.formRequest.method == '') {
 				alert('Escolha um método.')
 				return
 			}
@@ -70,7 +74,7 @@ function data() {
 			this.isLoading = true
 	
 			var options = {
-				method: this.method,
+				method: this.formRequest.method,
 				headers: {
 					'Content-Type': 'application/json'
 				}
@@ -80,11 +84,11 @@ function data() {
 				options.headers.Authorization = this.token
 			}
 	
-			if (this.method === 'POST' || this.method === 'PUT') {
-				options.body = this.body
+			if (this.formRequest.method === 'POST' || this.formRequest.method === 'PUT') {
+				options.body = this.formRequest.body
 			}
 		
-			fetch(this.url + this.endpoint, options)
+			fetch(this.url + this.formRequest.endpoint, options)
 				.then(response => {
 					this.status = response.status
 
@@ -114,9 +118,7 @@ function data() {
 	
 		},
 		clearFields() {
-			this.method = ''
-			this.endpoint = ''
-			this.body = ''
+			this.formRequest = {}
 			this.token = ''
 			this.result = ''
 			this.status = ''
@@ -194,8 +196,9 @@ function data() {
 		
 			const request = {
         ...this.activeLink,
+				name: this.name,
         method: this.method,
-        urn: this.endpoint
+        endpoint: this.endpoint
     	}
 		
 			if (this.method == 'POST' || this.method == 'PUT') {
@@ -205,23 +208,9 @@ function data() {
 				} catch (error) {
 					request['body'] = {}
 				}
-			} else {
-        delete request.body
-    	}
+			}
 
 			let found = false
-
-			for (const item of this.data.requests) {
-				if (!item.requests) continue
-
-				const index = item.requests.findIndex(r => r === this.activeLink)
-
-				if (index !== -1) {
-					item.requests.splice(index, 1, request)
-					found = true
-					break
-				}
-			}
 
 			if (!found) {
 				const index = this.data.requests.findIndex(r => r === this.activeLink)
@@ -234,33 +223,29 @@ function data() {
 
 			if (found) {
 				this.activeLink = request
-				localStorage.setItem('config', JSON.stringify(this.data))
+				// localStorage.setItem('config', JSON.stringify(this.data))
 			} else {
 				console.log('Request não encontrado:', this.activeLink)
 			}
 		},
 		createRequest() {
-			const index = this.data.requests.findIndex(objeto => objeto.name === this.addName && objeto.method === this.method)
-			
-			if (index !== -1) {
-				this.data.endpoints.splice(index, 1)
+			const request = {
+				...this.activeLink,
+				...this.request,
+				name: this.addName
 			}
-			
-			var request = {
-				name: this.addName,
-				method: this.method,
-				urn: this.endpoint
-			}
+			console.log(request)
 	
-			this.activeLink = request
-		
 			if (this.method == 'POST' || this.method == 'PUT') {
-				request['body'] = JSON.parse(this.body)
+				request['body'] = JSON.parse(this.request.body)
 			}
+
+			this.activeLink = request
 		
 			this.addName = ''
 			this.data.requests.push(request)
-			localStorage.setItem('config', JSON.stringify(this.data))
+			console.log(this.data.requests)
+			// localStorage.setItem('config', JSON.stringify(this.data))
 			this.showInsertRequest = false
 		},
 		saveAsRequest() {
@@ -348,8 +333,8 @@ function data() {
 			this.isContextMenuFolderVisible = false
 		},
 		newFolder() {
-			this.data.requests.push({folder: this.folder, requests: []})
-			this.folder = ''
+			this.data.folders.push(this.addFolder)
+			this.addFolder = ''
 			localStorage.setItem('config', JSON.stringify(this.data))
 			this.showCreateFolder = false
 		},
