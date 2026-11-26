@@ -139,6 +139,7 @@ function data() {
 				this.addUrl = this.url
 			}
 			this.showInsertUrl = true
+			this.$nextTick(() => this.$refs.urlInput.focus())
 		},
 		insertUrl() {
 			if (this.data.urls.includes(this.addUrl)) {
