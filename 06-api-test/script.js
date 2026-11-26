@@ -141,13 +141,16 @@ function data() {
 			this.showInsertUrl = true
 		},
 		insertUrl() {
-			if (!this.data.urls.includes(this.addUrl)) {
+			console.log(this.addUrl)
+			if (this.data.urls.includes(this.addUrl)) {
+				this.showNotification('URL já adicionada.', 'error')
+			} else {
 				this.data.urls.push(this.addUrl)
-				return
+				this.url = this.addUrl
+				this.addUrl = ''
+				localStorage.setItem('config', JSON.stringify(this.data))
 			}
-			this.url = this.addUrl
-			this.addUrl = ''
-			localStorage.setItem('config', JSON.stringify(this.data))
+
 			this.showInsertUrl = false
 		},
 		removeUrl() {
