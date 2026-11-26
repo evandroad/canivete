@@ -199,24 +199,6 @@
 						</button>
 					</div>
 
-					<div class="grid grid-cols-[3fr_1fr] items-end gap-2 w-full">
-						<div>
-							<label class="mb-1 block text-sm font-medium text-gray-300">Nome:</label>
-							<input type="text" x-model="formRequest.name" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-1 text-white outline-none focus:border-blue-500">
-						</div>
-
-						<div>
-							<label class="mb-1 block text-sm font-medium text-gray-300">Method:</label>
-							<select x-model="formRequest.method" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-2 py-1 text-white outline-none focus:border-blue-500">
-								<option value=""></option>
-								<option value="GET">GET</option>
-								<option value="POST">POST</option>
-								<option value="PUT">PUT</option>
-								<option value="DELETE">DELETE</option>
-							</select>
-						</div>
-					</div>
-
 					<div class="grid grid-cols-[8fr_1fr_1fr] items-end gap-2 w-full">
 						<div>
 							<label class="mb-1 block text-sm font-medium text-gray-300">URL:</label>
@@ -234,6 +216,24 @@
 						<button type="button" @click="removeUrl" title="Remover URL" class="flex h-8 items-center justify-center rounded-lg bg-red-600/50 text-white transition hover:bg-red-700 cursor-pointer">
 							<i class="fa-solid fa-trash"></i>
 						</button>
+					</div>
+
+					<div class="grid grid-cols-[1fr_3fr] items-end gap-2 w-full">
+						<div>
+							<label class="mb-1 block text-sm font-medium text-gray-300">Method:</label>
+							<select x-model="formRequest.method" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-2 py-1 text-white outline-none focus:border-blue-500">
+								<option value=""></option>
+								<option value="GET">GET</option>
+								<option value="POST">POST</option>
+								<option value="PUT">PUT</option>
+								<option value="DELETE">DELETE</option>
+							</select>
+						</div>
+
+						<div>
+							<label class="mb-1 block text-sm font-medium text-gray-300">Nome:</label>
+							<input type="text" x-model="formRequest.name" class="w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-1 text-white outline-none focus:border-blue-500">
+						</div>
 					</div>
 
 					<div class="w-full">
