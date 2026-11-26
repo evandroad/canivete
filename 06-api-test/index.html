@@ -4,7 +4,6 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="style.css">
 	<link rel="shortcut icon" type="image/x-png" href="dev.png"/>
 	<script src="https://kit.fontawesome.com/0416c4eefa.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -18,7 +17,7 @@
 		<h1 class="text-gray-300 text-4xl my-4">Test API</h1>
 
 		<div id="app" class="flex flex-row text-gray-300 grid grid-cols-[2fr_3fr_3fr] w-5/6 gap-2" x-data="data()">
-			<div x-show="showInsertUrl" x-cloak x-transition.opacity @keydown.escape.window="showInsertUrl = false" @click.self="showInsertUrl = false" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+			<div x-show="showInsertUrl" x-cloak x-transition.opacity @keydown.escape.window="showInsertUrl = false" @click.self="showInsertUrl = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
 				<div x-show="showInsertUrl" x-transition @click.stop class="w-full max-w-lg overflow-hidden rounded-xl bg-gray-800 shadow-2xl">
 					<div class="flex items-center justify-between border-b border-gray-700 px-6 py-4">
 						<h2 class="text-sm font-semibold text-white">Inserir URL</h2>
@@ -51,7 +50,7 @@
 				<div x-show="showCreateFolder" x-transition @click.stop class="w-full max-w-lg overflow-hidden rounded-xl bg-gray-800 shadow-2xl">
 					<div class="flex items-center justify-between border-b border-gray-700 px-6 py-4">
 						<h2 class="text-sm font-semibold text-white">Criar Pasta</h2>
-						<button type="button" @click="showCreateFolder = false" class="text-3xl leading-none text-gray-400 transition hover:text-white">
+						<button type="button" @click="showCreateFolder = false" class="text-3xl leading-none text-gray-400 transition hover:text-white cursor-pointer">
 							&times;
 						</button>
 					</div>
@@ -64,10 +63,10 @@
 							</div>
 
 							<div class="flex justify-end gap-3">
-								<button type="button" @click="showCreateFolder = false" class="rounded-lg bg-gray-700 px-4 py-1 text-sm font-medium text-gray-200 transition hover:bg-gray-600">
+								<button type="button" @click="showCreateFolder = false" class="rounded-lg bg-gray-700 px-4 py-1 text-sm font-medium text-gray-200 transition hover:bg-gray-600 cursor-pointer">
 									Cancelar
 								</button>
-								<button type="submit" @click="newFolder" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500">
+								<button type="submit" @click="newFolder" class="rounded-lg bg-blue-600/50 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 cursor-pointer">
 									Salvar
 								</button>
 							</div>
@@ -80,7 +79,7 @@
 				<div x-show="showInsertRequest" x-transition @click.stop class="w-full max-w-lg overflow-hidden rounded-xl bg-gray-800 shadow-2xl">
 					<div class="flex items-center justify-between border-b border-gray-700 px-6 py-4">
 						<h2 class="text-sm font-semibold text-white">Criar Requisição</h2>
-						<button type="button" @click="showInsertRequest = false" class="text-3xl leading-none text-gray-400 transition hover:text-white">
+						<button type="button" @click="showInsertRequest = false" class="text-3xl leading-none text-gray-400 transition hover:text-white cursor-pointer">
 							&times;
 						</button>
 					</div>
@@ -93,10 +92,10 @@
 							</div>
 
 							<div class="flex justify-end gap-3">
-								<button type="button" @click="showInsertRequest = false" class="rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-600">
+								<button type="button" @click="showInsertRequest = false" class="rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-200 transition hover:bg-gray-600 cursor-pointer">
 									Cancelar
 								</button>
-								<button type="submit" @click="createRequest" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500">
+								<button type="submit" @click="createRequest" class="rounded-lg bg-blue-600/50 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 cursor-pointer">
 									Salvar
 								</button>
 							</div>
@@ -107,12 +106,20 @@
 	
 			<div>
 				<template x-if="isContextMenuVisible">
-					<div class="context-menu" @click.outside="isContextMenuVisible = false" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}">
-						<ul style="display: flex; flex-direction: row">
-							<li @click="moveRequestUp()"><i class="fa-solid fa-arrow-up"></i></li>
-							<li @click="moveRequestDown()"><i class="fa-solid fa-arrow-down"></i></li>
-							<li @click="showContextMenuFolders($event)"><i class="fa-solid fa-turn-up"></i></li>
-							<li @click="moveOutOfTheFolder()"><i class="fa-solid fa-turn-down"></i></li>
+					<div @click.outside="isContextMenuVisible = false" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}" class="fixed z-[1000] rounded border border-[#4b4b4b] bg-[#292929] shadow-[0_2px_4px_#0000001a]">
+						<ul class="m-0 flex list-none flex-row p-0">
+              <li @click="moveRequestUp()" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]" title="Mover para cima">
+								<i class="fa-solid fa-arrow-up"></i>
+							</li>
+							<li @click="moveRequestDown()" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]" title="Mover para baixo">
+								<i class="fa-solid fa-arrow-down"></i>
+							</li>
+							<li @click="showContextMenuFolders($event)" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]" title="Mover para pasta">
+								<i class="fa-solid fa-turn-up"></i>
+							</li>
+							<li @click="moveOutOfTheFolder()" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]" title="Sair da pasta">
+								<i class="fa-solid fa-turn-down"></i>
+							</li>
 						</ul>
 					</div>
 				</template>
@@ -120,11 +127,17 @@
 	
 			<div>
 				<template x-if="isContextMenuFolderVisible">
-					<div class="context-menu" @click.outside="isContextMenuFolderVisible = false" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}">
-						<ul style="display: flex; flex-direction: row">
-							<li @click="moveFolderUp()"><i class="fa-solid fa-arrow-up"></i></li>
-							<li @click="moveFolderDown()"><i class="fa-solid fa-arrow-down"></i></li>
-							<li @click="deleteFolder()"><i class="fa-solid fa-trash"></i></li>
+					<div @click.outside="isContextMenuFolderVisible = false" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}" class="fixed z-[1000] rounded border border-[#4b4b4b] bg-[#292929] shadow-[0_2px_4px_#0000001a]">
+						<ul class="m-0 flex list-none flex-row p-0">
+							<li @click="moveFolderUp()" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]" title="Mover para cima">
+								<i class="fa-solid fa-arrow-up"></i>
+							</li>
+							<li @click="moveFolderDown()" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]" title="Mover para baixo">
+								<i class="fa-solid fa-arrow-down"></i>
+							</li>
+							<li @click="deleteFolder()" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]" title="Excluir pasta">
+								<i class="fa-solid fa-trash"></i>
+							</li>
 						</ul>
 					</div>
 				</template>
@@ -132,11 +145,11 @@
 	
 			<div>
 				<template x-if="isContextMenuFoldersVisible">
-					<div  class="context-menu" @click.outside="isContextMenuFoldersVisible = false" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}">
-						<ul>
-							<template x-for="(request, index) in data.requests" :key="index">
-								<template x-if="request.folder">
-									<li @click="moveRequest(request.folder)" x-text="request.folder"></li>
+					<div @click.outside="isContextMenuFoldersVisible = false" :style="{top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px'}" class="fixed z-[1000] rounded border border-[#4b4b4b] bg-[#292929] shadow-[0_2px_4px_#0000001a]">
+						<ul class="m-0 max-h-60 min-w-40 list-none overflow-y-auto p-0">
+							<template x-for="(folder, index) in data.folders" :key="index">
+								<template x-if="folder">
+									<li @click="moveRequest(request.folder)" x-text="folder" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]"></li>
 								</template>
 							</template>
 						</ul>
@@ -188,7 +201,7 @@
 								<span>Enviar</span>
 							</template>
 							<template x-if="isLoading">
-								<div id="loader"></div>
+									<div class="h-6 w-6 animate-spin rounded-full border-4 border-[#e5e5e5] border-t-[#51d4db]"></div>
 							</template>
 						</button>
 						<button type="button" class="rounded-lg py-1 px-2 text-white transition bg-gray-600/60 hover:bg-gray-500/60 cursor-pointer" @click="clearFields">
@@ -280,7 +293,7 @@
 						<span id="status" :style="{background: (status >= 200 && status <= 299) ? 'green' : 'red', borderRadius: '5px', margin: '5px', padding: '3px'}" x-text="status"></span>
 					</span>
 				</div>
-				<pre id="result" class="bg-gray-800 text-white font-mono text-sm rounded-lg p-2 m-2 overflow-y-auto" x-text="result"></pre>
+				<pre class="bg-gray-800 text-white font-mono text-sm rounded-lg p-2 m-2 max-h-[500px] overflow-y-auto overflow-x-auto whitespace-pre-wrap break-words" x-text="result"></pre>
 			</div>
 		</div>
 	</main>
