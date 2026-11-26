@@ -116,7 +116,7 @@
 						<ul class="m-0 max-h-60 min-w-40 list-none overflow-y-auto p-0">
 							<template x-for="(folder, index) in data.folders" :key="index">
 								<template x-if="folder">
-									<li @click="moveRequest(request.folder)" x-text="folder" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]"></li>
+									<li @click="moveRequest(folder)" x-text="folder" class="cursor-pointer px-3 py-2 hover:bg-[#1a1a1a]"></li>
 								</template>
 							</template>
 						</ul>

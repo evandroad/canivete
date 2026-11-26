@@ -56,14 +56,14 @@
       "id": "2e37712e-f729-44f6-96d4-c7a4aad2958a"
     },
     {
-      "name": "generic",
+      "name": "getAll",
       "method": "GET",
       "endpoint": "/generic/2026",
       "folder": "Generic",
       "id": "833c09de-197a-4c76-98b4-d3ab263de873"
     },
     {
-      "name": "generic",
+      "name": "insert",
       "method": "POST",
       "endpoint": "/expense",
       "body": {
@@ -76,7 +76,7 @@
       "id": "58c78643-db23-4baf-9ae4-92e4e0645d58"
     },
     {
-      "name": "generic",
+      "name": "update",
       "method": "PUT",
       "endpoint": "/expense",
       "body": {
@@ -92,7 +92,7 @@
       "id": "e902456b-aa5b-49c8-878c-12a871ec8205"
     },
     {
-      "name": "generic",
+      "name": "remove",
       "method": "DELETE",
       "endpoint": "/expense/2024-03-01/10/Alimentação",
       "folder": "Generic",
@@ -110,18 +110,18 @@
       "id": "f6b60d00-9430-49e4-9e75-ec235f0266d7"
     },
     {
-      "name": "health",
-      "method": "GET",
-      "endpoint": "/health",
-      "folder": "",
-      "id": "6cf8816c-2c1b-4ffb-84c9-26d44b688edd"
-    },
-    {
       "name": "status",
       "method": "GET",
       "endpoint": "/",
       "folder": "",
       "id": "a2adeb25-7364-4da1-9a33-fd7638bec5a0"
+    },
+    {
+      "name": "health",
+      "method": "GET",
+      "endpoint": "/health",
+      "folder": "",
+      "id": "6cf8816c-2c1b-4ffb-84c9-26d44b688edd"
     }
   ]
 }

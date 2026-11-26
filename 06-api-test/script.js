@@ -10,7 +10,6 @@ function data() {
 		result: '',
 		status: '',
 		addUrl: '',
-		addName: '',
 		addFolder: '',
 		activeLink: null,
 		isLoading: false,
@@ -130,12 +129,9 @@ function data() {
 			var element = document.createElement('a')
 			element.setAttribute('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(text))
 			element.setAttribute('download', filename)
-		
 			element.style.display = 'none'
 			document.body.appendChild(element)
-		
 			element.click()
-		
 			document.body.removeChild(element)
 		},
 		openInsertUrl() {
@@ -216,7 +212,7 @@ function data() {
 				}
 			}
 
-			const index = this.data.requests.findIndex(r => r === this.activeLink)
+			const index = this.data.requests.findIndex(r => r.id === this.activeLink.id)
 
 			if (index !== -1) {
 				this.data.requests.splice(index, 1, request)
@@ -250,17 +246,11 @@ function data() {
 
 			this.activeLink = request
 		
-			this.addName = ''
 			this.data.requests.push(request)
 			localStorage.setItem('config', JSON.stringify(this.data))
 		},
 		removeRequest() {
-			this.data.requests = this.data.requests.filter(objeto =>
-				objeto.name !== this.activeLink.name ||
-				objeto.method !== this.activeLink.method ||
-				objeto.folder !== this.activeLink.folder ||
-				objeto.endpoint !== this.activeLink.endpoint
-			)
+			this.data.requests = this.data.requests.filter(objeto => objeto.id !== this.activeLink.id)
 			this.method = ''
 			this.endpoint = ''
 			this.body = ''
@@ -299,44 +289,60 @@ function data() {
 				document.removeEventListener('click', this.closeContextMenuOutside)
 			}
 		},
-		moveRequestToPosition(newIndex) {
-			const currentIndex = this.data.requests.indexOf(this.selectedRequest)
-			const removedItem = this.data.requests.splice(currentIndex, 1)[0]
-			this.data.requests.splice(newIndex, 0, removedItem)
+		moveRequestToPosition(action) {
+			const requests = this.data.requests
+			const currentIndex = requests.indexOf(this.selectedRequest)
+
+			if (currentIndex === -1) return
+
+			const currentFolder = this.selectedRequest.folder || ''
+			const folderRequests = requests.filter(req => (req.folder || '') === currentFolder)
+			const folderIndex = folderRequests.indexOf(this.selectedRequest)
+			const newFolderIndex = action === 'up' ? folderIndex - 1 : folderIndex + 1
+
+			if (newFolderIndex < 0 || newFolderIndex >= folderRequests.length) return
+
+			const targetRequest = folderRequests[newFolderIndex]
+			const targetIndex = requests.indexOf(targetRequest)
+
+			const temp = requests[currentIndex]
+			requests[currentIndex] = requests[targetIndex]
+			requests[targetIndex] = temp
+
 			localStorage.setItem('config', JSON.stringify(this.data))
+			this.isContextMenuVisible = false
 		},
 		moveRequestUp() {
-			const currentIndex = this.data.requests.indexOf(this.selectedRequest)
-			const newIndex = currentIndex - 1
-			this.moveRequestToPosition(newIndex)
-			this.isContextMenuVisible = false
+			this.moveRequestToPosition('up')
 		},
 		moveRequestDown() {
-			const currentIndex = this.data.requests.indexOf(this.selectedRequest)
-			const newIndex = currentIndex + 1
-			this.moveRequestToPosition(newIndex)
-			this.isContextMenuVisible = false
+			this.moveRequestToPosition('down')
 		},
-		moveFolderToPosition(newIndex) {
-			const currentIndex = this.data.requests.indexOf(this.selectedFolder)
+		moveFolderToPosition(action) {
+			const folders = this.data.folders
 
-			if (currentIndex === -1 || newIndex < 0 || newIndex >= this.data.requests.length) {
-				return
-			}
+			const currentIndex = folders.indexOf(this.selectedFolder)
+			const newIndex = action === 'up' ? currentIndex - 1 : currentIndex + 1
 
-			const removedItem = this.data.requests.splice(currentIndex, 1)[0]
-			this.data.requests.splice(newIndex, 0, removedItem)
+			if (currentIndex === -1 || newIndex < 0 || newIndex >= folders.length) return
+
+			const [folder] = folders.splice(currentIndex, 1)
+			folders.splice(newIndex, 0, folder)
+
+			this.data.requests.sort((a, b) => {
+				const indexA = folders.indexOf(a.folder)
+				const indexB = folders.indexOf(b.folder)
+				return (indexA === -1 ? folders.length : indexA) - (indexB === -1 ? folders.length : indexB)
+			})
+
 			localStorage.setItem('config', JSON.stringify(this.data))
+			this.isContextMenuFolderVisible = false
 		},
 		moveFolderUp() {
-			const currentIndex = this.data.requests.indexOf(this.selectedFolder)
-			this.moveFolderToPosition(currentIndex - 1)
-			this.isContextMenuFolderVisible = false
+			this.moveFolderToPosition('up')
 		},
 		moveFolderDown() {
-			const currentIndex = this.data.requests.indexOf(this.selectedFolder)
-			this.moveFolderToPosition(currentIndex + 1)
-			this.isContextMenuFolderVisible = false
+			this.moveFolderToPosition('down')
 		},
 		newFolder() {
 			this.data.folders.push(this.addFolder)
@@ -345,33 +351,18 @@ function data() {
 			this.showCreateFolder = false
 		},
 		moveRequest(folder) {
-			this.isContextMenuFoldersVisible = false
-			const selectedRequest = this.selectedRequest
-			const targetFolder = this.data.requests.find(request => request.folder === folder)
-			if (!targetFolder) return
-
-		  for (const item of this.data.requests) {
-        if (item.requests) {
-					const index = item.requests.indexOf(selectedRequest)
-
-					if (index !== -1) {
-						item.requests.splice(index, 1)
-						break
-					}
-        }
-    	}
-
-			const rootIndex = this.data.requests.indexOf(selectedRequest)
-			if (rootIndex !== -1) this.data.requests.splice(rootIndex, 1)
-
-			targetFolder.requests.push(selectedRequest)
+			const request = this.data.requests.find(req => req.id === this.selectedRequest.id)
+			
+			if (request) request.folder = folder
+			
 			localStorage.setItem('config', JSON.stringify(this.data))
+			this.isContextMenuFoldersVisible = false
 		},
 		moveOutOfTheFolder() {
-			const folder = this.data.requests.find(item => item.requests && item.requests.includes(this.selectedRequest))
-			if (!folder) return
-			folder.requests = folder.requests.filter(request => request !== this.selectedRequest)
-			this.data.requests.push(this.selectedRequest)
+			const request = this.data.requests.find(req => req.id === this.selectedRequest.id)
+			
+			if (request) request.folder = ''
+
 			localStorage.setItem('config', JSON.stringify(this.data))
 			this.isContextMenuVisible = false
 		},
