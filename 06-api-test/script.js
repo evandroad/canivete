@@ -141,7 +141,6 @@ function data() {
 			this.showInsertUrl = true
 		},
 		insertUrl() {
-			console.log(this.addUrl)
 			if (this.data.urls.includes(this.addUrl)) {
 				this.showNotification('URL já adicionada.', 'error')
 			} else {
@@ -348,6 +347,7 @@ function data() {
 			this.moveFolderToPosition('down')
 		},
 		newFolder() {
+			if (!this.data.folders) this.data.folders = []
 			this.data.folders.push(this.addFolder)
 			this.addFolder = ''
 			localStorage.setItem('config', JSON.stringify(this.data))
