@@ -5,9 +5,6 @@
   ],
   "folders": [
     "Bank",
-    "Card",
-    "Bill",
-    "Salary",
     "Generic"
   ],
   "requests": [
@@ -15,7 +12,8 @@
       "name": "bank",
       "method": "GET",
       "endpoint": "/bank/2024-01-17/Nubank/Evandro",
-      "folder": "Bank"
+      "folder": "Bank",
+      "id": "4d0f3e49-6dbf-49c2-a118-752680e57b87"
     },
     {
       "name": "bank",
@@ -30,7 +28,8 @@
         "bank": "Nubank",
         "person": "Casa"
       },
-      "folder": "Bank"
+      "folder": "Bank",
+      "id": "6908a0ce-81c0-4744-adec-447575723a74"
     },
     {
       "name": "bank",
@@ -46,136 +45,22 @@
         "person": "Casa",
         "id": "10036"
       },
-      "folder": "Bank"
+      "folder": "Bank",
+      "id": "fbb52521-515f-43b7-93bd-33a5ffe861a9"
     },
     {
       "name": "bank",
       "method": "DELETE",
       "endpoint": "/bank/10036",
-      "folder": "Bank"
-    },
-    {
-      "name": "card",
-      "method": "GET",
-      "endpoint": "/card/2024/1/Nubank/Evandro",
-      "folder": "Card"
-    },
-    {
-      "name": "card",
-      "method": "POST",
-      "endpoint": "/card",
-      "body": {
-        "date": "2024-01-18",
-        "person": "Evandro",
-        "description": "Bazar",
-        "value": "1.00",
-        "installment": "1",
-        "holder": "Evandro",
-        "card": "Nubank",
-        "category": "Lazer"
-      },
-      "folder": "Card"
-    },
-    {
-      "name": "card",
-      "method": "PUT",
-      "endpoint": "/card",
-      "body": {
-        "date": "2024-01-18",
-        "person": "Evandro",
-        "description": "Bazar",
-        "value": "10,00",
-        "installment": "1",
-        "holder": "Evandro",
-        "card": "Nubank",
-        "category": "Lazer",
-        "id": "2890"
-      },
-      "folder": "Card"
-    },
-    {
-      "name": "card",
-      "method": "DELETE",
-      "endpoint": "/card/2890",
-      "folder": "Card"
-    },
-    {
-      "name": "bill",
-      "method": "GET",
-      "endpoint": "/bill/2024/1",
-      "folder": "Bill"
-    },
-    {
-      "name": "bill",
-      "method": "POST",
-      "endpoint": "/bill",
-      "body": {
-        "year": "2024",
-        "month": "02",
-        "bill": "Luz",
-        "value": "80.00"
-      },
-      "folder": "Bill"
-    },
-    {
-      "name": "bill",
-      "method": "PUT",
-      "endpoint": "/bill",
-      "body": {
-        "year": "2024",
-        "month": "02",
-        "bill": "Luz",
-        "value": "90.00"
-      },
-      "folder": "Bill"
-    },
-    {
-      "name": "bill",
-      "method": "DELETE",
-      "endpoint": "/bill/2024/2/Luz",
-      "folder": "Bill"
-    },
-    {
-      "name": "salary",
-      "method": "GET",
-      "endpoint": "/salary/2024/3",
-      "folder": "Salary"
-    },
-    {
-      "name": "salary",
-      "method": "POST",
-      "endpoint": "/salary",
-      "body": {
-        "date": "2024-03-15",
-        "lastMonth": "03",
-        "person": "Evandro",
-        "value": "1570"
-      },
-      "folder": "Salary"
-    },
-    {
-      "name": "salary",
-      "method": "PUT",
-      "endpoint": "/salary",
-      "body": {
-        "date": "2024-02-01",
-        "lastMonth": "02",
-        "person": "Evandro",
-        "value": "90.00"
-      },
-      "folder": "Salary"
-    },
-    {
-      "name": "salary",
-      "method": "DELETE",
-      "endpoint": "/salary/2024-03-18/3/Evandro",
-      "folder": "Salary"
+      "folder": "Bank",
+      "id": "2e37712e-f729-44f6-96d4-c7a4aad2958a"
     },
     {
       "name": "generic",
       "method": "GET",
       "endpoint": "/generic/2026",
-      "folder": "Generic"
+      "folder": "Generic",
+      "id": "833c09de-197a-4c76-98b4-d3ab263de873"
     },
     {
       "name": "generic",
@@ -187,7 +72,8 @@
         "description": "Alimentação",
         "value": "400"
       },
-      "folder": "Generic"
+      "folder": "Generic",
+      "id": "58c78643-db23-4baf-9ae4-92e4e0645d58"
     },
     {
       "name": "generic",
@@ -202,13 +88,15 @@
         "currentDescription": "Alimentação",
         "currentValue": "400"
       },
-      "folder": "Generic"
+      "folder": "Generic",
+      "id": "e902456b-aa5b-49c8-878c-12a871ec8205"
     },
     {
       "name": "generic",
       "method": "DELETE",
       "endpoint": "/expense/2024-03-01/10/Alimentação",
-      "folder": "Generic"
+      "folder": "Generic",
+      "id": "ab379c4b-9ae0-4b1a-b292-60380af11bc9"
     },
     {
       "name": "login",
@@ -218,19 +106,22 @@
         "login": "evandro",
         "password": "senha"
       },
-      "folder": ""
+      "folder": "",
+      "id": "f6b60d00-9430-49e4-9e75-ec235f0266d7"
     },
     {
       "name": "health",
       "method": "GET",
       "endpoint": "/health",
-      "folder": ""
+      "folder": "",
+      "id": "6cf8816c-2c1b-4ffb-84c9-26d44b688edd"
     },
     {
       "name": "status",
       "method": "GET",
       "endpoint": "/",
-      "folder": ""
+      "folder": "",
+      "id": "a2adeb25-7364-4da1-9a33-fd7638bec5a0"
     }
   ]
 }

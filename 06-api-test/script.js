@@ -16,7 +16,6 @@ function data() {
 		isLoading: false,
 		showInsertUrl: false,
 		showCreateFolder: false,
-		showInsertRequest: false,
 		selectedRequest: null,
 		isContextMenuVisible: false,
 		isContextMenuFolderVisible: false,
@@ -200,37 +199,34 @@ function data() {
 			}
 		
 			const request = {
-        ...this.activeLink,
+				...this.activeLink,
+				id: this.activeLink.id || crypto.randomUUID(),
 				name: this.formRequest.name,
         method: this.formRequest.method,
-        endpoint: this.formRequest.endpoint
+        endpoint: this.formRequest.endpoint,
+				folder: this.activeLink.folder || ''
     	}
 		
 			if (this.formRequest.method == 'POST' || this.formRequest.method == 'PUT') {
 				try {
-					const requestBody = JSON.parse(this.formRequest.body);
+					const requestBody = JSON.parse(this.formRequest.body)
 					request.body = typeof requestBody === 'object' && requestBody !== null ? requestBody : {}
 				} catch (error) {
 					request['body'] = {}
 				}
 			}
 
-			let found = false
+			const index = this.data.requests.findIndex(r => r === this.activeLink)
 
-			if (!found) {
-				const index = this.data.requests.findIndex(r => r === this.activeLink)
-
-				if (index !== -1) {
-					this.data.requests.splice(index, 1, request)
-					found = true
-				}
-			}
-
-			if (found) {
+			if (index !== -1) {
+				this.data.requests.splice(index, 1, request)
 				this.activeLink = request
 			} else {
 				console.log('Request não encontrado:', this.activeLink)
 			}
+
+			localStorage.setItem('config', JSON.stringify(this.data))
+			this.showNotification('Requisição salva com sucesso!')
 		},
 		createRequest() {
 			if (!this.formRequest.name) {
@@ -247,7 +243,6 @@ function data() {
         endpoint: this.formRequest.endpoint,
 				folder: ''
 			}
-			console.log(request)
 	
 			if (this.formRequest.method == 'POST' || this.formRequest.method == 'PUT') {
 				request['body'] = JSON.parse(this.formRequest.body)
@@ -258,11 +253,6 @@ function data() {
 			this.addName = ''
 			this.data.requests.push(request)
 			localStorage.setItem('config', JSON.stringify(this.data))
-			this.showInsertRequest = false
-		},
-		saveAsRequest() {
-			this.addName = this.activeLink.name
-			this.showInsertRequest = true
 		},
 		removeRequest() {
 			this.data.requests = this.data.requests.filter(objeto =>
@@ -395,6 +385,31 @@ function data() {
 
 			this.selectedFolder = null
 			this.isContextMenuFolderVisible = false
+		},
+		showNotification(message, type = 'success') {
+			const notification = document.createElement('div')
+
+			const colors = {
+				success: 'bg-green-800',
+				error: 'bg-red-800',
+				warning: 'bg-yellow-800',
+				info: 'bg-blue-800'
+			}
+
+			notification.textContent = message
+			notification.className = `
+				fixed top-5 left-1/2 -translate-x-1/2 z-[9999]
+				${colors[type] || colors.info}
+				text-white px-4 py-3 rounded-lg shadow-lg
+				transition-opacity duration-300
+			`
+
+			document.body.appendChild(notification)
+
+			setTimeout(() => {
+				notification.classList.add('opacity-0')
+				setTimeout(() => notification.remove(), 300)
+			}, 3000)
 		}
 	}
 }
